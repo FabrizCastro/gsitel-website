@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .text-shadow-hero {
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+  }
+}
+
 @layer components {
   .btn {
     @apply px-4 py-2 rounded-lg font-medium inline-flex items-center justify-center tracking-tight;
@@ -37,5 +43,26 @@
 
   .card {
     @apply p-10 border border-[#222222]/10 rounded-3xl shadow-[0_7px_14px_#EAEAEA] max-w-xs w-full;
+  }
+}
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

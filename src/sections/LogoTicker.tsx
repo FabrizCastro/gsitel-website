@@ -1,10 +1,11 @@
 "use client";
-import acmeLogo from "@/assets/logo-acme.png";
-import quantumLogo from "@/assets/logo-quantum.png";
-import echoLogo from "@/assets/logo-echo.png";
-import celestialLogo from "@/assets/logo-celestial.png";
-import pulseLogo from "@/assets/logo-pulse.png";
-import apexLogo from "@/assets/logo-apex.png";
+import ascensoresLogo from "@/assets/ascensores-logo.png";
+import gsitelServicesLogo from "@/assets/gsitel_services 1.png";
+import integratelPeruLogo from "@/assets/integratel_peru.png";
+import telefonicaLogo from "@/assets/telefonica-logo.png";
+import internetLogo from "@/assets/internettodos-logo.png";
+import entelLogo from "@/assets/entel-logo.png";
+import vaLogo from "@/assets/va-profesionales.png";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
@@ -25,66 +26,58 @@ export const LogoTicker = () => {
               repeatType: "loop",
             }}
           >
+            <Image src={vaLogo} alt="va Logo" className="logo-ticker-image" />
             <Image
-              src={acmeLogo}
-              alt="Acme Logo"
+              src={ascensoresLogo}
+              alt="Ascensores Logo"
               className="logo-ticker-image"
             />
             <Image
-              src={quantumLogo}
-              alt="Quantum Logo"
+              src={integratelPeruLogo}
+              alt="Integratel Perú Logo"
               className="logo-ticker-image"
             />
             <Image
-              src={echoLogo}
-              alt="Echo Logo"
+              src={telefonicaLogo}
+              alt="Telefónica Logo"
               className="logo-ticker-image"
             />
             <Image
-              src={celestialLogo}
-              alt="Celestial Logo"
+              src={internetLogo}
+              alt="Internet Todos Logo"
               className="logo-ticker-image"
             />
             <Image
-              src={pulseLogo}
-              alt="Pulse Logo"
-              className="logo-ticker-image"
-            />
-            <Image
-              src={apexLogo}
-              alt="Apex Logo"
+              src={entelLogo}
+              alt="Entel Logo"
               className="logo-ticker-image"
             />
 
             {/* Second set of logos for animation */}
+            <Image src={vaLogo} alt="va Logo" className="logo-ticker-image" />
             <Image
-              src={acmeLogo}
-              alt="Acme Logo"
+              src={ascensoresLogo}
+              alt="Ascensores Logo"
               className="logo-ticker-image"
             />
             <Image
-              src={quantumLogo}
-              alt="Quantum Logo"
+              src={integratelPeruLogo}
+              alt="Integratel Perú Logo"
               className="logo-ticker-image"
             />
             <Image
-              src={echoLogo}
-              alt="Echo Logo"
+              src={telefonicaLogo}
+              alt="Telefónica Logo"
               className="logo-ticker-image"
             />
             <Image
-              src={celestialLogo}
-              alt="Celestial Logo"
+              src={internetLogo}
+              alt="Internet Todos Logo"
               className="logo-ticker-image"
             />
             <Image
-              src={pulseLogo}
-              alt="Pulse Logo"
-              className="logo-ticker-image"
-            />
-            <Image
-              src={apexLogo}
-              alt="Apex Logo"
+              src={entelLogo}
+              alt="Entel Logo"
               className="logo-ticker-image"
             />
           </motion.div>

@@ -1,9 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // ✅ para export estático (genera /out)
+  output: "export",
+
+  // ✅ requerido si usas next/image en hosting estático
+  images: {
+    unoptimized: true,
+  },
+
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>
-      rule.test?.test?.(".svg")
+      rule.test?.test?.(".svg"),
     );
 
     config.module.rules.push(
@@ -19,7 +27,7 @@ const nextConfig = {
         issuer: fileLoaderRule.issuer,
         resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] }, // exclude if *.svg?url
         use: ["@svgr/webpack"],
-      }
+      },
     );
 
     // Modify the file loader rule to ignore *.svg, since we have it handled now.
@@ -27,8 +35,6 @@ const nextConfig = {
 
     return config;
   },
-
-  // ...other config
 };
 
 export default nextConfig;

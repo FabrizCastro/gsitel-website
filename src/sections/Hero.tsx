@@ -1,86 +1,69 @@
 "use client";
-import ArrowIcon from "@/assets/arrow-right.svg";
-import cogImage from "@/assets/cog.png";
-import cylinderImage from "@/assets/cylinder.png";
-import noodleImage from "@/assets/noodle.png";
+
+import backgroundHeroImage from "@/assets/backgroundhero1.png";
 import Image from "next/image";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useMotionValueEvent,
-} from "framer-motion";
-import { useRef } from "react";
 
 export const Hero = () => {
-  const heroRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start end", "end start"],
-  });
-  const translateY = useTransform(scrollYProgress, [0, 1], [150, -150]);
-
   return (
     <section
-      ref={heroRef}
-      className="pt-8 pb-20 md:pt-5 md:pb-10 bg-[radial-gradient(ellipse_200%_100%_at_bottom_left,#183EC2,#EAEEFE_100%)] overflow-x-clip"
+      id="acerca"
+      className="relative flex-1 min-h-[520px] pt-36 pb-14 md:min-h-[640px] md:pt-40 md:pb-12 overflow-hidden bg-[#0b1d3a] scroll-mt-24 md:scroll-mt-28"
     >
-      <div className="container">
+      <Image
+        src={backgroundHeroImage}
+        alt="Fondo tecnológico con tonos azules de GSITEL"
+        fill
+        priority
+        quality={100}
+        sizes="100vw"
+        className="object-cover object-center"
+      />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(110deg,rgba(8,29,63,0.9),rgba(8,29,63,0.65),rgba(8,29,63,0.25),rgba(8,29,63,0))]" />
+      <div className="container relative z-10">
         <div className="md:flex items-center">
-          <div className="md:w-[478px]">
-            <div className="tag">Version 2.0 is here</div>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter bg-gradient-to-b from-black to-[#001E80] text-transparent bg-clip-text mt-6">
-              Pathway to productivity
+          <div className="md:w-[578px]">
+            <span className="inline-flex items-center rounded-full border border-white/30 bg-white/10 px-4 py-1 text-sm font-semibold text-white/90 backdrop-blur">
+              Soluciones que transforman
+            </span>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight bg-gradient-to-b from-white to-[#9fc9ff] text-transparent bg-clip-text mt-5">
+              Simplifica tu trabajo de verdad
             </h1>
-            <p className="text-xl text-[#010D3E] tracking-tight mt-6">
-              Celebrate the joy of accomplishment with an app designed to track
-              your progress, motivate your efforts, and celebrate your
-              successes.
+            <p className="text-xl text-white/85 tracking-tight mt-5 max-w-2xl mx-auto">
+              ¡Adáptate a la tecnología! Optimiza tus servicios sin duplicar
+              esfuerzos.
             </p>
-            <div className="flex gap-1 items-center mt-[30px]">
-              <button className="btn btn-primary">Get for free</button>
-              <button className="btn btn-text gap-1">
-                <span>Learn more</span>
-                <ArrowIcon className="h-5 w-5" />
-              </button>
+            <div className="flex flex-wrap gap-2 mt-5 text-sm text-white/80">
+              <span className="rounded-full border border-white/25 bg-white/10 px-3 py-1">
+                Desarrollo de Software
+              </span>
+              <span className="rounded-full border border-white/25 bg-white/10 px-3 py-1">
+                Soporte Implementación RAN
+              </span>
+              <span className="rounded-full border border-white/25 bg-white/10 px-3 py-1">
+                Automatización
+              </span>
+              <span className="rounded-full border border-white/25 bg-white/10 px-3 py-1">
+                Consultoría TI
+              </span>
+            </div>
+            <div className="flex flex-wrap gap-3 items-center mt-8">
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSdfgHkDApUgxqeuqpwoaJPVWo6nQjS7NI9wtpB_W7f0RCddpQ/viewform?usp=publish-editor"
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-primary bg-[#1e63c6] hover:bg-[#1955a8] transition-colors"
+              >
+                Agendar una reunión
+              </a>
+              <a
+                href="#servicios"
+                className="btn border border-white/40 text-white/90 hover:bg-white/10 transition-colors"
+              >
+                Ver servicios
+              </a>
             </div>
           </div>
-          <div className="mt-20 md:mt-0 md:h-[648px] md:flex-1 relative">
-            <motion.img
-              src={cogImage.src}
-              alt="Cog image"
-              className="md:absolute md:h-full md:w-auto md:max-w-none md:-left-6 lg:left-0"
-              animate={{
-                translateY: [-30, 30],
-              }}
-              transition={{
-                repeat: Infinity,
-                repeatType: "mirror",
-                duration: 3,
-                ease: "easeInOut",
-              }}
-            />
-            <motion.img
-              src={cylinderImage.src}
-              width={220}
-              height={220}
-              alt="Cylinder image"
-              className="hidden md:block -top-8 -left-32 md:absolute"
-              style={{
-                translateY: translateY,
-              }}
-            />
-            <motion.img
-              src={noodleImage.src}
-              width={220}
-              alt="Noodle image"
-              className="hidden lg:block absolute top-[524px] left-[448px] rotate-[30deg]"
-              style={{
-                rotate: 30,
-                translateY: translateY,
-              }}
-            />
-          </div>
+          <div className="hidden md:block md:flex-1" aria-hidden="true" />
         </div>
       </div>
     </section>

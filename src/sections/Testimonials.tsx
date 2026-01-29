@@ -9,64 +9,80 @@ import avatar7 from "@/assets/avatar-7.png";
 import avatar8 from "@/assets/avatar-8.png";
 import avatar9 from "@/assets/avatar-9.png";
 import Image from "next/image";
-import { twMerge } from "tailwind-merge";
 import { motion } from "framer-motion";
 import React from "react";
 
-const testimonials = [
+type TestimonialTag = "Telecom" | "Software";
+
+type Testimonial = {
+  text: string;
+  imageSrc: string;
+  name: string;
+  role: string;
+  tag: TestimonialTag;
+};
+
+const tagStyles: Record<TestimonialTag, string> = {
+  Telecom: "bg-[#0f2a2f] text-[#22c55e]",
+  Software: "bg-[#0f2a2f] text-[#38bdf8]",
+};
+
+const testimonials: Testimonial[] = [
   {
-    text: "As a seasoned designer always on the lookout for innovative tools, Framer.com instantly grabbed my attention.",
+    text: "La integración RAN/TX se ejecutó con orden y sin reprocesos. Las MOP estuvieron claras para el equipo de campo.",
     imageSrc: avatar1.src,
-    name: "Jamie Rivera",
-    username: "@jamietechguru00",
+    name: "Daniela Torres",
+    role: "PM RAN · Operador móvil",
+    tag: "Telecom",
   },
   {
-    text: "Our team's productivity has skyrocketed since we started using this tool. ",
+    text: "En refarming 850/1900 mantuvimos continuidad del servicio gracias al seguimiento diario del plan.",
     imageSrc: avatar2.src,
-    name: "Josh Smith",
-    username: "@jjsmith",
+    name: "Carlos M.",
+    role: "Jefe de Refarming · Telefónica Perú",
+    tag: "Telecom",
   },
   {
-    text: "This app has completely transformed how I manage my projects and deadlines.",
+    text: "La validación de rutas TX y los eventos RAN salieron a tiempo con reportes claros al cierre de cada jornada.",
     imageSrc: avatar3.src,
-    name: "Morgan Lee",
-    username: "@morganleewhiz",
+    name: "Paul Rojas",
+    role: "Coordinador de Eventos · Entel Perú",
+    tag: "Telecom",
   },
   {
-    text: "I was amazed at how quickly we were able to integrate this app into our workflow.",
+    text: "El soporte OYM/NOC redujo tiempos de atención y nos dio visibilidad del estado de red.",
     imageSrc: avatar4.src,
-    name: "Casey Jordan",
-    username: "@caseyj",
+    name: "Luis Herrera",
+    role: "NOC Manager · Operador móvil",
+    tag: "Telecom",
   },
   {
-    text: "Planning and executing events has never been easier. This app helps me keep track of all the moving parts, ensuring nothing slips through the cracks.",
-    imageSrc: avatar5.src,
-    name: "Taylor Kim",
-    username: "@taylorkimm",
-  },
-  {
-    text: "The customizability and integration capabilities of this app are top-notch.",
-    imageSrc: avatar6.src,
-    name: "Riley Smith",
-    username: "@rileysmith1",
-  },
-  {
-    text: "Adopting this app for our team has streamlined our project management and improved communication across the board.",
-    imageSrc: avatar7.src,
-    name: "Jordan Patels",
-    username: "@jpatelsdesign",
-  },
-  {
-    text: "With this app, we can easily assign tasks, track progress, and manage documents all in one place.",
-    imageSrc: avatar8.src,
-    name: "Sam Dawson",
-    username: "@dawsontechtips",
-  },
-  {
-    text: "Its user-friendly interface and robust features support our diverse needs.",
+    text: "El dashboard de KPIs nos ahorró horas de consolidación y facilitó decisiones operativas.",
     imageSrc: avatar9.src,
-    name: "Casey Harper",
-    username: "@casey09",
+    name: "André Salas",
+    role: "Jefe de Operaciones · Telecom",
+    tag: "Software",
+  },
+  {
+    text: "Automatizar reportes y alertas nos dio trazabilidad y menos errores manuales.",
+    imageSrc: avatar8.src,
+    name: "Juliana P.",
+    role: "Analista de Procesos · Servicios TI",
+    tag: "Software",
+  },
+  {
+    text: "La plataforma web a medida ordenó nuestros flujos de aprobación y seguimiento de proyectos.",
+    imageSrc: avatar7.src,
+    name: "Renzo Vidal",
+    role: "PMO · Integrador TI",
+    tag: "Software",
+  },
+  {
+    text: "La app móvil para equipos de campo mejoró el registro de avances y evidencias.",
+    imageSrc: avatar6.src,
+    name: "Fiorella S.",
+    role: "Coordinadora de Campo · Infraestructura",
+    tag: "Software",
   },
 ];
 
@@ -94,26 +110,45 @@ const TestimonialsColumn = (props: {
     >
       {[...new Array(2)].fill(0).map((_, index) => (
         <React.Fragment key={index}>
-          {props.testimonials.map(({ text, imageSrc, name, username }) => (
-            <div className="card">
-              <div>{text}</div>
-              <div className="flex items-center gap-2 mt-5">
-                <Image
-                  src={imageSrc}
-                  alt={name}
-                  width={40}
-                  height={40}
-                  className="h-10 w-10 rounded-full"
-                />
-                <div className="flex flex-col">
-                  <div className="font-medium tracking-tight leading-5">
-                    {name}
+          {props.testimonials.map(({ text, imageSrc, name, role, tag }) => {
+            const tagClass = tagStyles[tag];
+
+            return (
+              <div
+                key={`${name}-${role}`}
+                className="card relative overflow-hidden border-white/10 bg-[#0f1419] shadow-[0_24px_50px_rgba(0,0,0,0.4)]"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <span
+                    className={`inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] ${tagClass}`}
+                  >
+                    {tag}
+                  </span>
+                  <span className="text-xs text-white/50">Testimonio</span>
+                </div>
+                <p className="mt-4 text-sm leading-relaxed text-white/70">
+                  {text}
+                </p>
+                <div className="mt-6 flex items-center gap-3">
+                  <Image
+                    src={imageSrc}
+                    alt={name}
+                    width={40}
+                    height={40}
+                    className="h-10 w-10 rounded-full border border-white/15"
+                  />
+                  <div className="flex flex-col">
+                    <div className="text-sm font-semibold tracking-tight text-white">
+                      {name}
+                    </div>
+                    <div className="text-xs tracking-tight text-white/50">
+                      {role}
+                    </div>
                   </div>
-                  <div className="leading-5 tracking-tight">{username}</div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </React.Fragment>
       ))}
     </motion.div>
@@ -122,19 +157,24 @@ const TestimonialsColumn = (props: {
 
 export const Testimonials = () => {
   return (
-    <section className="bg-white">
-      <div className="container">
+    <section
+      id="clientes"
+      className="relative overflow-hidden bg-[#f5f7ff] py-24 scroll-mt-24 md:scroll-mt-28"
+    >
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.16),transparent_45%),radial-gradient(circle_at_80%_80%,rgba(29,78,216,0.14),transparent_45%)]" />
+      <div className="pointer-events-none absolute inset-0 opacity-40 [background-image:linear-gradient(90deg,rgba(15,23,42,0.06)_1px,transparent_1px),linear-gradient(0deg,rgba(15,23,42,0.06)_1px,transparent_1px)] [background-size:28px_28px]" />
+      <div className="container relative z-10">
         <div className="section-heading">
           <div className="flex justify-center">
-            <div className="tag">Testimonials</div>
+            <div className="tag">Testimonios</div>
           </div>
-          <h2 className="section-title mt-5">What our users say</h2>
+          <h2 className="section-title mt-5">Lo que dicen nuestros clientes</h2>
           <p className="section-description mt-5">
-            From intuitive design to powerful features, our app has become an
-            essential tool for users around the world.
+            Resultados en implementación RAN/TX y software que mejora el control
+            operativo y la velocidad de respuesta.
           </p>
         </div>
-        <div className="flex justify-center gap-6 mt-10 [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)] max-h-[738px] overflow-hidden">
+        <div className="flex justify-center gap-6 mt-12 [mask-image:linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)] max-h-[760px] overflow-hidden">
           <TestimonialsColumn testimonials={firstColumn} duration={15} />
           <TestimonialsColumn
             testimonials={secondColumn}
