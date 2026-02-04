@@ -51,12 +51,25 @@ export const metadata: Metadata = {
     locale: "es_PE",
     siteName: "GSITEL Services S.A.C.",
     url: "https://gsitelservices.com",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "GSITEL Services S.A.C.",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "GSITEL Services S.A.C.",
     description:
       "Soluciones en software y telecom: automatización, integración y soporte RAN multivendor.",
+    images: ["/og-image.png"],
+  },
+  icons: {
+    icon: [{ url: "/icon.png" }],
+    apple: [{ url: "/apple-touch-icon.png" }],
   },
   category: "Technology",
 };

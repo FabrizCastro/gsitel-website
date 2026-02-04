@@ -23,8 +23,8 @@ type Testimonial = {
 };
 
 const tagStyles: Record<TestimonialTag, string> = {
-  Telecom: "bg-[#0f2a2f] text-[#22c55e]",
-  Software: "bg-[#0f2a2f] text-[#38bdf8]",
+  Telecom: "bg-[#0f172a]/10 text-[#0f172a]",
+  Software: "bg-[#1d4ed8]/10 text-[#1d4ed8]",
 };
 
 const testimonials: Testimonial[] = [
@@ -116,7 +116,7 @@ const TestimonialsColumn = (props: {
             return (
               <div
                 key={`${name}-${role}`}
-                className="card relative overflow-hidden border-white/10 bg-[#0f1419] shadow-[0_24px_50px_rgba(0,0,0,0.4)]"
+                className="card relative overflow-hidden border-white/60 bg-white/90 shadow-[0_20px_45px_rgba(15,23,42,0.12)] backdrop-blur"
               >
                 <div className="flex items-center justify-between gap-3">
                   <span
@@ -124,9 +124,9 @@ const TestimonialsColumn = (props: {
                   >
                     {tag}
                   </span>
-                  <span className="text-xs text-white/50">Testimonio</span>
+                  <span className="text-xs text-slate-400">Testimonio</span>
                 </div>
-                <p className="mt-4 text-sm leading-relaxed text-white/70">
+                <p className="mt-4 text-sm leading-relaxed text-slate-700">
                   {text}
                 </p>
                 <div className="mt-6 flex items-center gap-3">
@@ -135,13 +135,13 @@ const TestimonialsColumn = (props: {
                     alt={name}
                     width={40}
                     height={40}
-                    className="h-10 w-10 rounded-full border border-white/15"
+                    className="h-10 w-10 rounded-full border border-white/80"
                   />
                   <div className="flex flex-col">
-                    <div className="text-sm font-semibold tracking-tight text-white">
+                    <div className="text-sm font-semibold tracking-tight text-slate-900">
                       {name}
                     </div>
-                    <div className="text-xs tracking-tight text-white/50">
+                    <div className="text-xs tracking-tight text-slate-500">
                       {role}
                     </div>
                   </div>
@@ -168,7 +168,9 @@ export const Testimonials = () => {
           <div className="flex justify-center">
             <div className="tag">Testimonios</div>
           </div>
-          <h2 className="section-title mt-5">Lo que dicen nuestros clientes</h2>
+          <h2 className="section-title mt-5 text-left text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] break-words">
+            Lo que dicen nuestros clientes
+          </h2>
           <p className="section-description mt-5">
             Resultados en implementación RAN/TX y software que mejora el control
             operativo y la velocidad de respuesta.

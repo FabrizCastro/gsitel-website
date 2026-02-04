@@ -35,7 +35,7 @@ export const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 w-full z-20">
-      <div className="flex justify-center items-center py-3 bg-black text-white/90 text-sm gap-3">
+      <div className="hidden md:flex justify-center items-center py-3 bg-black text-white/90 text-sm gap-3">
         <p className="text-white/80 hidden md:block font-semibold">
           Soluciones en software y telecom para operaciones críticas
         </p>
@@ -45,7 +45,7 @@ export const Header = () => {
         </div> */}
       </div>
       <div
-        className={`py-5 transition-colors duration-300 ${
+        className={`py-4 md:py-5 transition-colors duration-300 ${
           isAtTop
             ? "bg-[rgba(12,33,66,0.35)] backdrop-blur-sm"
             : "bg-[rgba(18,45,88,0.72)] backdrop-blur-md"
@@ -53,7 +53,11 @@ export const Header = () => {
       >
         <div className="container">
           <div className="flex items-center justify-between">
-            <div className="rounded-2xl bg-white/90 p-2 shadow-[0_8px_20px_rgba(0,0,0,0.35)]">
+            <a
+              href="/#acerca"
+              className="rounded-2xl bg-white/90 p-2 shadow-[0_8px_20px_rgba(0,0,0,0.35)] transition hover:shadow-[0_10px_26px_rgba(0,0,0,0.45)]"
+              aria-label="Ir al inicio"
+            >
               <Image
                 src={Logo}
                 alt="GSITEL Logo"
@@ -61,7 +65,7 @@ export const Header = () => {
                 width={180}
                 className="h-10 w-auto md:h-12"
               />
-            </div>
+            </a>
             <button
               type="button"
               className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white md:hidden ${
@@ -78,11 +82,12 @@ export const Header = () => {
                 isAtTop ? "text-shadow-hero" : ""
               }`}
             >
-              <a href="#acerca">Acerca de nosotros</a>
-              <a href="#servicios">Servicios</a>
-              <a href="#clientes">Clientes</a>
-              <a href="#proyectos">Proyectos</a>
-              <a href="#contacto">Contacto</a>
+              <a href="/aboutus">Acerca de nosotros</a>
+              <a href="/#servicios">Servicios</a>
+              <a href="/#clientes">Clientes</a>
+              <a href="/#proyectos">Proyectos</a>
+              <a href="/blog">Noticias</a>
+              <a href="/#contacto">Contacto</a>
               {/* <button className="bg-black text-white px-4 py-2 rounded-lg font-medium inline-flex align-items justify-center tracking-tight">
                 Get for free
               </button>*/}
@@ -95,35 +100,42 @@ export const Header = () => {
           >
             <nav className="mt-4 flex flex-col gap-3 rounded-2xl border border-white/15 bg-[rgba(11,29,58,0.85)] px-5 py-4 text-white/90 backdrop-blur">
               <a
-                href="#acerca"
+                href="/aboutus"
                 className="font-semibold"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Acerca de nosotros
               </a>
               <a
-                href="#servicios"
+                href="/#servicios"
                 className="font-semibold"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Servicios
               </a>
               <a
-                href="#clientes"
+                href="/#clientes"
                 className="font-semibold"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Clientes
               </a>
               <a
-                href="#proyectos"
+                href="/#proyectos"
                 className="font-semibold"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Proyectos
               </a>
               <a
-                href="#contacto"
+                href="/blog"
+                className="font-semibold"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Noticias
+              </a>
+              <a
+                href="/#contacto"
                 className="font-semibold"
                 onClick={() => setIsMenuOpen(false)}
               >
