@@ -1,7 +1,8 @@
 "use client";
 
-import backgroundHeroImage from "@/assets/backgroundhero1.png";
+import backgroundHeroImage from "@/assets/backgrounds/backgroundhero1.png";
 import Image from "next/image";
+import SplitText from "@/components/SplitText";
 
 export const AboutHero = () => {
   return (
@@ -25,9 +26,50 @@ export const AboutHero = () => {
             <span className="inline-flex items-center rounded-full border border-white/30 bg-white/10 px-4 py-1 text-sm font-semibold text-white/90 backdrop-blur">
               Soluciones que transforman
             </span>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight bg-gradient-to-b from-white to-[#9fc9ff] text-transparent bg-clip-text mt-5">
-              Simplifica tu trabajo de verdad
-            </h1>
+            <div className="mt-5 space-y-1">
+              <SplitText
+                text="Simplifica tu"
+                className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight bg-gradient-to-b from-white to-[#9fc9ff] text-transparent bg-clip-text block"
+                delay={45}
+                duration={1.05}
+                ease="power3.out"
+                splitType="chars"
+                from={{ opacity: 0, y: 32 }}
+                to={{ opacity: 1, y: 0 }}
+                threshold={0.2}
+                rootMargin="-80px"
+                textAlign="left"
+                preserveGradient
+              />
+              <SplitText
+                text="trabajo"
+                className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight bg-gradient-to-b from-white to-[#9fc9ff] text-transparent bg-clip-text block"
+                delay={45}
+                duration={1.05}
+                ease="power3.out"
+                splitType="chars"
+                from={{ opacity: 0, y: 32 }}
+                to={{ opacity: 1, y: 0 }}
+                threshold={0.2}
+                rootMargin="-80px"
+                textAlign="left"
+                preserveGradient
+              />
+              <SplitText
+                text="de verdad"
+                className="text-5xl md:text-7xl font-bold tracking-tighter leading-tight bg-gradient-to-b from-white to-[#9fc9ff] text-transparent bg-clip-text block"
+                delay={45}
+                duration={1.05}
+                ease="power3.out"
+                splitType="chars"
+                from={{ opacity: 0, y: 32 }}
+                to={{ opacity: 1, y: 0 }}
+                threshold={0.2}
+                rootMargin="-80px"
+                textAlign="left"
+                preserveGradient
+              />
+            </div>
             <p className="text-xl text-white/85 tracking-tight mt-5 max-w-2xl mx-auto">
               ¡Adáptate a la tecnología! Optimiza tus servicios sin duplicar
               esfuerzos.
@@ -51,7 +93,7 @@ export const AboutHero = () => {
                 href="https://docs.google.com/forms/d/e/1FAIpQLSdfgHkDApUgxqeuqpwoaJPVWo6nQjS7NI9wtpB_W7f0RCddpQ/viewform?usp=publish-editor"
                 target="_blank"
                 rel="noreferrer"
-                className="btn btn-primary bg-[#1e63c6] hover:bg-[#1955a8] transition-colors"
+                className="btn btn-primary bg-[#1e63c6] hover:bg-[#1955a8] transition-colors relative overflow-hidden ring-2 ring-cyan-300/70 shadow-[0_0_25px_rgba(34,211,238,0.45)] hover:shadow-[0_0_40px_rgba(34,211,238,0.65)] animate-pulse"
               >
                 Agendar una reunión
               </a>

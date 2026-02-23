@@ -9,18 +9,36 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/aboutus",
   },
+  keywords: [
+    "GSITEL",
+    "proyectos telecom",
+    "automatización",
+    "software a medida",
+    "ingeniería RAN",
+    "Perú",
+    "LATAM",
+  ],
   openGraph: {
     title: "Acerca de Nosotros | GSITEL Services S.A.C.",
     description:
       "Equipo, misión y visión de GSITEL: ingeniería RAN, automatización y software para redes y operaciones críticas.",
     url: "https://gsitelservices.com/aboutus",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Acerca de GSITEL Services S.A.C.",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Acerca de Nosotros | GSITEL Services S.A.C.",
     description:
       "Equipo, misión y visión de GSITEL: ingeniería RAN, automatización y software para redes y operaciones críticas.",
+    images: ["/og-image.png"],
   },
 };
 

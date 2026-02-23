@@ -1,8 +1,7 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  // ✅ para export estático (genera /out)
-  output: "export",
+import { PHASE_DEVELOPMENT_SERVER } from "next/constants.js";
 
+/** @type {import('next').NextConfig} */
+const baseConfig = {
   // ✅ requerido si usas next/image en hosting estático
   images: {
     unoptimized: true,
@@ -37,4 +36,12 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default (phase) => {
+  const isDev = phase === PHASE_DEVELOPMENT_SERVER;
+
+  return {
+    ...baseConfig,
+    // ✅ para export estático (solo en build, no en dev)
+    ...(isDev ? {} : { output: "export" }),
+  };
+};

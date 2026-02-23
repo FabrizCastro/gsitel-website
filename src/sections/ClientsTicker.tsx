@@ -1,11 +1,11 @@
 "use client";
-import ascensoresLogo from "@/assets/ascensores-logo.png";
-import gsitelServicesLogo from "@/assets/gsitel_services 1.png";
-import integratelPeruLogo from "@/assets/integratel_peru.png";
-import telefonicaLogo from "@/assets/telefonica-logo.png";
-import internetLogo from "@/assets/internettodos-logo.png";
-import entelLogo from "@/assets/entel-logo.png";
-import vaLogo from "@/assets/va-profesionales.png";
+import ascensoresLogo from "@/assets/logos/ascensores-logo.png";
+import gsitelServicesLogo from "@/assets/logos/gsitel_services 1.png";
+import integratelPeruLogo from "@/assets/logos/integratel_peru.png";
+import telefonicaLogo from "@/assets/logos/telefonica-logo.png";
+import internetLogo from "@/assets/logos/internettodos-logo.png";
+import entelLogo from "@/assets/logos/entel-logo.png";
+import vaLogo from "@/assets/logos/va-profesionales.png";
 import Image from "next/image";
 import { motion } from "framer-motion";
 

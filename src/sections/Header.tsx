@@ -1,8 +1,8 @@
 "use client";
 
-import Logo from "@/assets/gsitel_services.png";
+import Logo from "@/assets/logos/gsitel_services.png";
 import Image from "next/image";
-import MenuIcon from "@/assets/menu.svg";
+import MenuIcon from "@/assets/icons/menu.svg";
 import { useEffect, useState } from "react";
 
 export const Header = () => {
@@ -82,11 +82,15 @@ export const Header = () => {
                 isAtTop ? "text-shadow-hero" : ""
               }`}
             >
-              <a href="/aboutus">Acerca de nosotros</a>
+              <a href="/aboutus" className="underline underline-offset-8">
+                Nosotros
+              </a>
               <a href="/#servicios">Servicios</a>
               <a href="/#clientes">Clientes</a>
               <a href="/#proyectos">Proyectos</a>
-              <a href="/blog">Noticias</a>
+              <a href="/blog" className="underline underline-offset-8">
+                Noticias
+              </a>
               <a href="/#contacto">Contacto</a>
               {/* <button className="bg-black text-white px-4 py-2 rounded-lg font-medium inline-flex align-items justify-center tracking-tight">
                 Get for free
@@ -101,10 +105,10 @@ export const Header = () => {
             <nav className="mt-4 flex flex-col gap-3 rounded-2xl border border-white/15 bg-[rgba(11,29,58,0.85)] px-5 py-4 text-white/90 backdrop-blur">
               <a
                 href="/aboutus"
-                className="font-semibold"
+                className="font-semibold underline underline-offset-6"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Acerca de nosotros
+                Nosotros
               </a>
               <a
                 href="/#servicios"
@@ -129,7 +133,7 @@ export const Header = () => {
               </a>
               <a
                 href="/blog"
-                className="font-semibold"
+                className="font-semibold underline underline-offset-6"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Noticias

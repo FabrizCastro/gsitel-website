@@ -49,15 +49,13 @@ const newsItems: NewsItem[] = [
     link: "https://investors.dxc.com/investor-news/news-details/2025/DXC-relaunches-SAP-Fast-RISE-offering-in-Mexico-powered-by-Microsoft-Azure-to-accelerate-secure-and-local-digital-transformation/default.aspx",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1200",
-    date: "DEC 12, 2024",
+    image: "/evento_navidad.jpg",
+    date: "DEC 2025",
     category: "Corporativo",
-    title:
-      "Perú impulsa transformación digital inclusiva para MYPEs y mercados",
+    title: "Chocolatada navideña con la ONG Villa Sin Fronteras",
     excerpt:
-      "UNDP apoyó una misión de aprendizaje para modernizar mercados tradicionales con herramientas digitales.",
-    link: "https://www.undp.org/policy-centre/seoul/news/peru-explores-koreas-inclusive-digital-transformation-strategies-empower-msmes-and-traditional-markets",
+      "Una noche llena de sonrisas, unión y espíritu navideño. Así se vivió nuestra chocolatada junto a los niños, sus padres y todo el equipo de la ONG Villa Sin Fronteras. Momentos que nos recuerdan que juntos seguimos construyendo esperanza y comunidad.",
+    link: "#",
   },
   {
     image:

@@ -7,18 +7,36 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/blog",
   },
+  keywords: [
+    "noticias",
+    "software",
+    "automatización",
+    "telecom",
+    "LATAM",
+    "innovación",
+    "tecnología",
+  ],
   openGraph: {
     title: "Noticias y Blog | GSITEL Services S.A.C.",
     description:
       "Actualidad de software, automatización y telecom en LATAM: inversiones, cloud, data centers y redes móviles.",
     url: "https://gsitelservices.com/blog",
     type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Noticias y Blog GSITEL Services S.A.C.",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Noticias y Blog | GSITEL Services S.A.C.",
     description:
       "Actualidad de software, automatización y telecom en LATAM: inversiones, cloud, data centers y redes móviles.",
+    images: ["/og-image.png"],
   },
 };
 
