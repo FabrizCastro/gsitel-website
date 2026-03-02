@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { Footer } from "@/sections/Footer";
 import { Header } from "@/sections/Header";
@@ -107,10 +108,12 @@ function NewsCard({
       <article className="cursor-pointer bg-white/[0.02] border border-white/10 rounded-[2.5rem] overflow-hidden transition-all hover:-translate-y-4 hover:border-cyan-500/30 hover:shadow-2xl backdrop-blur-sm min-w-0">
         <div className="h-64 overflow-hidden relative">
           <div className="absolute inset-0 bg-cyan-500/10 opacity-0 group-hover:opacity-100 transition-opacity z-10" />
-          <img
+          <Image
             src={image}
             alt={title}
-            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-125"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover transition-transform duration-1000 group-hover:scale-125"
           />
           <div className="absolute bottom-4 left-4 z-20">
             <span className="bg-black/90 backdrop-blur-md text-[9px] font-black text-cyan-400 tracking-[0.3em] uppercase px-4 py-2 rounded-full border border-white/10">
@@ -203,10 +206,13 @@ export default function BlogPage() {
                 className="grid lg:grid-cols-2"
               >
                 <div className="relative h-56 sm:h-[320px] lg:h-auto overflow-hidden">
-                  <img
+                  <Image
                     src={featuredItem.image}
                     alt={featuredItem.title}
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-1000 group-hover:scale-110"
                   />
                   <div className="absolute top-8 left-8">
                     <span className="bg-cyan-500 text-black px-6 py-2 rounded-full font-black text-[10px] uppercase tracking-widest">

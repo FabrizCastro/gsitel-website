@@ -68,11 +68,16 @@ export default function SplitText({
     backgroundRepeat?: string;
   } | null>(null);
 
-  const { segments, lettersCount } = useMemo(() => {
+  type Segment = { type: "word" | "chars"; value: string; addSpace?: boolean };
+
+  const { segments, lettersCount } = useMemo((): {
+    segments: Segment[];
+    lettersCount: number;
+  } => {
     const words = text.split(" ");
 
     if (splitType === "words") {
-      const wordSegments = words.map((word, index) => ({
+      const wordSegments: Segment[] = words.map((word, index) => ({
         type: "word",
         value: index === words.length - 1 ? word : `${word} `,
       }));
@@ -83,7 +88,7 @@ export default function SplitText({
       };
     }
 
-    const charSegments = words.map((word, index) => ({
+    const charSegments: Segment[] = words.map((word, index) => ({
       type: "chars",
       value: word,
       addSpace: index < words.length - 1,
@@ -145,7 +150,15 @@ export default function SplitText({
     );
 
     return () => window.clearTimeout(timer);
-  }, [delay, duration, isVisible, onLetterAnimationComplete, segments, showCallback]);
+  }, [
+    delay,
+    duration,
+    isVisible,
+    lettersCount,
+    onLetterAnimationComplete,
+    segments,
+    showCallback,
+  ]);
 
   const timing = easeMap[ease] ?? ease;
   const fromTransform = buildTransform(from);

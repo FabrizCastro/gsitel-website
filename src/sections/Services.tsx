@@ -91,10 +91,11 @@ const services: ServiceItem[] = [
     description:
       "Diseñamos soluciones a medida para automatizar procesos, centralizar información y acelerar la toma de decisiones.",
     activities: [
-      "Automatización de reportes y monitoreo",
-      "Desarrollo de herramientas y aplicaciones",
-      "Integraciones y APIs multivendor",
-      "Alertas inteligentes y workflows",
+      "Automatización de ventas, compras y cobranzas",
+      "Desarrollo de aplicaciones web, páginas web y diseño web",
+      "Reportes simples y paneles para microempresas y empresas",
+      "Control de clientes, inventario y operaciones diarias",
+      "Alertas y flujos de trabajo para reducir errores",
     ],
     cta: "Conoce más",
     ctaClass: "bg-[#e25555] hover:bg-[#cc4a4a]",
@@ -144,12 +145,12 @@ const services: ServiceItem[] = [
       </>
     ),
     description:
-      "Acompañamos la planificación y ejecución de iniciativas digitales con foco en impacto y eficiencia.",
+      "Acompañamos a empresas grandes y microempresas en la planificación y ejecución de iniciativas digitales con foco en impacto y eficiencia.",
     activities: [
-      "Levantamiento y definición de requerimientos",
-      "Roadmap técnico y priorización",
-      "Gestión de riesgos y calidad",
-      "Acompañamiento a equipos TI",
+      "Diagnóstico claro de procesos y oportunidades",
+      "Plan paso a paso para digitalizarse sin complicaciones",
+      "Automatización con IA para ahorrar tiempo y errores",
+      "Implementación y acompañamiento en cada etapa del proceso",
     ],
     cta: "Conoce más",
     ctaClass: "bg-[#2f9edb] hover:bg-[#2583b8]",
@@ -306,7 +307,10 @@ export const Services = () => {
             </div>
             <ul className="mt-8 space-y-4">
               {activeService.activities.map((activity) => (
-                <li key={activity} className="flex items-start gap-3 text-white/85">
+                <li
+                  key={activity}
+                  className="flex items-start gap-3 text-white/85"
+                >
                   <span className="mt-0.5 inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/20 bg-white/10">
                     <CheckIcon className="h-4 w-4" />
                   </span>

@@ -1,6 +1,7 @@
 "use client";
 
 import { Galaxy } from "@/components/Galaxy";
+import Image from "next/image";
 
 export const Contact = () => {
   return (
@@ -36,12 +37,12 @@ export const Contact = () => {
           </p>
           <div className="mb-8 sm:mb-10 flex flex-wrap items-center justify-center gap-3 text-white/90 font-semibold break-words">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/10">
-              <img
+              <Image
                 src="https://www.gstatic.com/images/branding/product/2x/gmail_2020q4_48dp.png"
                 alt="Gmail"
+                width={20}
+                height={20}
                 className="h-5 w-5"
-                loading="lazy"
-                decoding="async"
               />
             </span>
             <span>soporte@gsitel-solutions.com</span>

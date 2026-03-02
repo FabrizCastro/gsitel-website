@@ -5,6 +5,7 @@ import SocialInsta from "@/assets/icons/social-insta.svg";
 import SocialLinkedIn from "@/assets/icons/social-linkedin.svg";
 import SocialPin from "@/assets/icons/social-pin.svg";
 import SocialYoutube from "@/assets/icons/social-youtube.svg";
+import Link from "next/link";
 
 export const Footer = () => {
   return (
@@ -25,12 +26,12 @@ export const Footer = () => {
         </div>
 
         <nav className="flex flex-col md:flex-row md:justify-center gap-6 mt-6">
-          <a href="/aboutus">Acerca de nosotros</a>
-          <a href="/#servicios">Servicios</a>
-          <a href="/#clientes">Clientes</a>
-          <a href="/#proyectos">Proyectos</a>
-          <a href="/blog">Noticias</a>
-          <a href="/#contacto">Contacto</a>
+          <Link href="/aboutus">Acerca de nosotros</Link>
+          <Link href="/#servicios">Servicios</Link>
+          <Link href="/#clientes">Clientes</Link>
+          <Link href="/#proyectos">Proyectos</Link>
+          <Link href="/blog">Noticias</Link>
+          <Link href="/#contacto">Contacto</Link>
         </nav>
         <div className="flex justify-center gap-6 mt-6">
           {/*<SocialX />

@@ -3,6 +3,7 @@
 import Logo from "@/assets/logos/gsitel_services.png";
 import Image from "next/image";
 import MenuIcon from "@/assets/icons/menu.svg";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export const Header = () => {
@@ -53,7 +54,7 @@ export const Header = () => {
       >
         <div className="container">
           <div className="flex items-center justify-between">
-            <a
+            <Link
               href="/#acerca"
               className="rounded-2xl bg-white/90 p-2 shadow-[0_8px_20px_rgba(0,0,0,0.35)] transition hover:shadow-[0_10px_26px_rgba(0,0,0,0.45)]"
               aria-label="Ir al inicio"
@@ -65,7 +66,7 @@ export const Header = () => {
                 width={180}
                 className="h-10 w-auto md:h-12"
               />
-            </a>
+            </Link>
             <button
               type="button"
               className={`inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white md:hidden ${
@@ -82,16 +83,16 @@ export const Header = () => {
                 isAtTop ? "text-shadow-hero" : ""
               }`}
             >
-              <a href="/aboutus" className="underline underline-offset-8">
+              <Link href="/aboutus" className="underline underline-offset-8">
                 Nosotros
-              </a>
-              <a href="/#servicios">Servicios</a>
-              <a href="/#clientes">Clientes</a>
-              <a href="/#proyectos">Proyectos</a>
-              <a href="/blog" className="underline underline-offset-8">
+              </Link>
+              <Link href="/#servicios">Servicios</Link>
+              <Link href="/#clientes">Clientes</Link>
+              <Link href="/#proyectos">Proyectos</Link>
+              <Link href="/blog" className="underline underline-offset-8">
                 Noticias
-              </a>
-              <a href="/#contacto">Contacto</a>
+              </Link>
+              <Link href="/#contacto">Contacto</Link>
               {/* <button className="bg-black text-white px-4 py-2 rounded-lg font-medium inline-flex align-items justify-center tracking-tight">
                 Get for free
               </button>*/}
@@ -103,48 +104,48 @@ export const Header = () => {
             } overflow-hidden`}
           >
             <nav className="mt-4 flex flex-col gap-3 rounded-2xl border border-white/15 bg-[rgba(11,29,58,0.85)] px-5 py-4 text-white/90 backdrop-blur">
-              <a
+              <Link
                 href="/aboutus"
                 className="font-semibold underline underline-offset-6"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Nosotros
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/#servicios"
                 className="font-semibold"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Servicios
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/#clientes"
                 className="font-semibold"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Clientes
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/#proyectos"
                 className="font-semibold"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Proyectos
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/blog"
                 className="font-semibold underline underline-offset-6"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Noticias
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/#contacto"
                 className="font-semibold"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Contacto
-              </a>
+              </Link>
             </nav>
           </div>
         </div>

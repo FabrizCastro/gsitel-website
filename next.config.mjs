@@ -5,6 +5,16 @@ const baseConfig = {
   // ✅ requerido si usas next/image en hosting estático
   images: {
     unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "www.gstatic.com",
+      },
+    ],
   },
 
   webpack(config) {

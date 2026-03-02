@@ -7,6 +7,7 @@ import internetLogo from "@/assets/logos/internettodos-logo.png";
 import entelLogo from "@/assets/logos/entel-logo.png";
 import vaLogo from "@/assets/logos/va-profesionales.png";
 import Image from "next/image";
+import vsfLogo from "@/assets/logos/vsf_logo.png";
 import { motion } from "framer-motion";
 
 export const ClientsTicker = () => {
@@ -52,6 +53,11 @@ export const ClientsTicker = () => {
               alt="Entel Logo"
               className="logo-ticker-image"
             />
+            <Image
+              src={vsfLogo}
+              alt="Villa Sin Fronteras Logo"
+              className="logo-ticker-image"
+            />
 
             {/* Second set of logos for animation */}
             <Image src={vaLogo} alt="va Logo" className="logo-ticker-image" />
@@ -78,6 +84,11 @@ export const ClientsTicker = () => {
             <Image
               src={entelLogo}
               alt="Entel Logo"
+              className="logo-ticker-image"
+            />
+            <Image
+              src={vsfLogo}
+              alt="Villa Sin Fronteras Logo"
               className="logo-ticker-image"
             />
           </motion.div>

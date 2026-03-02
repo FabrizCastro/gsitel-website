@@ -1,6 +1,7 @@
 import { Header } from "@/sections/Header";
 import { AboutHero } from "@/sections/AboutHero";
 import { ClientsTicker } from "@/sections/ClientsTicker";
+import { DigitalTransformation } from "@/sections/DigitalTransformation";
 import { Services } from "@/sections/Services";
 import { Projects } from "@/sections/Projects";
 import { Testimonials } from "@/sections/Testimonials";
@@ -16,6 +17,7 @@ export default function Home() {
         </div>
         <ClientsTicker />
       </div>
+      <DigitalTransformation />
       <Services />
       <Projects />
       <Testimonials />
