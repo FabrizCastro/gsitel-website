@@ -399,7 +399,7 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
                 {isTelecom ? "Estrategia de Red" : "Estrategia de Crecimiento"}
               </div>
             </div>
-            <h2 className="mt-5 text-left text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight leading-[0.95] break-words bg-gradient-to-b from-white to-[#7fb7ff] text-transparent bg-clip-text">
+            <h2 className="mt-5 text-left text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight leading-[0.95] break-words bg-gradient-to-b from-white to-[#7fb7ff] text-transparent bg-clip-text">
               {isTelecom
                 ? "Operación telecom inteligente"
                 : "Software integral inteligente"}

@@ -459,7 +459,7 @@ export const Projects = ({ mode }: { mode: SiteMode }) => {
   return (
     <section
       id="proyectos"
-      className="relative bg-[#EAEEFE] px-4 pt-24 pb-32 text-[#0b1d3a] scroll-mt-24 md:scroll-mt-28 overflow-hidden sm:px-6 md:pt-28"
+      className="relative bg-[#EAEEFE] px-4 pt-6 pb-28 text-[#0b1d3a] scroll-mt-24 md:scroll-mt-28 overflow-hidden sm:px-6 md:pt-8"
     >
       <DotGrid
         dotSize={4}
@@ -473,9 +473,8 @@ export const Projects = ({ mode }: { mode: SiteMode }) => {
         returnDuration={1.4}
         className="opacity-28"
       />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(20,37,63,0.18)_0%,rgba(167,186,220,0.34)_12%,rgba(234,238,254,0.94)_34%,rgba(234,238,254,0.82)_62%,rgba(234,238,254,0.96)_100%)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-[#d7e1f4] via-[#e4ebf8]/90 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent via-[#eef2fb]/88 to-[#f5f7ff]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(234,238,254,0.96),rgba(234,238,254,0.82)_48%,rgba(234,238,254,0.96))]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-[#EAEEFE]" />
 
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className="rounded-[2rem] border border-white/80 bg-white/75 p-6 shadow-[0_24px_70px_rgba(15,23,42,0.12)] backdrop-blur-xl sm:p-8 lg:p-10">
@@ -486,7 +485,7 @@ export const Projects = ({ mode }: { mode: SiteMode }) => {
           </div>
           <div className="flex flex-col gap-10 lg:grid lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-8">
-              <h2 className="text-left text-4xl font-black uppercase leading-[0.92] tracking-tight text-[#06111f] drop-shadow-[0_2px_0_rgba(255,255,255,0.8)] sm:text-5xl md:text-7xl">
+              <h2 className="text-left text-3xl font-black uppercase leading-[0.92] tracking-tight text-[#06111f] drop-shadow-[0_2px_0_rgba(255,255,255,0.8)] sm:text-4xl md:text-6xl">
                 {isTelecom ? "Experiencia telecom" : "Casos de software"}
               </h2>
               <p className="mt-6 max-w-2xl text-base font-medium leading-7 text-[#0b1d3a]/75 sm:text-lg md:text-xl">

@@ -32,9 +32,6 @@ export const Footer = () => {
           <Link href="/#proyectos" className="smooth-transition hover:text-white">
             Proyectos
           </Link>
-          <Link href="/blog" className="smooth-transition hover:text-white">
-            Noticias
-          </Link>
           <Link href="/#contacto" className="smooth-transition hover:text-white">
             Contacto
           </Link>

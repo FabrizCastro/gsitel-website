@@ -175,12 +175,11 @@ export const Testimonials = ({ mode }: { mode: SiteMode }) => {
   return (
     <section
       id="clientes"
-      className="relative overflow-hidden bg-[#f5f7ff] px-4 py-24 scroll-mt-24 md:scroll-mt-28 sm:px-6"
+      className="relative overflow-hidden bg-[#EAEEFE] px-4 py-20 scroll-mt-24 md:scroll-mt-28 sm:px-6"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.16),transparent_45%),radial-gradient(circle_at_80%_80%,rgba(29,78,216,0.14),transparent_45%)]" />
       <div className="pointer-events-none absolute inset-0 opacity-20 [background-image:linear-gradient(90deg,rgba(15,23,42,0.06)_1px,transparent_1px),linear-gradient(0deg,rgba(15,23,42,0.06)_1px,transparent_1px)] [background-size:28px_28px]" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(234,238,254,0.42)_0%,rgba(245,247,255,0.94)_20%,rgba(245,247,255,0.8)_46%,rgba(245,247,255,0.96)_100%)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-[#f1f4fc] via-[#f5f7ff]/92 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(234,238,254,0.96),rgba(234,238,254,0.82)_48%,rgba(234,238,254,0.96))]" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-[#081d3f]/18" />
 
       <div className="container relative z-10">
@@ -191,7 +190,7 @@ export const Testimonials = ({ mode }: { mode: SiteMode }) => {
             </div>
           </div>
           <div className="max-w-3xl">
-            <h2 className="text-left text-4xl font-black uppercase leading-[0.92] tracking-tight text-[#06111f] drop-shadow-[0_2px_0_rgba(255,255,255,0.8)] sm:text-5xl md:text-7xl">
+            <h2 className="text-left text-3xl font-black uppercase leading-[0.92] tracking-tight text-[#06111f] drop-shadow-[0_2px_0_rgba(255,255,255,0.8)] sm:text-4xl md:text-6xl">
               {isTelecom ? "Resultados en red" : "Resultados reales"}
             </h2>
             <p className="mt-6 max-w-2xl text-base font-medium leading-7 text-[#0b1d3a]/75 sm:text-lg md:text-xl">

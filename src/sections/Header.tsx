@@ -95,7 +95,7 @@ export const Header = ({ mode, onModeChange }: HeaderProps) => {
               ? "bg-[rgba(40,27,10,0.45)] backdrop-blur-sm"
               : "bg-[rgba(12,33,66,0.35)] backdrop-blur-sm"
             : isTelecom
-              ? "bg-[rgba(64,39,12,0.78)] backdrop-blur-md"
+              ? "bg-[linear-gradient(90deg,rgba(5,5,6,0.92)_0%,rgba(35,19,7,0.88)_48%,rgba(83,45,14,0.82)_100%)] backdrop-blur-md shadow-[0_12px_34px_rgba(0,0,0,0.28)]"
               : "bg-[rgba(18,45,88,0.72)] backdrop-blur-md"
         }`}
       >
@@ -155,12 +155,6 @@ export const Header = ({ mode, onModeChange }: HeaderProps) => {
                 Proyectos
               </Link>
               <Link
-                href="/blog"
-                className="link-hover text-white/85 hover:text-white smooth-transition"
-              >
-                Noticias
-              </Link>
-              <Link
                 href="/#contacto"
                 className="link-hover text-white/85 hover:text-white smooth-transition"
               >
@@ -203,13 +197,6 @@ export const Header = ({ mode, onModeChange }: HeaderProps) => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Proyectos
-              </Link>
-              <Link
-                href="/blog"
-                className="font-semibold underline underline-offset-6"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Noticias
               </Link>
               <Link
                 href="/#contacto"

@@ -173,7 +173,7 @@ export const Services = ({ mode }: { mode: SiteMode }) => {
       />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(47,158,219,0.18),transparent_34%),radial-gradient(circle_at_84%_14%,rgba(243,156,54,0.14),transparent_28%),linear-gradient(180deg,rgba(2,4,8,0.98)_0%,rgba(2,4,8,0.94)_34%,rgba(5,14,28,0.92)_72%,rgba(12,26,46,0.88)_100%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#020408] via-[#020408]/92 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent via-[#11233e]/72 to-[#d7e1f4]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent via-[#1b3354]/55 to-[#EAEEFE]" />
 
       <div className="container relative">
         <div className="section-heading max-w-4xl">
@@ -189,7 +189,7 @@ export const Services = ({ mode }: { mode: SiteMode }) => {
                   ? "Soluciones telecom y RAN"
                   : "Soluciones integrales de software"
               }
-              className="block text-center text-4xl font-black uppercase leading-[0.95] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.45)] sm:text-5xl md:text-7xl"
+              className="block text-center text-3xl font-black uppercase leading-[0.95] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.45)] sm:text-4xl md:text-6xl"
               speed={28}
               startDelay={200}
               cursor

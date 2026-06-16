@@ -37,7 +37,7 @@ export const Contact = ({ mode }: { mode: SiteMode }) => {
         <div className="absolute inset-0 bg-[#081d3f]/60 pointer-events-none" />
         <div className="absolute top-0 left-0 w-full h-full bg-grid-white/[0.05] pointer-events-none" />
         <div className="relative z-10 animate-in">
-          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-white mb-8 sm:mb-10 tracking-tight uppercase leading-[0.95] break-words">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-8 sm:mb-10 tracking-tight uppercase leading-[0.95] break-words">
             {isTelecom ? (
               <>
                 OPTIMICEMOS <br /> TU RED

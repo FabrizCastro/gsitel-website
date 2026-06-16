@@ -51,9 +51,9 @@ const heroCopy: Record<SiteMode, HeroConfig> = {
     button:
       "bg-[#1e63c6] hover:bg-[#1955a8] ring-cyan-300/70 shadow-[0_0_25px_rgba(34,211,238,0.45)] hover:shadow-[0_0_40px_rgba(34,211,238,0.65)]",
     panel:
-      "border-cyan-200/18 bg-[linear-gradient(145deg,rgba(5,18,39,0.86),rgba(7,27,58,0.68)_56%,rgba(5,18,39,0.48))] shadow-[0_26px_80px_rgba(0,10,30,0.46)]",
+      "border-cyan-200/20 bg-[linear-gradient(145deg,rgba(5,18,39,0.86),rgba(7,27,58,0.68)_56%,rgba(5,18,39,0.48))] shadow-[0_26px_80px_rgba(0,10,30,0.46)]",
     iconGlow: "shadow-[0_0_32px_rgba(59,130,246,0.28)]",
-    iconBorder: "border-cyan-300/18",
+    iconBorder: "border-cyan-300/20",
     icons: [
       { src: hackerDarkIcon, alt: "Arquitectura de software", label: "Arquitectura" },
       { src: monitorDarkIcon, alt: "Monitor de aplicaciones", label: "Apps web" },
@@ -79,9 +79,9 @@ const heroCopy: Record<SiteMode, HeroConfig> = {
     button:
       "bg-[#f39c36] hover:bg-[#da862b] text-white ring-amber-200/70 shadow-[0_0_25px_rgba(243,156,54,0.45)] hover:shadow-[0_0_40px_rgba(243,156,54,0.62)]",
     panel:
-      "border-amber-100/18 bg-[linear-gradient(145deg,rgba(26,13,4,0.84),rgba(9,24,48,0.66)_56%,rgba(5,18,39,0.48))] shadow-[0_26px_80px_rgba(20,8,2,0.44)]",
+      "border-amber-100/20 bg-[linear-gradient(145deg,rgba(26,13,4,0.84),rgba(9,24,48,0.66)_56%,rgba(5,18,39,0.48))] shadow-[0_26px_80px_rgba(20,8,2,0.44)]",
     iconGlow: "shadow-[0_0_32px_rgba(243,156,54,0.24)]",
-    iconBorder: "border-amber-200/18",
+    iconBorder: "border-amber-200/20",
     icons: [
       { src: routerDarkIcon, alt: "Router telecom", label: "Core y TX" },
       { src: antenaDarkIcon, alt: "Antena telecom", label: "RAN" },
@@ -93,12 +93,6 @@ const heroCopy: Record<SiteMode, HeroConfig> = {
 export const AboutHero = ({ mode }: AboutHeroProps) => {
   const copy = heroCopy[mode];
   const isTelecom = mode === "telecom";
-  const heroBackground = isTelecom
-    ? telecomBackgroundHeroImage
-    : backgroundHeroImage;
-  const heroAlt = isTelecom
-    ? "Fondo telecom con infraestructura de red GSITEL"
-    : "Fondo tecnologico con tonos azules de GSITEL";
 
   return (
     <section
@@ -106,13 +100,26 @@ export const AboutHero = ({ mode }: AboutHeroProps) => {
       className="relative min-h-[100svh] overflow-hidden bg-[#0b1d3a] pt-24 pb-6 scroll-mt-24 md:h-[100svh] md:min-h-0 md:pt-28 md:pb-6 md:scroll-mt-28"
     >
       <Image
-        src={heroBackground}
-        alt={heroAlt}
+        src={backgroundHeroImage}
+        alt="Fondo tecnologico con tonos azules de GSITEL"
         fill
         priority
         quality={100}
         sizes="100vw"
-        className={`object-cover ${isTelecom ? "object-[58%_center]" : "object-[70%_center]"}`}
+        className={`object-cover object-[70%_center] transition-opacity duration-700 ease-out ${
+          isTelecom ? "opacity-0" : "opacity-100"
+        }`}
+      />
+      <Image
+        src={telecomBackgroundHeroImage}
+        alt="Fondo telecom con infraestructura de red GSITEL"
+        fill
+        priority
+        quality={100}
+        sizes="100vw"
+        className={`object-cover object-[58%_center] transition-opacity duration-700 ease-out ${
+          isTelecom ? "opacity-100" : "opacity-0"
+        }`}
       />
       <div className={`pointer-events-none absolute inset-0 ${copy.overlay}`} />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,rgba(59,130,246,0.16),transparent_32%)]" />
@@ -148,7 +155,7 @@ export const AboutHero = ({ mode }: AboutHeroProps) => {
                 }`}
               >
                 <div
-                  className={`flex min-w-0 items-center gap-2 rounded-full border border-white/18 bg-white/[0.08] px-3.5 py-1.5 text-xs font-semibold text-white shadow-[0_10px_26px_rgba(0,0,0,0.22)] backdrop-blur ${
+                  className={`flex min-w-0 items-center gap-2 rounded-full border border-white/20 bg-white/[0.08] px-3.5 py-1.5 text-xs font-semibold !text-white shadow-[0_10px_26px_rgba(0,0,0,0.22)] backdrop-blur ${
                     isTelecom ? "flex-row-reverse" : ""
                   }`}
                 >
@@ -157,12 +164,12 @@ export const AboutHero = ({ mode }: AboutHeroProps) => {
                       isTelecom ? "bg-[#f39c36] text-[#f39c36]" : "bg-cyan-300 text-cyan-300"
                     }`}
                   />
-                  <span className="truncate text-white">{copy.eyebrow}</span>
+                  <span className="truncate !text-white">{copy.eyebrow}</span>
                 </div>
               </div>
 
               <h1
-                className={`relative z-10 mt-4 space-y-0.5 text-[3rem] font-black leading-[0.92] tracking-tight text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.55)] sm:text-[3.45rem] lg:text-[4.55rem] ${
+                className={`relative z-10 mt-4 space-y-0.5 text-[3rem] font-black leading-[0.92] tracking-tight !text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.55)] sm:text-[3.45rem] lg:text-[4.55rem] ${
                   isTelecom ? "text-right" : "text-left"
                 }`}
               >
@@ -174,7 +181,7 @@ export const AboutHero = ({ mode }: AboutHeroProps) => {
               </h1>
 
               <p
-                className={`relative z-10 mt-4 text-base leading-7 text-white/84 sm:text-lg ${
+                className={`relative z-10 mt-4 text-base leading-7 !text-[#eaf3ff] sm:text-lg ${
                   isTelecom ? "ml-auto max-w-[34rem] text-right" : "max-w-[34rem]"
                 }`}
               >
@@ -189,7 +196,7 @@ export const AboutHero = ({ mode }: AboutHeroProps) => {
                 {copy.chips.map((chip) => (
                   <span
                     key={chip}
-                    className="rounded-full border border-white/18 bg-white/[0.08] px-3 py-1.5 text-white/90 shadow-inner"
+                    className="rounded-full border border-white/20 bg-white/[0.1] px-3 py-1.5 !text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_10px_22px_rgba(0,0,0,0.16)]"
                   >
                     {chip}
                   </span>
@@ -205,16 +212,16 @@ export const AboutHero = ({ mode }: AboutHeroProps) => {
                   href="https://docs.google.com/forms/d/e/1FAIpQLSdfgHkDApUgxqeuqpwoaJPVWo6nQjS7NI9wtpB_W7f0RCddpQ/viewform?usp=publish-editor"
                   target="_blank"
                   rel="noreferrer"
-                  className={`btn btn-primary relative overflow-hidden ring-2 transition duration-300 hover:-translate-y-1 active:translate-y-0 active:scale-[0.98] ${copy.button}`}
+                  className={`btn relative overflow-hidden !text-white ring-2 transition duration-300 hover:-translate-y-1 active:translate-y-0 active:scale-[0.98] ${copy.button}`}
                 >
-                  <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-white/18" />
-                  <span className="relative z-10 text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.35)]">
+                  <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-white/[0.18]" />
+                  <span className="relative z-10 !text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.35)]">
                     {copy.primary}
                   </span>
                 </a>
                 <a
                   href="#servicios"
-                  className="btn border border-white/28 bg-white/[0.08] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_14px_30px_rgba(0,0,0,0.24)] transition duration-300 hover:-translate-y-1 hover:bg-white/14 hover:text-white active:translate-y-0 active:scale-[0.98]"
+                  className="btn border border-white/30 bg-white/[0.08] !text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_14px_30px_rgba(0,0,0,0.24)] transition duration-300 hover:-translate-y-1 hover:bg-white/[0.14] hover:!text-white active:translate-y-0 active:scale-[0.98]"
                 >
                   {copy.secondary}
                 </a>
@@ -228,7 +235,7 @@ export const AboutHero = ({ mode }: AboutHeroProps) => {
                 {copy.icons.map((icon) => (
                   <div
                     key={icon.label}
-                    className="group flex min-h-[5.5rem] flex-col items-center justify-center rounded-[1rem] border border-white/16 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.06))] px-2.5 py-2.5 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_16px_34px_rgba(0,0,0,0.24)] backdrop-blur transition duration-300 hover:-translate-y-1 hover:border-white/30 hover:bg-white/[0.13] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_24px_44px_rgba(0,0,0,0.34)]"
+                    className="group flex min-h-[5.5rem] flex-col items-center justify-center rounded-[1rem] border border-white/20 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.06))] px-2.5 py-2.5 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_16px_34px_rgba(0,0,0,0.24)] backdrop-blur transition duration-300 hover:-translate-y-1 hover:border-white/30 hover:bg-white/[0.13] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_24px_44px_rgba(0,0,0,0.34)]"
                   >
                     <div
                       className={`relative flex h-12 w-12 items-center justify-center rounded-[0.9rem] border bg-[linear-gradient(145deg,rgba(255,255,255,1),rgba(216,231,255,0.92))] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_12px_24px_rgba(0,0,0,0.28)] transition duration-300 group-hover:scale-105 ${
@@ -244,7 +251,7 @@ export const AboutHero = ({ mode }: AboutHeroProps) => {
                         className="relative z-10 h-8 w-8 object-contain drop-shadow-[0_7px_10px_rgba(0,0,0,0.35)]"
                       />
                     </div>
-                    <div className="mt-2 text-[10px] font-black uppercase tracking-[0.16em] text-white/82 drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)]">
+                    <div className="mt-2 text-[10px] font-black uppercase tracking-[0.16em] !text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)]">
                       {icon.label}
                     </div>
                   </div>
