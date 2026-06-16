@@ -2,14 +2,23 @@
 
 import { Galaxy } from "@/components/Galaxy";
 import Image from "next/image";
+import type { SiteMode } from "@/lib/siteMode";
 
-export const Contact = () => {
+export const Contact = ({ mode }: { mode: SiteMode }) => {
+  const isTelecom = mode === "telecom";
+
   return (
     <section
       id="contacto"
-      className="py-20 sm:py-28 px-6 scroll-mt-24 md:scroll-mt-28 bg-[#081d3f] overflow-hidden"
+      className="relative overflow-hidden bg-[#081d3f] py-20 sm:py-28 px-6 scroll-mt-24 md:scroll-mt-28"
     >
-      <div className="max-w-5xl mx-auto rounded-[2.5rem] sm:rounded-[3rem] bg-gradient-to-br from-[#0b1f3a] via-[#0d3b7a] to-[#1b5aa6] p-8 sm:p-12 md:p-20 text-center relative overflow-hidden shadow-[0_0_80px_rgba(47,158,219,0.35)]">
+      <div
+        className={`max-w-5xl mx-auto rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 md:p-20 text-center relative overflow-hidden shadow-[0_0_80px_rgba(47,158,219,0.35)] ${
+          isTelecom
+            ? "bg-gradient-to-br from-[#211203] via-[#7a470d] to-[#1b5aa6]"
+            : "bg-gradient-to-br from-[#0b1f3a] via-[#0d3b7a] to-[#1b5aa6]"
+        }`}
+      >
         <Galaxy
           mouseRepulsion
           mouseInteraction
@@ -29,11 +38,20 @@ export const Contact = () => {
         <div className="absolute top-0 left-0 w-full h-full bg-grid-white/[0.05] pointer-events-none" />
         <div className="relative z-10 animate-in">
           <h2 className="text-3xl sm:text-4xl md:text-6xl font-black text-white mb-8 sm:mb-10 tracking-tight uppercase leading-[0.95] break-words">
-            DISEÑEMOS <br /> EL FUTURO
+            {isTelecom ? (
+              <>
+                OPTIMICEMOS <br /> TU RED
+              </>
+            ) : (
+              <>
+                DISEÑEMOS <br /> TU SISTEMA
+              </>
+            )}
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-8 max-w-3xl mx-auto font-medium">
-            Lleva tu infraestructura y tus procesos al siguiente nivel con
-            ingeniería de clase mundial.
+            {isTelecom
+              ? "Hablemos de integración, parámetros, drive test, soporte OyM y automatización para tu operación móvil."
+              : "Hablemos de tu flujo actual y convirtamos procesos dispersos en una solución integral de software."}
           </p>
           <div className="mb-8 sm:mb-10 flex flex-wrap items-center justify-center gap-3 text-white/90 font-semibold break-words">
             <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/10">

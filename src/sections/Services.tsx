@@ -3,10 +3,11 @@
 import CheckIcon from "@/assets/icons/check.svg";
 import automateBackground from "@/assets/backgrounds/services_background_automate.png";
 import telecomBackground from "@/assets/backgrounds/services_background_telecom.png";
-import Image from "next/image";
-import { useState } from "react";
 import { DotGrid } from "@/components/DotGrid";
 import TypeText from "@/components/TypeText";
+import type { SiteMode } from "@/lib/siteMode";
+import Image from "next/image";
+import { useState } from "react";
 
 type ServiceItem = {
   id: string;
@@ -16,12 +17,8 @@ type ServiceItem = {
   title: React.ReactNode;
   description: string;
   activities: string[];
-  cta: string;
   ctaClass: string;
-  backClass: string;
-  align: "left" | "right";
   background: typeof automateBackground;
-  overlayClass: string;
 };
 
 const AutomationIcon = ({ className }: { className?: string }) => (
@@ -81,11 +78,11 @@ const services: ServiceItem[] = [
     label: "Automatización & Software",
     imageAlt:
       "Ilustración de automatización y software para operaciones críticas",
-    icon: <AutomationIcon className="h-6 w-6 text-[#e25555]" />,
+    icon: <AutomationIcon className="h-6 w-6 text-[#ff7a7a]" />,
     title: (
       <>
         Automatización y software para operaciones{" "}
-        <span className="text-[#e25555]">críticas</span>.
+        <span className="text-[#ff7a7a]">críticas</span>.
       </>
     ),
     description:
@@ -97,47 +94,37 @@ const services: ServiceItem[] = [
       "Control de clientes, inventario y operaciones diarias",
       "Alertas y flujos de trabajo para reducir errores",
     ],
-    cta: "Conoce más",
     ctaClass: "bg-[#e25555] hover:bg-[#cc4a4a]",
-    backClass: "bg-[linear-gradient(135deg,#e25555,#b73a3a)]",
-    align: "left",
     background: automateBackground,
-    overlayClass:
-      "bg-[linear-gradient(90deg,rgba(8,12,18,0.92),rgba(8,12,18,0.75),rgba(8,12,18,0.35))]",
   },
   {
     id: "ran",
-    label: "Ingenieria RAN",
+    label: "Ingeniería RAN",
     imageAlt: "Ilustración de ingeniería RAN para redes móviles",
-    icon: <RanIcon className="h-6 w-6 text-[#f39c36]" />,
+    icon: <RanIcon className="h-6 w-6 text-[#ffc266]" />,
     title: (
       <>
-        Integración y configuración <span className="text-[#f39c36]">RAN</span>{" "}
-        multivendor.
+        Integración y configuración{" "}
+        <span className="text-[#ffc266]">RAN</span> multivendor.
       </>
     ),
     description:
       "Servicios especializados para despliegue, optimización y soporte en redes móviles 2G/3G/4G/5G.",
     activities: [
-      "Comisionamiento y Capacitación BBU's",
-      "Integración y Configuración Nodos RAN",
-      "Diseño DriveTest & Site Survey",
-      "Soporte, Optimización y Monitoreo OyM RAN",
-      "Consultoría Implementación Controladores",
+      "Comisionamiento y capacitación de BBU",
+      "Integración y configuración de nodos RAN",
+      "Diseño Drive Test & Site Survey",
+      "Soporte, optimización y monitoreo OyM RAN",
+      "Consultoría de implementación de controladores",
     ],
-    cta: "Conoce más",
-    ctaClass: "bg-[#f39c36] hover:bg-[#da862b]",
-    backClass: "bg-[linear-gradient(135deg,#f39c36,#c9751d)]",
-    align: "right",
+    ctaClass: "bg-[#f39c36] hover:bg-[#da862b] text-black",
     background: telecomBackground,
-    overlayClass:
-      "bg-[linear-gradient(270deg,rgba(8,12,18,0.92),rgba(8,12,18,0.72),rgba(8,12,18,0.35))]",
   },
   {
     id: "consultoria",
     label: "Consultoría de Software",
     imageAlt: "Ilustración de consultoría de proyectos de software",
-    icon: <ConsultingIcon className="h-6 w-6 text-[#2f9edb]" />,
+    icon: <ConsultingIcon className="h-6 w-6 text-[#7fb7ff]" />,
     title: (
       <>
         Consultoría para{" "}
@@ -152,126 +139,145 @@ const services: ServiceItem[] = [
       "Automatización con IA para ahorrar tiempo y errores",
       "Implementación y acompañamiento en cada etapa del proceso",
     ],
-    cta: "Conoce más",
     ctaClass: "bg-[#2f9edb] hover:bg-[#2583b8]",
-    backClass: "bg-[linear-gradient(135deg,#2f9edb,#1b5aa6)]",
-    align: "left",
     background: automateBackground,
-    overlayClass:
-      "bg-[linear-gradient(90deg,rgba(8,12,18,0.92),rgba(8,12,18,0.72),rgba(8,12,18,0.35))]",
   },
 ];
 
-export const Services = () => {
+export const Services = ({ mode }: { mode: SiteMode }) => {
   const [activeService, setActiveService] = useState<ServiceItem | null>(null);
+  const isTelecom = mode === "telecom";
+  const orderedServices = isTelecom
+    ? [services[1], services[0], services[2]]
+    : [services[0], services[2]];
+  const focusTags = isTelecom
+    ? ["RAN", "Drive test", "OyM", "Automatización"]
+    : ["Apps web", "Dashboards", "APIs", "IA aplicada"];
 
   return (
     <section
       id="servicios"
-      className="pt-12 pb-24 scroll-mt-24 md:pt-16 md:pb-24 md:scroll-mt-28 relative overflow-hidden"
+      className="relative overflow-hidden bg-[#020408] px-4 py-20 text-white scroll-mt-24 sm:px-6 md:py-28 md:scroll-mt-28"
     >
       <DotGrid
         dotSize={4}
         gap={18}
-        baseColor="#0b1d3a"
-        activeColor="#2f9edb"
+        baseColor="#15304f"
+        activeColor={isTelecom ? "#f39c36" : "#2f9edb"}
         proximity={140}
         shockRadius={260}
         shockStrength={3}
         resistance={800}
         returnDuration={1.4}
-        className="opacity-40"
+        className="opacity-25"
       />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(47,158,219,0.18),transparent_34%),radial-gradient(circle_at_84%_14%,rgba(243,156,54,0.14),transparent_28%),linear-gradient(180deg,rgba(2,4,8,0.98)_0%,rgba(2,4,8,0.94)_34%,rgba(5,14,28,0.92)_72%,rgba(12,26,46,0.88)_100%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#020408] via-[#020408]/92 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent via-[#11233e]/72 to-[#d7e1f4]" />
+
       <div className="container relative">
-        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[680px] w-[680px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/5 blur-[120px]" />
-        <div className="section-heading">
+        <div className="section-heading max-w-4xl">
           <div className="flex justify-center">
-            <div className="tag">Especificación de servicios</div>
+            <div className="tag border-white/20 bg-white/10 text-white">
+              Especificación de servicios
+            </div>
           </div>
           <h2 className="mt-5">
             <TypeText
-              text="Soluciones de software y telecom"
-              className="section-title text-left text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] break-words"
+              text={
+                isTelecom
+                  ? "Soluciones telecom y RAN"
+                  : "Soluciones integrales de software"
+              }
+              className="block text-center text-4xl font-black uppercase leading-[0.95] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.45)] sm:text-5xl md:text-7xl"
               speed={28}
               startDelay={200}
               cursor
             />
           </h2>
-          <p className="section-description mt-5">
-            Dos frentes de servicio para cubrir automatización de software e
-            integración de redes móviles.
+          <p className="mx-auto mt-5 max-w-3xl text-center text-base font-medium leading-7 text-white/80 sm:text-lg md:text-xl">
+            {isTelecom
+              ? "Servicios especializados para despliegue, integración, soporte y optimización de redes móviles."
+              : "Diseñamos, integramos y automatizamos sistemas para que tu operación funcione como una sola plataforma."}
           </p>
+          <div className="mx-auto mt-7 flex max-w-3xl flex-wrap justify-center gap-2 text-xs font-black uppercase tracking-[0.18em] text-white/80">
+            {focusTags.map((item) => (
+              <span
+                key={item}
+                className="rounded-full border border-white/15 bg-white/[0.07] px-3 py-2 backdrop-blur"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
         </div>
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-2 lg:gap-8 lg:-mx-12 xl:-mx-16">
-          {services.map((service) => {
-            const isRight = service.align === "right";
+        <div className="mt-12 grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 xl:grid-cols-2">
+          {orderedServices.map((service) => (
+            <article
+              key={service.id}
+              className="group relative flex min-h-[430px] overflow-hidden rounded-[1.75rem] border border-white/15 bg-[#0a1627] shadow-[0_24px_60px_rgba(0,0,0,0.35)] transition duration-300 hover:-translate-y-1 hover:border-white/35 hover:shadow-[0_34px_90px_rgba(0,0,0,0.48)] focus-within:-translate-y-1 focus-within:border-white/35 sm:min-h-[460px]"
+            >
+              <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <div className="absolute -right-20 -top-20 h-48 w-48 rounded-full bg-white/20 blur-3xl" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_10%,rgba(255,255,255,0.26),transparent_42%)]" />
+              </div>
+              <div className="absolute inset-0">
+                <Image
+                  src={service.background}
+                  alt={service.imageAlt}
+                  fill
+                  quality={90}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                  className="object-cover transition duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,8,17,0.38)_0%,rgba(3,8,17,0.74)_38%,rgba(3,8,17,0.98)_100%)]" />
+                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,8,17,0.55),transparent_55%)]" />
+                <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.2)_1px,transparent_0)] [background-size:22px_22px]" />
+              </div>
 
-            return (
-              <article
-                key={service.id}
-                className={`group relative min-h-[320px] overflow-hidden rounded-3xl border-2 border-white/10 bg-[#0f1419] shadow-[0_24px_50px_rgba(0,0,0,0.45)] transition-all duration-300 hover:-translate-y-3 hover:scale-[1.02] hover:border-white/40 hover:ring-2 hover:ring-white/50 hover:shadow-[0_28px_70px_rgba(0,0,0,0.55)] focus-within:-translate-y-3 focus-within:scale-[1.02] focus-within:border-white/40 focus-within:ring-2 focus-within:ring-white/50 sm:min-h-[440px] lg:min-h-[480px] hover:z-10 focus-within:z-10 backdrop-blur-sm ${
-                  service.id === "consultoria" ? "lg:col-span-2" : ""
-                }`}
-              >
-                <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  <div className="absolute -top-24 -right-24 h-48 w-48 rounded-full bg-white/15 blur-2xl" />
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_10%,rgba(255,255,255,0.35),transparent_55%)]" />
-                </div>
-                <div className="absolute inset-0">
-                  <Image
-                    src={service.background}
-                    alt={service.imageAlt}
-                    fill
-                    quality={100}
-                    sizes="(max-width: 1024px) 100vw, 60vw"
-                    className="object-cover"
-                  />
-                  <div className={`absolute inset-0 ${service.overlayClass}`} />
-                  <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.22)_1px,transparent_0)] [background-size:22px_22px]" />
-                </div>
-                <div
-                  className={`relative z-10 flex h-full flex-col justify-between p-6 sm:p-8 md:p-10 lg:p-12 items-center text-center ${
-                    isRight
-                      ? "md:items-end md:text-right"
-                      : "md:items-start md:text-left"
-                  }`}
-                >
-                  <div
-                    className={`max-w-[440px] w-full ${
-                      isRight ? "md:ml-auto" : ""
-                    }`}
-                  >
-                    <div
-                      className={`mb-4 inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white/10 mx-auto ${
-                        isRight ? "md:ml-auto" : "md:ml-0"
-                      }`}
-                    >
-                      {service.icon}
-                    </div>
-                    <span className="block text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] sm:tracking-wide text-white/80 break-words">
-                      {service.label}
-                    </span>
-                    <h3 className="mt-4 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-tight break-words">
-                      {service.title}
-                    </h3>
-                    <p className="mt-3 text-sm sm:text-base md:text-lg text-white/80 break-words">
-                      {service.description}
-                    </p>
+              <div className="relative z-10 flex w-full flex-col justify-between p-4 sm:p-5 lg:p-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-black/35 shadow-[0_12px_30px_rgba(0,0,0,0.28)] backdrop-blur">
+                    {service.icon}
                   </div>
+                  <span className="rounded-full border border-white/15 bg-black/35 px-3 py-2 text-right text-[10px] font-black uppercase tracking-[0.18em] text-white/85 backdrop-blur">
+                    {service.label}
+                  </span>
+                </div>
+
+                <div className="mt-auto rounded-3xl border border-white/15 bg-[#030817]/70 p-5 shadow-[0_18px_50px_rgba(0,0,0,0.42)] backdrop-blur-md sm:p-6">
+                  <h3 className="text-2xl font-black leading-tight text-white drop-shadow-[0_3px_12px_rgba(0,0,0,0.55)] sm:text-3xl">
+                    {service.title}
+                  </h3>
+                  <p className="mt-4 text-sm font-medium leading-6 text-white/80 sm:text-base">
+                    {service.description}
+                  </p>
+                  <ul className="mt-5 space-y-2">
+                    {service.activities.slice(0, 3).map((activity) => (
+                      <li
+                        key={activity}
+                        className="flex items-start gap-2 text-xs font-semibold leading-5 text-white/80 sm:text-sm"
+                      >
+                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-300" />
+                        <span>{activity}</span>
+                      </li>
+                    ))}
+                  </ul>
                   <button
                     type="button"
                     onClick={() => setActiveService(service)}
-                    className={`mt-6 sm:mt-8 inline-flex w-full sm:w-auto items-center justify-center rounded-full border border-white/30 bg-white/15 px-5 py-2 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.18em] sm:tracking-[0.2em] text-white/95 transition hover:bg-white/25 text-center`}
+                    className={`mt-6 inline-flex w-full items-center justify-center rounded-2xl px-5 py-3 text-[11px] font-black uppercase tracking-[0.2em] text-white transition hover:brightness-110 sm:w-auto ${service.ctaClass}`}
                   >
                     Ver más
                   </button>
                 </div>
-              </article>
-            );
-          })}
+              </div>
+            </article>
+          ))}
         </div>
       </div>
+
       {activeService && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-10"
@@ -299,10 +305,10 @@ export const Services = () => {
               <button
                 type="button"
                 onClick={() => setActiveService(null)}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20"
                 aria-label="Cerrar"
               >
-                ✕
+                ×
               </button>
             </div>
             <ul className="mt-8 space-y-4">
@@ -311,7 +317,7 @@ export const Services = () => {
                   key={activity}
                   className="flex items-start gap-3 text-white/85"
                 >
-                  <span className="mt-0.5 inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/20 bg-white/10">
+                  <span className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10">
                     <CheckIcon className="h-4 w-4" />
                   </span>
                   <span className="text-sm sm:text-base break-words">

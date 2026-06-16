@@ -12,8 +12,10 @@ import { motion } from "framer-motion";
 
 export const ClientsTicker = () => {
   return (
-    <div className="py-8 md:py-12 bg-white">
-      <div className="container">
+    <div className="relative overflow-hidden bg-white py-8 md:py-12">
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,1)_0%,rgba(250,251,255,0.98)_72%,rgba(240,244,251,0.96)_100%)]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-b from-transparent to-[#020408]/22" />
+      <div className="container relative z-10">
         <div className="flex overflow-hidden [mask-image:linear-gradient(to_right,transparent,black,transparent)]">
           <motion.div
             className="flex gap-14 flex-none pr-14"

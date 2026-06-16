@@ -25,6 +25,7 @@ import {
   PieChart,
 } from "lucide-react";
 import { type ReactNode, useMemo, useState } from "react";
+import type { SiteMode } from "@/lib/siteMode";
 
 type SectorConfig = {
   solutions: {
@@ -368,9 +369,10 @@ const SECTOR_DATA: Record<string, SectorConfig> = {
   },
 };
 
-export const DigitalTransformation = () => {
+export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
   const [selectedSector, setSelectedSector] = useState<string | null>(null);
   const [isSectorModalOpen, setIsSectorModalOpen] = useState(false);
+  const isTelecom = mode === "telecom";
 
   const activeSector = useMemo(() => {
     if (!selectedSector) {
@@ -388,20 +390,24 @@ export const DigitalTransformation = () => {
       id="digitalizacion"
       className="py-32 sm:py-40 px-6 bg-[#020408] relative overflow-hidden border-t border-white/5"
     >
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#020408] via-[#020408]/94 to-transparent" />
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="flex flex-col lg:flex-row justify-between items-start mb-20 sm:mb-28 gap-12">
           <div className="section-heading max-w-3xl">
             <div className="flex justify-center lg:justify-start">
               <div className="tag border-white/15 text-white/80 bg-white/5">
-                Estrategia de Crecimiento
+                {isTelecom ? "Estrategia de Red" : "Estrategia de Crecimiento"}
               </div>
             </div>
             <h2 className="mt-5 text-left text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight leading-[0.95] break-words bg-gradient-to-b from-white to-[#7fb7ff] text-transparent bg-clip-text">
-              Transformación inteligente
+              {isTelecom
+                ? "Operación telecom inteligente"
+                : "Software integral inteligente"}
             </h2>
             <p className="mt-5 text-base sm:text-lg md:text-xl font-medium leading-relaxed text-slate-400">
-              Desde el primer paso digital hasta la optimización con IA.
-              Acompañamos tu negocio en cada etapa de su evolución tecnológica.
+              {isTelecom
+                ? "Acompañamos despliegues, integración, optimización y soporte RAN con procesos claros y automatización operativa."
+                : "Desde el diagnóstico de procesos hasta plataformas a medida, automatizaciones e IA aplicada a tu operación."}
             </p>
           </div>
         </div>
@@ -426,20 +432,60 @@ export const DigitalTransformation = () => {
               </div>
               <div>
                 <h3 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tighter">
-                  FASE 01: INICIAR
+                  {isTelecom ? "FASE 01: DESPLEGAR" : "FASE 01: INICIAR"}
                 </h3>
                 <span className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.3em]">
-                  Digitalización Integral
+                  {isTelecom ? "Integración RAN" : "Digitalización Integral"}
                 </span>
               </div>
             </div>
 
             <p className="text-slate-300 text-base sm:text-lg mb-10 leading-relaxed">
-              Llevamos tu operación física al entorno digital. Ideal para
-              negocios que buscan modernizar su atención y gestión interna.
+              {isTelecom
+                ? "Ordenamos tareas de rollout, comisionamiento, parametrización y validación para acelerar la puesta en servicio."
+                : "Llevamos tu operación física al entorno digital. Ideal para negocios que buscan modernizar su atención y gestión interna."}
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-10">
+            {isTelecom && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-10">
+                <SectorItem
+                  icon="5G"
+                  title="Rollout RAN"
+                  desc="Sites, BBU y puesta ON AIR"
+                />
+                <SectorItem
+                  icon="TX"
+                  title="Transmisión"
+                  desc="Rutas, enlaces y validación"
+                />
+                <SectorItem
+                  icon="KPI"
+                  title="Optimización"
+                  desc="KPIs, alarmas y performance"
+                />
+                <SectorItem
+                  icon="DT"
+                  title="Drive Test"
+                  desc="Site survey y mediciones"
+                />
+                <SectorItem
+                  icon="OyM"
+                  title="Soporte OyM"
+                  desc="NOC, averias y monitoreo"
+                />
+                <SectorItem
+                  icon="AUTO"
+                  title="Automatización"
+                  desc="Scripts, XML y reportes"
+                />
+              </div>
+            )}
+
+            <div
+              className={`grid grid-cols-1 sm:grid-cols-2 gap-5 mb-10 ${
+                isTelecom ? "hidden" : ""
+              }`}
+            >
               <SectorItem
                 icon="🍽️"
                 title="Restaurantes"
@@ -500,7 +546,7 @@ export const DigitalTransformation = () => {
               href="#contacto"
               className="inline-flex px-5 py-3 sm:px-6 sm:py-3.5 bg-white/5 border border-white/10 rounded-2xl text-white font-black uppercase tracking-widest text-[10px] transition-all text-center hover:bg-white hover:text-black hover:shadow-[0_0_40px_rgba(6,182,212,0.35)] hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/70 animate-pulse"
             >
-              Empezar Digitalización
+              {isTelecom ? "Planificar despliegue" : "Empezar digitalización"}
             </a>
           </div>
 
@@ -523,17 +569,18 @@ export const DigitalTransformation = () => {
               </div>
               <div>
                 <h3 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tighter">
-                  FASE 02: EVOLUCIONAR
+                  {isTelecom ? "FASE 02: OPTIMIZAR" : "FASE 02: EVOLUCIONAR"}
                 </h3>
                 <span className="text-blue-400 text-[10px] font-black uppercase tracking-[0.3em]">
-                  IA & Automatización
+                  {isTelecom ? "OyM & Automatización" : "IA & Automatización"}
                 </span>
               </div>
             </div>
 
             <p className="text-slate-300 text-base sm:text-lg mb-10 leading-relaxed">
-              Para empresas digitales que buscan competitividad internacional.
-              Optimizamos flujos con IA y herramientas de vanguardia.
+              {isTelecom
+                ? "Para operaciones que necesitan visibilidad, troubleshooting y control de KPIs en redes móviles de misión crítica."
+                : "Para empresas digitales que buscan competitividad internacional. Optimizamos flujos con IA y herramientas de vanguardia."}
             </p>
 
             <div className="space-y-5 sm:space-y-6 mb-10">
@@ -555,7 +602,7 @@ export const DigitalTransformation = () => {
               href="#contacto"
               className="inline-flex px-5 py-3 sm:px-6 sm:py-3.5 bg-blue-600 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all shadow-xl shadow-blue-900/20 text-center hover:bg-white hover:text-black hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300/70"
             >
-              Optimizar con IA
+              {isTelecom ? "Optimizar red" : "Optimizar con IA"}
             </a>
           </div>
         </div>

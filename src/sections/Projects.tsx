@@ -12,8 +12,6 @@ import ascensoresEliminar from "@/assets/projects/ascensores/eliminar.jpeg";
 import ascensoresConstructoras from "@/assets/projects/ascensores/constructoras.jpeg";
 import ascensoresDistritos from "@/assets/projects/ascensores/distritos.jpeg";
 import ascensoresSwagger from "@/assets/projects/ascensores/swagger.jpeg";
-import n8nXmlAutomation from "@/assets/projects/n8n/xml-automatization.jpeg";
-import n8nXmlResponse from "@/assets/projects/n8n/xml-response.png";
 import n8nFactVentas from "@/assets/projects/n8n/fact-ventas-automatization.jpeg";
 import n8nFactReport from "@/assets/projects/n8n/factreportresponsegmail.jpeg";
 import pichangappOverview from "@/assets/projects/pichangapp/nuevo1c.png";
@@ -32,13 +30,13 @@ import mobileAppImage from "@/assets/illustrations/mobileapp.png";
 import n8nLogo from "@/assets/logos/n8n logo.png";
 import pichangaAppLogo from "@/assets/logos/pichangapplogo.png";
 import telradChileLogo from "@/assets/logos/telradchile.png";
-import telecomImage from "@/assets/illustrations/telecom.png";
 import telefonicaLogo from "@/assets/logos/telefonica-logo.png";
 import webAppImage from "@/assets/illustrations/webapp.png";
 import CheckIcon from "@/assets/icons/check.svg";
+import { DotGrid } from "@/components/DotGrid";
+import type { SiteMode } from "@/lib/siteMode";
 import Image, { type StaticImageData } from "next/image";
 import { useState } from "react";
-import { DotGrid } from "@/components/DotGrid";
 
 type ProjectItem = {
   title: string;
@@ -128,10 +126,7 @@ const renderTechIcon = (tech: string) => {
             fill="currentColor"
             d="M8.5 6a3.5 3.5 0 0 0 0 7H11v-2H8.5a1.5 1.5 0 1 1 0-3H11V6H8.5zm4.5 7h2.5a3.5 3.5 0 0 0 0-7H13v2h2.5a1.5 1.5 0 1 1 0 3H13v2z"
           />
-          <path
-            fill="currentColor"
-            d="M9 11h6v2H9z"
-          />
+          <path fill="currentColor" d="M9 11h6v2H9z" />
         </svg>
       );
     case "ui/ux":
@@ -146,10 +141,7 @@ const renderTechIcon = (tech: string) => {
     case "web design":
       return (
         <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M4 5h16v10H4zM2 17h20v2H2z"
-          />
+          <path fill="currentColor" d="M4 5h16v10H4zM2 17h20v2H2z" />
         </svg>
       );
     case "seo":
@@ -158,15 +150,6 @@ const renderTechIcon = (tech: string) => {
           <path
             fill="currentColor"
             d="M10 4a6 6 0 1 0 3.7 10.7l3.9 3.9 1.4-1.4-3.9-3.9A6 6 0 0 0 10 4zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"
-          />
-        </svg>
-      );
-    case "code":
-      return (
-        <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M8 16l-4-4 4-4 1.4 1.4L6.8 12l2.6 2.6L8 16zm8 0-1.4-1.4L17.2 12l-2.6-2.6L16 8l4 4-4 4z"
           />
         </svg>
       );
@@ -202,9 +185,9 @@ const softwareProjects: ProjectItem[] = [
     title: "Automatización contable con SUNAT",
     tag: "Estudios contables",
     description:
-      "Es un sistema integral para controlar operaciones, flujo de caja y reportes con trazabilidad total.",
+      "Sistema integral para controlar operaciones, flujo de caja y reportes con trazabilidad total.",
     detail:
-      "Automatización de procesos contables para estudios contables y sus clientes, integrando APIs de SUNAT para extracción de datos de ventas, compras y cobranzas. El sistema permite generar reportes personalizados por cliente, facilitando la validación y ajustes necesarios para una gestión financiera eficiente. Este proyecto ha sido implementado con éxito en varios estudios contables, mejorando significativamente la eficiencia operativa y la precisión en el manejo de información financiera.",
+      "Automatización de procesos contables para estudios contables y sus clientes, integrando APIs de SUNAT para extraer datos de ventas, compras y cobranzas. El sistema permite generar reportes personalizados por cliente y facilita validaciones y ajustes para una gestión financiera eficiente.",
     techTags: ["n8n", "Python", "APIs"],
     detailImages: [
       { src: n8nFactVentas, alt: "Automatización de ventas SUNAT" },
@@ -225,7 +208,7 @@ const softwareProjects: ProjectItem[] = [
     description:
       "Soluciones web para gestión interna, clientes y procesos con foco en usabilidad y rendimiento.",
     detail:
-      "Es una aplicación que desarrollada en Ascensores S.A.\nSu objetivo fue reemplazar el uso de Microsoft Office y SharePoint en la empresa. Buscábamos integrar herramientas en un software específico y el primer área que migarada fue el departamento de ventas.\n\nMuestra una bandeja personalizada para usuarios de ventas, analizada con los datos necesarios por proyecto. El proyecto también permite agregar y modificar DISTRITOS, PROPIETARIOS y EMPRESAS CONSTRUCTORAS. Este proyecto fue diseñado y aprobado por la Gerencia de Sistemas de Ascensores S.A.",
+      "Aplicación desarrollada para Ascensores S.A. con el objetivo de reemplazar procesos dispersos en Microsoft Office y SharePoint. El sistema unificó información comercial, seguimiento por proyecto y catálogos operativos en una sola herramienta.",
     techTags: ["React", ".NET Core", "MySQL"],
     detailImages: [
       { src: ascensoresLogin, alt: "Ascensores Tools login" },
@@ -249,33 +232,12 @@ const softwareProjects: ProjectItem[] = [
     accent: "#9ac7ff",
   },
   {
-    title: "Automatización para servicios RAN",
-    tag: "Telecom",
-    description:
-      "Herramientas para optimizar y acelerar tareas de redes móviles multivendor.",
-    detail:
-      "Automatizaciones que conectan archivos personales en la nube con APIs dinámicas de diferentes aplicaciones, incluyendo Google y Microsoft.\nEl objetivo es reducir esfuerzos aplicando automatización a tareas diarias rigurosas, integrando lógica de negocio con flujos que pueden automatizarse por módulos.\n\nTransformar un template XML CFGDATA y modificar sus valores internos según la información de un archivo Excel. Esto permite cargar automáticamente los valores requeridos cada vez que se agregan datos en Excel.",
-    techTags: ["n8n", "Python", "Code"],
-    detailImages: [
-      { src: n8nXmlAutomation, alt: "Automatización XML en n8n" },
-      { src: n8nXmlResponse, alt: "Respuesta XML procesada" },
-    ],
-    highlights: [
-      "Automatización de KPIs y alarmas",
-      "Soporte a troubleshooting",
-      "Scripts y orquestación operativa",
-    ],
-    image: telecomImage,
-    imageAlt: "Telecom",
-    accent: "#7fb7ff",
-  },
-  {
-    title: "Desarrollo y diseño de páginas web",
+    title: "Diseño y desarrollo web",
     tag: "Web & UX",
     description:
-      "Diseño y desarrollo de sitios web modernos, optimizados para conversión, rendimiento y accesibilidad.",
+      "Sitios modernos optimizados para conversión, rendimiento y accesibilidad.",
     detail:
-      "Página web diseñada para una ONG enfocada en apoyar a la juventud mediante becas deportivas. El sitio comunica su propósito, muestra resultados e historias, y facilita el contacto con potenciales aliados y beneficiarios.\n\nIncluye secciones de impacto, equipo, noticias y formularios de contacto para impulsar la participación comunitaria y las donaciones.",
+      "Página web diseñada para una ONG enfocada en apoyar a la juventud mediante becas deportivas. El sitio comunica propósito, muestra resultados e historias, y facilita el contacto con aliados y beneficiarios.",
     techTags: ["UI/UX", "Web Design", "SEO"],
     detailImages: [
       { src: paginasHero, alt: "ONG becas deportivas hero" },
@@ -296,11 +258,11 @@ const softwareProjects: ProjectItem[] = [
   },
   {
     title: "Plataforma de alquiler de canchas",
-    tag: "Grass sintético",
+    tag: "Reservas online",
     description:
-      "Sistema de reservas para canchas deportivas con disponibilidad en tiempo real.",
+      "Sistema de reservas con disponibilidad en tiempo real, pagos y control operativo.",
     detail:
-      "Plataforma de gestión para canchas deportivas que permite controlar reservas, disponibilidad en tiempo real, pagos y administración de usuarios. Incluye módulos para horarios, pagos y reportes operativos orientados a optimizar la ocupación y la atención al cliente.",
+      "Plataforma de gestión para canchas deportivas que permite controlar reservas, disponibilidad en tiempo real, pagos y administración de usuarios. Incluye módulos para horarios, pagos y reportes operativos.",
     techTags: ["React", "Spring Boot", "MySQL", "Microservices"],
     detailImages: [
       { src: pichangappOverview, alt: "Plataforma de canchas vista general" },
@@ -357,8 +319,8 @@ const telecomProjects: ProjectItem[] = [
       "Soporte de comisionamiento e integración en proyecto RAN consolidado.",
     highlights: [
       "Comisionamiento e integración Ericsson 4G-5G",
-      "SWAP y Modernización RANCO",
-      "Expansión Portadoras AWS, APT e Implementación VOLTE",
+      "SWAP y modernización RANCO",
+      "Expansión de portadoras AWS, APT e implementación VOLTE",
     ],
     image: telradChileLogo,
     imageAlt: "Telrad Chile logo",
@@ -373,7 +335,7 @@ const telecomProjects: ProjectItem[] = [
       "Puesta en servicio de estaciones rurales móviles",
       "Proyectos especiales CRAN y RAN Sharing",
       "Coordinación multivendor Ericsson/Huawei",
-      "Soporte Ingeniería RAN y averías OyM NOC",
+      "Soporte de ingeniería RAN y averías OyM NOC",
     ],
     image: internetTodosLogo,
     imageAlt: "Internet Para Todos logo",
@@ -383,11 +345,11 @@ const telecomProjects: ProjectItem[] = [
     title: "Rollout, expansión y modernización RAN/TX",
     tag: "Entel Perú",
     description:
-      "Planificación y ejecución de proyectos de rollout, expansión, swap y modernización RAN/TX.",
+      "Planificación y ejecución de rollout, expansión, swap y modernización RAN/TX.",
     highlights: [
-      "Soporte Implementación RAN/TX Huawei",
-      "Comisionamiento e Integración BBU5900 2G/3G/4G APT,PCS,AWS,NR 5G",
-      "Consultoría Diseño RAN",
+      "Soporte de implementación RAN/TX Huawei",
+      "Comisionamiento e integración BBU5900 2G/3G/4G/5G",
+      "Consultoría de diseño RAN",
     ],
     image: entelLogo,
     imageAlt: "Entel logo",
@@ -415,7 +377,7 @@ const ProjectCard = ({
   onOpen: () => void;
 }) => {
   return (
-    <article className="group relative overflow-hidden rounded-[2.25rem] border border-white/70 bg-white/80 p-8 sm:p-10 shadow-[0_20px_50px_rgba(15,23,42,0.12)] backdrop-blur-md transition-all hover:-translate-y-2 hover:bg-white hover:shadow-[0_32px_80px_rgba(15,23,42,0.2)]">
+    <article className="group relative overflow-hidden rounded-[2.25rem] border border-white/70 bg-white/88 p-8 sm:p-10 shadow-[0_20px_50px_rgba(15,23,42,0.12)] backdrop-blur-md transition-all hover:-translate-y-2 hover:bg-white hover:shadow-[0_32px_80px_rgba(15,23,42,0.2)]">
       <div
         className="absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         style={{
@@ -453,19 +415,19 @@ const ProjectCard = ({
         className="relative z-10 mt-3 h-1 w-16 rounded-full"
         style={{ backgroundColor: accent }}
       />
-      <p className="relative z-10 mt-5 text-base sm:text-lg font-medium leading-relaxed text-[#0b1d3a]/70">
+      <p className="relative z-10 mt-5 text-base sm:text-lg font-medium leading-7 text-[#0b1d3a]/74">
         {desc}
       </p>
       <div className="relative z-10 mt-7 flex flex-wrap gap-3">
-        {tags.map((tag) => (
+        {tags.map((tagItem) => (
           <span
-            key={tag}
-            className="inline-flex items-center gap-2 rounded-2xl border border-[#0b1d3a]/15 bg-white/90 px-4 py-2 text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-[#0b1d3a]/60 transition-colors hover:border-[#2f9edb]/40 hover:text-[#1b5aa6]"
+            key={tagItem}
+            className="inline-flex items-center gap-2 rounded-2xl border border-[#0b1d3a]/15 bg-white/92 px-4 py-2 text-[10px] sm:text-[11px] font-black uppercase tracking-widest text-[#0b1d3a]/60 transition-colors hover:border-[#2f9edb]/40 hover:text-[#1b5aa6]"
           >
             <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#0b1d3a]/10 text-[#1b5aa6]">
               <CheckIcon className="h-3 w-3" />
             </span>
-            {tag}
+            {tagItem}
           </span>
         ))}
       </div>
@@ -480,17 +442,15 @@ const ProjectCard = ({
   );
 };
 
-export const Projects = () => {
+export const Projects = ({ mode }: { mode: SiteMode }) => {
   const [activeProject, setActiveProject] = useState<ProjectItem | null>(null);
   const [activeImage, setActiveImage] = useState<{
     src: StaticImageData;
     alt: string;
   } | null>(null);
-  const [projectTrack, setProjectTrack] = useState<"software" | "telecom">(
-    "software",
-  );
-  const activeProjects =
-    projectTrack === "software" ? softwareProjects : telecomProjects;
+  const isTelecom = mode === "telecom";
+  const activeProjects = isTelecom ? telecomProjects : softwareProjects;
+
   const handleCloseProject = () => {
     setActiveProject(null);
     setActiveImage(null);
@@ -499,65 +459,51 @@ export const Projects = () => {
   return (
     <section
       id="proyectos"
-      className="relative bg-[#EAEEFE] px-6 pt-20 pb-32 text-[#0b1d3a] scroll-mt-24 md:scroll-mt-28 overflow-hidden"
+      className="relative bg-[#EAEEFE] px-4 pt-24 pb-32 text-[#0b1d3a] scroll-mt-24 md:scroll-mt-28 overflow-hidden sm:px-6 md:pt-28"
     >
       <DotGrid
         dotSize={4}
         gap={18}
         baseColor="#9eb3d8"
-        activeColor="#2f9edb"
+        activeColor={isTelecom ? "#f39c36" : "#2f9edb"}
         proximity={140}
         shockRadius={260}
         shockStrength={3}
         resistance={800}
         returnDuration={1.4}
-        className="opacity-45"
+        className="opacity-28"
       />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(20,37,63,0.18)_0%,rgba(167,186,220,0.34)_12%,rgba(234,238,254,0.94)_34%,rgba(234,238,254,0.82)_62%,rgba(234,238,254,0.96)_100%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-[#d7e1f4] via-[#e4ebf8]/90 to-transparent" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-b from-transparent via-[#eef2fb]/88 to-[#f5f7ff]" />
+
       <div className="relative z-10 mx-auto max-w-7xl">
-        <div className="flex justify-center">
-          <div className="tag mb-6">Proyectos</div>
-        </div>
-        <div className="flex flex-col gap-16 lg:grid lg:grid-cols-12">
-          <div className="lg:col-span-8">
-            <h2 className="section-title mb-6 text-left text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-tight leading-[0.95] break-words">
-              Historial de éxito
-            </h2>
-            <p className="max-w-2xl text-xl font-medium tracking-wide text-slate-500">
-              Resultados tangibles entregados a líderes de la industria bajo
-              estándares internacionales.
-            </p>
+        <div className="rounded-[2rem] border border-white/80 bg-white/75 p-6 shadow-[0_24px_70px_rgba(15,23,42,0.12)] backdrop-blur-xl sm:p-8 lg:p-10">
+          <div className="flex justify-start">
+            <div className="tag mb-6 border-[#0b1d3a]/10 bg-[#0b1d3a]/5 text-[#0b1d3a]">
+              Proyectos
+            </div>
           </div>
-          <div className="flex items-end justify-center lg:col-span-4 lg:justify-end">
-            <div className="flex rounded-2xl border border-[#0b1d3a]/10 bg-[#0b1d3a]/5 p-2 backdrop-blur-xl">
-              <button
-                role="tab"
-                aria-selected={projectTrack === "software"}
-                onClick={() => setProjectTrack("software")}
-                className={`px-10 py-5 text-xs font-black uppercase tracking-widest transition-all ${
-                  projectTrack === "software"
-                    ? "rounded-xl bg-gradient-to-r from-[#2f9edb] to-[#1b5aa6] text-white shadow-lg shadow-cyan-500/20"
-                    : "text-slate-500 hover:text-[#0b1d3a]"
-                }`}
-              >
-                Software
-              </button>
-              <button
-                role="tab"
-                aria-selected={projectTrack === "telecom"}
-                onClick={() => setProjectTrack("telecom")}
-                className={`px-10 py-5 text-xs font-black uppercase tracking-widest transition-all ${
-                  projectTrack === "telecom"
-                    ? "rounded-xl bg-gradient-to-r from-[#2f9edb] to-[#1b5aa6] text-white shadow-lg shadow-cyan-500/20"
-                    : "text-slate-500 hover:text-[#0b1d3a]"
-                }`}
-              >
-                Telecom
-              </button>
+          <div className="flex flex-col gap-10 lg:grid lg:grid-cols-12 lg:items-end">
+            <div className="lg:col-span-8">
+              <h2 className="text-left text-4xl font-black uppercase leading-[0.92] tracking-tight text-[#06111f] drop-shadow-[0_2px_0_rgba(255,255,255,0.8)] sm:text-5xl md:text-7xl">
+                {isTelecom ? "Experiencia telecom" : "Casos de software"}
+              </h2>
+              <p className="mt-6 max-w-2xl text-base font-medium leading-7 text-[#0b1d3a]/75 sm:text-lg md:text-xl">
+                {isTelecom
+                  ? "Proyectos RAN, rollout, modernización y soporte ejecutados con operadores y partners regionales."
+                  : "Plataformas, automatizaciones e integraciones entregadas para resolver operaciones reales con impacto medible y menos fricción para el equipo."}
+              </p>
+            </div>
+            <div className="flex items-end justify-start lg:col-span-4 lg:justify-end">
+              <div className="inline-flex rounded-full border border-[#0b1d3a]/10 bg-white/80 px-4 py-2 text-[11px] font-black uppercase tracking-[0.22em] text-[#0b1d3a]/70 shadow-inner">
+                {isTelecom ? "Modo telecom" : "Modo software"}
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="mt-32 grid gap-12 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {activeProjects.map((project) => (
             <ProjectCard
               key={project.title}
@@ -573,6 +519,7 @@ export const Projects = () => {
           ))}
         </div>
       </div>
+
       {activeProject && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4 py-10"
@@ -593,7 +540,7 @@ export const Projects = () => {
                 <h3 className="mt-4 text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#0b1d3a] break-words">
                   {activeProject.title}
                 </h3>
-                <p className="mt-4 text-sm sm:text-base text-[#0b1d3a]/80 whitespace-pre-line">
+                <p className="mt-4 text-sm sm:text-base font-medium leading-7 text-[#0b1d3a]/80 whitespace-pre-line">
                   {activeProject.detail ?? activeProject.description}
                 </p>
               </div>
@@ -603,7 +550,7 @@ export const Projects = () => {
                 className="flex h-10 w-10 items-center justify-center rounded-full border border-[#0b1d3a]/20 bg-[#0b1d3a]/5 text-[#0b1d3a] hover:bg-[#0b1d3a]/10"
                 aria-label="Cerrar"
               >
-                ✕
+                ×
               </button>
             </div>
             {activeProject.techTags && activeProject.techTags.length > 0 && (
@@ -656,6 +603,7 @@ export const Projects = () => {
           </div>
         </div>
       )}
+
       {activeImage && (
         <div
           className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 px-4 py-10"
@@ -678,7 +626,7 @@ export const Projects = () => {
               className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/10 text-white hover:bg-white/20"
               aria-label="Cerrar imagen"
             >
-              ✕
+              ×
             </button>
             <div className="relative z-0 h-[55vh] sm:h-[60vh] w-full">
               <Image
