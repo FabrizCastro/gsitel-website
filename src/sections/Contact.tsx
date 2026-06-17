@@ -1,74 +1,180 @@
 "use client";
 
-import { Galaxy } from "@/components/Galaxy";
-import Image from "next/image";
 import type { SiteMode } from "@/lib/siteMode";
+import Image from "next/image";
+import {
+  type ComponentType,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
+type GalaxyProps = {
+  mouseRepulsion?: boolean;
+  mouseInteraction?: boolean;
+  density?: number;
+  glowIntensity?: number;
+  saturation?: number;
+  hueShift?: number;
+  twinkleIntensity?: number;
+  rotationSpeed?: number;
+  repulsionStrength?: number;
+  autoCenterRepulsion?: number;
+  starSpeed?: number;
+  speed?: number;
+  className?: string;
+};
+
+const ContactBackground = ({
+  prefersReducedMotion,
+}: {
+  prefersReducedMotion: boolean;
+}) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [GalaxyComponent, setGalaxyComponent] =
+    useState<ComponentType<GalaxyProps> | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    const container = containerRef.current;
+    if (!container) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "160px 0px", threshold: 0.01 },
+    );
+
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [prefersReducedMotion]);
+
+  useEffect(() => {
+    if (!isVisible || prefersReducedMotion) {
+      return;
+    }
+
+    let cancelled = false;
+
+    void import("@/components/Galaxy").then((module) => {
+      if (!cancelled) {
+        setGalaxyComponent(() => module.Galaxy);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isVisible, prefersReducedMotion]);
+
+  return (
+    <div ref={containerRef} className="absolute inset-0">
+      {prefersReducedMotion ? (
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 opacity-40 [background-image:radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.18),transparent_35%),radial-gradient(circle_at_80%_70%,rgba(47,158,219,0.22),transparent_40%)]"
+        />
+      ) : (
+        GalaxyComponent && (
+          <GalaxyComponent
+            mouseRepulsion
+            mouseInteraction
+            density={1}
+            glowIntensity={0.3}
+            saturation={0}
+            hueShift={140}
+            twinkleIntensity={0.3}
+            rotationSpeed={0.1}
+            repulsionStrength={2}
+            autoCenterRepulsion={0}
+            starSpeed={0.5}
+            speed={1}
+            className="opacity-70"
+          />
+        )
+      )}
+    </div>
+  );
+};
 
 export const Contact = ({ mode }: { mode: SiteMode }) => {
   const isTelecom = mode === "telecom";
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updateMotionPreference = () => {
+      setPrefersReducedMotion(mediaQuery.matches);
+    };
+
+    updateMotionPreference();
+    mediaQuery.addEventListener("change", updateMotionPreference);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateMotionPreference);
+    };
+  }, []);
 
   return (
     <section
       id="contacto"
-      className="relative overflow-hidden bg-[#081d3f] py-20 sm:py-28 px-6 scroll-mt-24 md:scroll-mt-28"
+      className="relative bg-transparent px-4 section-shell scroll-mt-24 sm:px-6 md:scroll-mt-28"
     >
       <div
-        className={`max-w-5xl mx-auto rounded-[2.5rem] sm:rounded-[3rem] p-8 sm:p-12 md:p-20 text-center relative overflow-hidden shadow-[0_0_80px_rgba(47,158,219,0.35)] ${
+        className={`relative mx-auto max-w-4xl overflow-hidden rounded-[2rem] p-6 text-center shadow-[0_0_60px_rgba(47,158,219,0.28)] sm:p-8 md:p-10 ${
           isTelecom
             ? "bg-gradient-to-br from-[#211203] via-[#7a470d] to-[#1b5aa6]"
             : "bg-gradient-to-br from-[#0b1f3a] via-[#0d3b7a] to-[#1b5aa6]"
         }`}
       >
-        <Galaxy
-          mouseRepulsion
-          mouseInteraction
-          density={1}
-          glowIntensity={0.3}
-          saturation={0}
-          hueShift={140}
-          twinkleIntensity={0.3}
-          rotationSpeed={0.1}
-          repulsionStrength={2}
-          autoCenterRepulsion={0}
-          starSpeed={0.5}
-          speed={1}
-          className="opacity-70"
-        />
-        <div className="absolute inset-0 bg-[#081d3f]/60 pointer-events-none" />
-        <div className="absolute top-0 left-0 w-full h-full bg-grid-white/[0.05] pointer-events-none" />
-        <div className="relative z-10 animate-in">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white mb-8 sm:mb-10 tracking-tight uppercase leading-[0.95] break-words">
-            {isTelecom ? (
-              <>
-                OPTIMICEMOS <br /> TU RED
-              </>
-            ) : (
-              <>
-                DISEÑEMOS <br /> TU SISTEMA
-              </>
-            )}
-          </h2>
-          <p className="text-base sm:text-lg md:text-xl text-white/80 mb-6 sm:mb-8 max-w-3xl mx-auto font-medium">
-            {isTelecom
-              ? "Hablemos de integración, parámetros, drive test, soporte OyM y automatización para tu operación móvil."
-              : "Hablemos de tu flujo actual y convirtamos procesos dispersos en una solución integral de software."}
+        <ContactBackground prefersReducedMotion={prefersReducedMotion} />
+        <div className="pointer-events-none absolute inset-0 bg-[#081d3f]/55" />
+        <div className="pointer-events-none absolute inset-0 bg-grid-white/[0.04]" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+
+        <div className="relative z-10">
+          <p className="section-eyebrow-dark">
+            {isTelecom ? "Soporte de red" : "Proyecto de software"}
           </p>
-          <div className="mb-8 sm:mb-10 flex flex-wrap items-center justify-center gap-3 text-white/90 font-semibold break-words">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/10">
+          <h2 className="section-title-dark">
+            {isTelecom ? "Optimicemos tu red" : "Diseñemos tu sistema"}
+          </h2>
+          <p className="section-desc-dark mx-auto max-w-2xl text-center">
+            {isTelecom
+              ? "Integración, drive test, soporte OyM y automatización para tu operación móvil."
+              : "Convirtamos procesos dispersos en una solución integral de software."}
+          </p>
+
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-2 text-sm font-semibold text-white/90">
+            <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/10">
               <Image
                 src="https://www.gstatic.com/images/branding/product/2x/gmail_2020q4_48dp.png"
                 alt="Gmail"
-                width={20}
-                height={20}
-                className="h-5 w-5"
+                width={16}
+                height={16}
+                className="h-4 w-4"
               />
             </span>
-            <span>soporte@gsitel-solutions.com</span>
+            <span className="break-all text-center sm:break-normal">soporte@gsitel-solutions.com</span>
           </div>
-          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center w-full">
+
+          <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a
               href="mailto:soporte@gsitel-solutions.com"
-              className="w-full sm:w-auto px-6 sm:px-10 md:px-12 py-4 sm:py-5 bg-black text-white font-black uppercase tracking-[0.2em] sm:tracking-[0.25em] rounded-2xl hover:bg-white hover:text-black hover:scale-105 transition-all shadow-2xl text-[11px] sm:text-[12px]"
+              className="w-full rounded-xl bg-black px-6 py-3 text-[11px] font-black uppercase tracking-[0.2em] text-white transition hover:bg-white hover:text-black sm:w-auto"
             >
               Contactar ahora
             </a>
@@ -76,7 +182,7 @@ export const Contact = ({ mode }: { mode: SiteMode }) => {
               href="https://docs.google.com/forms/d/e/1FAIpQLSdfgHkDApUgxqeuqpwoaJPVWo6nQjS7NI9wtpB_W7f0RCddpQ/viewform?usp=publish-editor"
               target="_blank"
               rel="noreferrer"
-              className="w-full sm:w-auto px-6 sm:px-10 md:px-12 py-4 sm:py-5 bg-white/10 text-white border-2 border-white/20 font-black uppercase tracking-[0.2em] sm:tracking-[0.25em] rounded-2xl hover:bg-white/20 transition-all backdrop-blur-md text-[11px] sm:text-[12px]"
+              className="w-full rounded-xl border border-white/25 bg-white/10 px-6 py-3 text-[11px] font-black uppercase tracking-[0.2em] text-white backdrop-blur-md transition hover:bg-white/20 sm:w-auto"
             >
               Agendar reunión
             </a>

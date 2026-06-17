@@ -1,3 +1,4 @@
+import { CtaFooterShell } from "@/components/CtaFooterShell";
 import { Footer } from "@/sections/Footer";
 import { Header } from "@/sections/Header";
 import type { Metadata } from "next";
@@ -184,7 +185,9 @@ export default function AboutUsPage() {
           </div>
         </div>
       </section>
-      <Footer />
+      <CtaFooterShell>
+        <Footer />
+      </CtaFooterShell>
     </>
   );
 }

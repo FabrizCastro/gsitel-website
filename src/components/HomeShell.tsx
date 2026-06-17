@@ -1,18 +1,66 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { SiteMode } from "@/lib/siteMode";
 import { Header } from "@/sections/Header";
 import { AboutHero } from "@/sections/AboutHero";
 import { ClientsTicker } from "@/sections/ClientsTicker";
-import { DigitalTransformation } from "@/sections/DigitalTransformation";
-import { KnowledgeStack } from "@/sections/KnowledgeStack";
 import { Services } from "@/sections/Services";
-import { Projects } from "@/sections/Projects";
-import { Testimonials } from "@/sections/Testimonials";
-import { Contact } from "@/sections/Contact";
+import { DarkSectionsShell } from "@/components/DarkSectionsShell";
+import { CtaFooterShell } from "@/components/CtaFooterShell";
 import { Footer } from "@/sections/Footer";
+
+const DigitalTransformation = dynamic(
+  () =>
+    import("@/sections/DigitalTransformation").then(
+      (module) => module.DigitalTransformation,
+    ),
+  { ssr: false },
+);
+
+const KnowledgeStack = dynamic(
+  () =>
+    import("@/sections/KnowledgeStack").then((module) => module.KnowledgeStack),
+  { ssr: false },
+);
+
+const Projects = dynamic(
+  () => import("@/sections/Projects").then((module) => module.Projects),
+  { ssr: false },
+);
+
+const Testimonials = dynamic(
+  () =>
+    import("@/sections/Testimonials").then((module) => module.Testimonials),
+  { ssr: false },
+);
+
+const Contact = dynamic(
+  () => import("@/sections/Contact").then((module) => module.Contact),
+  { ssr: false },
+);
+
+const ModeAwareSection = ({
+  mode,
+  children,
+  className,
+}: {
+  mode: SiteMode;
+  children: ReactNode;
+  className?: string;
+}) => (
+  <motion.div
+    key={mode}
+    initial={{ opacity: 0, y: 12 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+    className={className}
+  >
+    {children}
+  </motion.div>
+);
 
 export const HomeShell = () => {
   const [mode, setMode] = useState<SiteMode>("software");
@@ -21,7 +69,6 @@ export const HomeShell = () => {
   const isSwitchingModeRef = useRef(false);
   const switchStartTimerRef = useRef<number | null>(null);
   const switchEndTimerRef = useRef<number | null>(null);
-  const [transitionKey, setTransitionKey] = useState(0);
 
   useEffect(() => {
     return () => {
@@ -53,7 +100,6 @@ export const HomeShell = () => {
 
     switchStartTimerRef.current = window.setTimeout(() => {
       setMode(nextMode);
-      setTransitionKey((current) => current + 1);
     }, 180);
 
     switchEndTimerRef.current = window.setTimeout(() => {
@@ -65,24 +111,27 @@ export const HomeShell = () => {
   return (
     <>
       <Header mode={mode} onModeChange={handleModeChange} />
-      <AnimatePresence mode="wait">
-        <motion.main
-          key={`${mode}-${transitionKey}`}
-          initial={{ opacity: 0, y: 20, filter: "blur(12px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          exit={{ opacity: 0, y: -14, filter: "blur(12px)" }}
-          transition={{ duration: 0.62, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <AboutHero mode={mode} />
-          <ClientsTicker />
-          <DigitalTransformation mode={mode} />
-          <Services mode={mode} />
-          <KnowledgeStack mode={mode} />
+      <main>
+        <div className="relative flex min-h-svh min-h-[100dvh] flex-col">
+          <ModeAwareSection mode={mode} className="flex min-h-0 flex-1 flex-col">
+            <AboutHero mode={mode} />
+          </ModeAwareSection>
+        </div>
+        <ModeAwareSection mode={mode}>
+          <DarkSectionsShell mode={mode}>
+            <ClientsTicker mode={mode} />
+            <DigitalTransformation mode={mode} />
+            <Services mode={mode} />
+          </DarkSectionsShell>
+          {mode === "software" && <KnowledgeStack mode={mode} />}
           <Projects mode={mode} />
           <Testimonials mode={mode} />
-          <Contact mode={mode} />
-        </motion.main>
-      </AnimatePresence>
+          <CtaFooterShell>
+            <Contact mode={mode} />
+            <Footer />
+          </CtaFooterShell>
+        </ModeAwareSection>
+      </main>
       <AnimatePresence>
         {isSwitchingMode && (
           <motion.div
@@ -109,7 +158,6 @@ export const HomeShell = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      <Footer />
     </>
   );
 };

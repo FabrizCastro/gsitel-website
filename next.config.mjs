@@ -5,6 +5,7 @@ const baseConfig = {
   // ✅ requerido si usas next/image en hosting estático
   images: {
     unoptimized: true,
+    qualities: [75, 85],
     remotePatterns: [
       {
         protocol: "https",

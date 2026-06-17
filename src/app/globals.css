@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --bg-deep: #060a11;
+    --accent-blue: #1d6fff;
+    --accent-cyan: #22d3ee;
+  }
+
   html,
   body {
     width: 100%;
@@ -76,6 +82,151 @@
     @apply text-sm inline-flex border border-white/25 bg-white/10 px-3 py-1 rounded-lg tracking-tight backdrop-blur-sm hover:bg-white/15 smooth-transition;
   }
 
+  .tag-premium {
+    @apply inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.22em] text-white backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.25)];
+  }
+
+  .glass-panel {
+    @apply relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] backdrop-blur-2xl shadow-[0_32px_80px_rgba(0,0,0,0.35)];
+  }
+
+  .glass-panel::before {
+    content: "";
+    @apply pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent;
+  }
+
+  .mesh-dark {
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(47, 158, 219, 0.14), transparent 42%),
+      radial-gradient(circle at 85% 12%, rgba(243, 156, 54, 0.1), transparent 38%),
+      radial-gradient(circle at 50% 100%, rgba(37, 99, 235, 0.08), transparent 48%);
+  }
+
+  .mesh-dark-telecom {
+    background-image:
+      radial-gradient(circle at 20% 18%, rgba(243, 156, 54, 0.16), transparent 40%),
+      radial-gradient(circle at 80% 24%, rgba(47, 158, 219, 0.1), transparent 36%),
+      radial-gradient(circle at 50% 100%, rgba(180, 83, 9, 0.1), transparent 45%);
+  }
+
+  .services-mesh-software {
+    background-image:
+      radial-gradient(ellipse at 15% 0%, rgba(34, 211, 238, 0.18), transparent 50%),
+      radial-gradient(ellipse at 85% 15%, rgba(37, 99, 235, 0.14), transparent 45%),
+      radial-gradient(ellipse at 50% 100%, rgba(30, 79, 173, 0.2), transparent 55%),
+      radial-gradient(circle at 70% 60%, rgba(47, 158, 219, 0.08), transparent 40%);
+  }
+
+  .services-mesh-telecom {
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(243, 156, 54, 0.2), transparent 48%),
+      radial-gradient(ellipse at 80% 20%, rgba(47, 158, 219, 0.1), transparent 42%),
+      radial-gradient(ellipse at 50% 100%, rgba(180, 83, 9, 0.15), transparent 55%),
+      radial-gradient(circle at 30% 70%, rgba(234, 88, 12, 0.08), transparent 38%);
+  }
+
+  .services-stack-glow {
+    background-image:
+      radial-gradient(circle at 50% 85%, rgba(47, 158, 219, 0.12), transparent 50%),
+      linear-gradient(180deg, transparent 60%, rgba(30, 79, 173, 0.06) 100%);
+  }
+
+  .services-stack-glow-linear {
+    background-image: linear-gradient(
+      180deg,
+      transparent 55%,
+      rgba(30, 79, 173, 0.1) 100%
+    );
+  }
+
+  .services-deco-mask {
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 52%, transparent 86%);
+    mask-image: linear-gradient(to bottom, black 0%, black 52%, transparent 86%);
+  }
+
+  .knowledge-stack-shine {
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.14), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(34, 211, 238, 0.12), transparent 42%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 12%, black 22%, black 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, transparent 12%, black 22%, black 100%);
+  }
+
+  .knowledge-stack-bg {
+    background: linear-gradient(
+      180deg,
+      #1e4fad 0%,
+      #2f9edb 42%,
+      #60a5fa 100%
+    );
+  }
+
+  .logo-ticker-card {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .section-shell {
+    @apply py-12 sm:py-16;
+  }
+
+  .section-eyebrow-dark {
+    @apply text-[10px] font-black uppercase tracking-[0.28em] text-white/60;
+  }
+
+  .section-eyebrow-light {
+    @apply text-[10px] font-black uppercase tracking-[0.28em] text-[#1b5aa6]/80;
+  }
+
+  .section-title-dark {
+    @apply mt-3 text-2xl font-black leading-tight text-white sm:text-3xl md:text-4xl lg:text-5xl;
+  }
+
+  .section-title-light {
+    @apply mt-3 text-2xl font-black leading-tight text-[#06111f] sm:text-3xl md:text-4xl lg:text-5xl;
+  }
+
+  .section-desc-dark {
+    @apply mt-4 max-w-lg text-sm leading-7 text-white/75 sm:text-base;
+  }
+
+  .section-desc-light {
+    @apply mt-4 max-w-lg text-sm leading-7 text-[#0b1d3a]/70 sm:text-base;
+  }
+
+  .services-bridge-software {
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(11, 45, 110, 0.45) 30%,
+      rgba(30, 79, 173, 0.82) 55%,
+      #1e4fad 72%,
+      #1e4fad 100%
+    );
+  }
+
+  .services-bridge-telecom {
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(234, 238, 254, 0.12) 55%,
+      #eaeefe 100%
+    );
+  }
+
+  .grid-fine {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .btn-ghost-light {
+    @apply inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/[0.06] px-6 py-3.5 text-[11px] font-black uppercase tracking-[0.2em] text-white transition duration-300 hover:border-white/30 hover:bg-white hover:text-[#020408] hover:shadow-[0_0_40px_rgba(255,255,255,0.12)] hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center rounded-2xl px-6 py-3.5 text-[11px] font-black uppercase tracking-[0.2em] text-white transition duration-300 hover:-translate-y-0.5 hover:brightness-110 active:translate-y-0;
+  }
+
   .section-title {
     @apply text-center text-4xl md:text-[54px] md:leading-[60px] font-bold tracking-tighter bg-gradient-to-b from-white via-blue-100 to-blue-300 text-transparent bg-clip-text;
   }
@@ -95,8 +246,9 @@
 
 .reveal-on-scroll {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translateY(22px);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: var(--reveal-delay, 0ms);
   will-change: opacity, transform;
 }
@@ -144,4 +296,165 @@
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+.connected-ecosystem .glass-panel {
+  background: rgba(16, 36, 58, 0.45);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.connected-ecosystem .eco-card-depth {
+  box-shadow:
+    0 30px 60px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.connected-ecosystem .eco-screen {
+  position: relative;
+}
+
+.connected-ecosystem .eco-screen-shine {
+  background: linear-gradient(
+    125deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    transparent 38%,
+    transparent 100%
+  );
+}
+
+.connected-ecosystem .eco-chart-line {
+  stroke-dasharray: 140;
+  animation: eco-chart-draw 4s ease-in-out infinite alternate;
+}
+
+.connected-ecosystem .eco-chart-dot {
+  animation: eco-chart-pulse 2s ease-in-out infinite;
+}
+
+.connected-ecosystem .eco-node-pulse {
+  animation: eco-node-blink 2.4s ease-in-out infinite;
+}
+
+@keyframes eco-chart-draw {
+  from {
+    stroke-dashoffset: 20;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes eco-chart-pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    r: 2;
+  }
+  50% {
+    opacity: 1;
+    r: 3;
+  }
+}
+
+@keyframes eco-node-blink {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+.connected-ecosystem .text-gradient {
+  background: linear-gradient(135deg, #1d6fff 0%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.connected-ecosystem .hero-grid {
+  background-image: radial-gradient(
+    circle at 2px 2px,
+    rgba(255, 255, 255, 0.03) 1px,
+    transparent 0
+  );
+  background-size: 40px 40px;
+}
+
+.connected-ecosystem .glow-sphere {
+  filter: blur(80px);
+  opacity: 0.15;
+  z-index: 0;
+}
+
+.connected-ecosystem.perspective-view,
+.connected-ecosystem .perspective-view {
+  perspective: 2000px;
+}
+
+.connected-ecosystem .float-animation {
+  animation: eco-float 6s ease-in-out infinite;
+}
+
+.connected-ecosystem .skewed-card {
+  transform: rotateY(-15deg) rotateX(10deg);
+}
+
+.connected-ecosystem .data-flow {
+  stroke-dasharray: 8;
+  animation: eco-dash 20s linear infinite;
+}
+
+.connected-ecosystem .pulse-core {
+  animation: eco-pulse-ring 3s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
+
+@keyframes eco-float {
+  0%,
+  100% {
+    transform: rotateY(-15deg) rotateX(10deg) translateY(0);
+  }
+  50% {
+    transform: rotateY(-15deg) rotateX(12deg) translateY(-20px);
+  }
+}
+
+@keyframes eco-dash {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+@keyframes eco-pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.2;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .connected-ecosystem .float-animation,
+  .connected-ecosystem .data-flow,
+  .connected-ecosystem .pulse-core,
+  .connected-ecosystem .eco-chart-line,
+  .connected-ecosystem .eco-chart-dot,
+  .connected-ecosystem .eco-node-pulse {
+    animation: none;
+  }
 }

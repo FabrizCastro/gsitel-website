@@ -1,669 +1,274 @@
 "use client";
 
+import type { DetailConfig } from "@/data/detailConfig";
 import {
-  Globe,
-  Settings,
-  Smartphone,
-  Cpu,
-  ShoppingBag,
-  Layers,
-  Users,
-  Sparkles,
-  FileText,
-  Zap,
-  UserCheck,
-  Brain,
-  Truck,
-  BarChart3,
-  Package,
-  Activity,
-  Scissors,
-  Calendar,
-  MessageSquare,
-  Target,
-  Workflow,
-  PieChart,
-} from "lucide-react";
-import { type ReactNode, useMemo, useState } from "react";
+  SOFTWARE_PHASE2_FEATURES,
+  TELECOM_CAPABILITIES,
+  TELECOM_CAPABILITY_DATA,
+  TELECOM_PHASE2_FEATURES,
+} from "@/data/telecomCapabilities";
+import { SECTOR_DATA, SOFTWARE_SECTORS } from "@/data/sectorData";
+import { AppModal } from "@/components/AppModal";
+import { MotionInView, staggerContainer, staggerItem } from "@/components/MotionInView";
+import { getModeTheme } from "@/lib/modeTheme";
+import { renderRoadmapIcon } from "@/lib/roadmapIcons";
 import type { SiteMode } from "@/lib/siteMode";
+import { Antenna, Brain, Gauge, Rocket, type LucideIcon } from "lucide-react";
+import { motion } from "framer-motion";
+import { type ReactNode, useCallback, useState } from "react";
 
-type SectorConfig = {
-  solutions: {
-    name: string;
-    provider: string;
-    link: string;
-    summary: string;
-  }[];
-  roadmap: {
-    step: string;
-    title: string;
-    desc: string;
-    icon: ReactNode;
-  }[];
+type ActiveDetail = {
+  label: string;
+  categoryLabel: string;
+  solutions: DetailConfig["solutions"];
+  roadmap: { step: string; title: string; desc: string; icon: ReactNode }[];
 };
 
-const SECTOR_DATA: Record<string, SectorConfig> = {
-  Restaurantes: {
-    solutions: [
-      {
-        name: "Menú Digital & Pedidos",
-        provider: "GloriaFood",
-        link: "https://www.gloriafood.com",
-        summary: "Pedidos online y reservas desde tu web sin comisiones.",
-      },
-      {
-        name: "Gestión de Reservas",
-        provider: "TheFork",
-        link: "https://www.thefork.com",
-        summary: "Plataforma de reservas que atrae clientes y organiza mesas.",
-      },
-      {
-        name: "POS & Inventario Cloud",
-        provider: "Toast",
-        link: "https://www.toasttab.com",
-        summary: "POS y gestión de restaurante con reportes e insights.",
-      },
-      {
-        name: "Automatización de Delivery",
-        provider: "Flipdish",
-        link: "https://www.flipdish.com",
-        summary: "Pedidos directos, delivery y marketing en una sola plataforma.",
-      },
-    ],
-    roadmap: [
-      {
-        step: "01",
-        title: "Presencia Digital",
-        desc: "Menú QR y perfil en Google Business.",
-        icon: <Globe className="h-5 w-5" />,
-      },
-      {
-        step: "02",
-        title: "Gestión Operativa",
-        desc: "Implementación de POS en la nube e inventario.",
-        icon: <Settings className="h-5 w-5" />,
-      },
-      {
-        step: "03",
-        title: "Canal Propio",
-        desc: "App de pedidos propia para evitar comisiones altas.",
-        icon: <Smartphone className="h-5 w-5" />,
-      },
-      {
-        step: "04",
-        title: "IA Gastronómica",
-        desc: "Predicción de demanda y personalización de ofertas.",
-        icon: <Cpu className="h-5 w-5" />,
-      },
-    ],
-  },
-  Comercio: {
-    solutions: [
-      {
-        name: "E-commerce Omnicanal",
-        provider: "Shopify",
-        link: "https://www.shopify.com",
-        summary: "Crea tu tienda y vende online, social y en físico.",
-      },
-      {
-        name: "ERP para Retail",
-        provider: "Odoo",
-        link: "https://www.odoo.com",
-        summary: "ERP modular que integra ventas, inventario y contabilidad.",
-      },
-      {
-        name: "Pasarela de Pagos Global",
-        provider: "Stripe",
-        link: "https://www.stripe.com",
-        summary: "Pagos online y presenciales con una plataforma unificada.",
-      },
-      {
-        name: "Logística de Última Milla",
-        provider: "Shippify",
-        link: "https://www.shippify.co",
-        summary: "Gestión de entregas con rutas y seguimiento en tiempo real.",
-      },
-    ],
-    roadmap: [
-      {
-        step: "01",
-        title: "Tienda Online",
-        desc: "Lanzamiento de catálogo digital y pagos online.",
-        icon: <ShoppingBag className="h-5 w-5" />,
-      },
-      {
-        step: "02",
-        title: "Sincronización",
-        desc: "Unificar stock de tienda física y virtual.",
-        icon: <Layers className="h-5 w-5" />,
-      },
-      {
-        step: "03",
-        title: "CRM Retail",
-        desc: "Fidelización de clientes y marketing segmentado.",
-        icon: <Users className="h-5 w-5" />,
-      },
-      {
-        step: "04",
-        title: "IA de Ventas",
-        desc: "Recomendaciones inteligentes y chatbots de soporte.",
-        icon: <Sparkles className="h-5 w-5" />,
-      },
-    ],
-  },
-  "Estudios Contables": {
-    solutions: [
-      {
-        name: "Gestión Documental",
-        provider: "Holded",
-        link: "https://www.holded.com",
-        summary: "Facturación y gestión en la nube con contabilidad e inventario.",
-      },
-      {
-        name: "Facturación Electrónica",
-        provider: "Nubefact",
-        link: "https://www.nubefact.com",
-        summary: "Factura electrónica SUNAT con integración por API.",
-      },
-      {
-        name: "Contabilidad Automatizada",
-        provider: "QuickBooks",
-        link: "https://quickbooks.intuit.com",
-        summary: "Contabilidad simple para pymes: ingresos, gastos y facturas.",
-      },
-      {
-        name: "Auditoría con IA",
-        provider: "MindBridge",
-        link: "https://www.mindbridge.ai",
-        summary: "IA para detectar riesgos y anomalías en datos financieros.",
-      },
-    ],
-    roadmap: [
-      {
-        step: "01",
-        title: "Cero Papel",
-        desc: "Digitalización de todos los archivos y facturas.",
-        icon: <FileText className="h-5 w-5" />,
-      },
-      {
-        step: "02",
-        title: "Automatización",
-        desc: "Sincronización bancaria y asientos automáticos.",
-        icon: <Zap className="h-5 w-5" />,
-      },
-      {
-        step: "03",
-        title: "Portal Cliente",
-        desc: "Acceso 24/7 para clientes a sus estados financieros.",
-        icon: <UserCheck className="h-5 w-5" />,
-      },
-      {
-        step: "04",
-        title: "Asesoría IA",
-        desc: "Análisis predictivo de impuestos y riesgos financieros.",
-        icon: <Brain className="h-5 w-5" />,
-      },
-    ],
-  },
-  Logística: {
-    solutions: [
-      {
-        name: "Optimización de Rutas",
-        provider: "Routific",
-        link: "https://routific.com",
-        summary: "Optimiza rutas, reduce costos y da tracking en vivo.",
-      },
-      {
-        name: "Gestión de Flotas IoT",
-        provider: "Samsara",
-        link: "https://www.samsara.com",
-        summary: "Telemática y gestión de flota con GPS en tiempo real.",
-      },
-      {
-        name: "WMS Inteligente",
-        provider: "Oracle NetSuite",
-        link: "https://www.netsuite.com",
-        summary: "WMS móvil para recibir, almacenar, picking y envíos.",
-      },
-      {
-        name: "Visibilidad de Carga",
-        provider: "Project44",
-        link: "https://www.project44.com",
-        summary: "Visibilidad de envíos con ETAs y alertas proactivas.",
-      },
-    ],
-    roadmap: [
-      {
-        step: "01",
-        title: "Visibilidad",
-        desc: "GPS y tracking básico de pedidos en tiempo real.",
-        icon: <Truck className="h-5 w-5" />,
-      },
-      {
-        step: "02",
-        title: "Eficiencia",
-        desc: "Algoritmos de optimización de rutas y combustible.",
-        icon: <BarChart3 className="h-5 w-5" />,
-      },
-      {
-        step: "03",
-        title: "Almacén Digital",
-        desc: "Control de inventario mediante RFID y escaneo.",
-        icon: <Package className="h-5 w-5" />,
-      },
-      {
-        step: "04",
-        title: "Logística 4.0",
-        desc: "Predicción de cuellos de botella mediante IA.",
-        icon: <Activity className="h-5 w-5" />,
-      },
-    ],
-  },
-  Belleza: {
-    solutions: [
-      {
-        name: "Agenda & Reservas",
-        provider: "Fresha",
-        link: "https://www.fresha.com",
-        summary: "Agenda, clientes y pagos en una sola plataforma.",
-      },
-      {
-        name: "Marketing para Salones",
-        provider: "Treatwell",
-        link: "https://www.treatwell.com",
-        summary: "Gestión de reservas y clientes con recordatorios automáticos.",
-      },
-      {
-        name: "Gestión de Clientes",
-        provider: "Shedul",
-        link: "https://www.shedul.com",
-        summary: "Citas online, POS y gestión para salones y spas.",
-      },
-      {
-        name: "Pagos Integrados",
-        provider: "Square",
-        link: "https://squareup.com",
-        summary: "Cobros y POS integrados para servicios y retail.",
-      },
-    ],
-    roadmap: [
-      {
-        step: "01",
-        title: "Reserva 24/7",
-        desc: "Habilitar citas online vía Instagram y Web.",
-        icon: <Calendar className="h-5 w-5" />,
-      },
-      {
-        step: "02",
-        title: "Base de Datos",
-        desc: "Historial de servicios y preferencias de clientes.",
-        icon: <Users className="h-5 w-5" />,
-      },
-      {
-        step: "03",
-        title: "Marketing Auto",
-        desc: "Recordatorios de citas y promos por WhatsApp.",
-        icon: <MessageSquare className="h-5 w-5" />,
-      },
-      {
-        step: "04",
-        title: "IA Estética",
-        desc: "Análisis de tendencias y gestión de stock predictiva.",
-        icon: <Scissors className="h-5 w-5" />,
-      },
-    ],
-  },
-  Marketing: {
-    solutions: [
-      {
-        name: "Inbound Marketing",
-        provider: "HubSpot",
-        link: "https://www.hubspot.com",
-        summary: "CRM con marketing, ventas y servicio en un solo lugar.",
-      },
-      {
-        name: "Generación de Contenido",
-        provider: "Jasper AI",
-        link: "https://www.jasper.ai",
-        summary: "IA para crear y escalar contenido de marketing.",
-      },
-      {
-        name: "Análisis de Datos",
-        provider: "GA4",
-        link: "https://analytics.google.com",
-        summary: "Analítica basada en eventos para web y apps.",
-      },
-      {
-        name: "Gestión de Proyectos",
-        provider: "Monday.com",
-        link: "https://monday.com",
-        summary: "Gestión de proyectos con tableros y automatizaciones.",
-      },
-    ],
-    roadmap: [
-      {
-        step: "01",
-        title: "Centralización",
-        desc: "Implementación de CRM para todos los contactos.",
-        icon: <Target className="h-5 w-5" />,
-      },
-      {
-        step: "02",
-        title: "Automatización",
-        desc: "Workflows de nutrición de leads y email marketing.",
-        icon: <Workflow className="h-5 w-5" />,
-      },
-      {
-        step: "03",
-        title: "Atribución",
-        desc: "Medición exacta del ROI de cada canal digital.",
-        icon: <PieChart className="h-5 w-5" />,
-      },
-      {
-        step: "04",
-        title: "Marketing GenAI",
-        desc: "Personalización masiva de contenido mediante IA.",
-        icon: <Brain className="h-5 w-5" />,
-      },
-    ],
-  },
-};
+const PhaseIcon = ({
+  icon: Icon,
+  className,
+}: {
+  icon: LucideIcon;
+  className?: string;
+}) => <Icon className={className} strokeWidth={2.25} aria-hidden="true" />;
 
 export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
-  const [selectedSector, setSelectedSector] = useState<string | null>(null);
-  const [isSectorModalOpen, setIsSectorModalOpen] = useState(false);
-  const isTelecom = mode === "telecom";
+  const [activeDetail, setActiveDetail] = useState<ActiveDetail | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const theme = getModeTheme(mode);
+  const phase2Features = theme.isTelecom
+    ? TELECOM_PHASE2_FEATURES
+    : SOFTWARE_PHASE2_FEATURES;
+  const sectorCount = theme.isTelecom
+    ? TELECOM_CAPABILITIES.length
+    : SOFTWARE_SECTORS.length;
 
-  const activeSector = useMemo(() => {
-    if (!selectedSector) {
-      return null;
+  const openSoftwareSector = useCallback((title: string) => {
+    const sector = SECTOR_DATA[title];
+    if (!sector) {
+      return;
     }
 
-    return {
-      label: selectedSector,
-      ...SECTOR_DATA[selectedSector],
-    };
-  }, [selectedSector]);
+    setActiveDetail({
+      label: title,
+      categoryLabel: "Sector",
+      solutions: sector.solutions,
+      roadmap: sector.roadmap.map((step) => ({
+        ...step,
+        icon: renderRoadmapIcon(step.iconKey),
+      })),
+    });
+    setIsModalOpen(true);
+  }, []);
+
+  const openTelecomCapability = useCallback((title: string) => {
+    const capability = TELECOM_CAPABILITY_DATA[title];
+    if (!capability) {
+      return;
+    }
+
+    setActiveDetail({
+      label: title,
+      categoryLabel: "Capacidad",
+      solutions: capability.solutions,
+      roadmap: capability.roadmap.map((step) => ({
+        ...step,
+        icon: renderRoadmapIcon(step.iconKey),
+      })),
+    });
+    setIsModalOpen(true);
+  }, []);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setActiveDetail(null);
+  };
+
+  const sectorItems = theme.isTelecom
+    ? TELECOM_CAPABILITIES.map((item) => ({
+        badge: item.icon,
+        title: item.title,
+        onClick: () => openTelecomCapability(item.title),
+      }))
+    : SOFTWARE_SECTORS.map((item) => ({
+        badge: item.icon,
+        title: item.title,
+        onClick: () => openSoftwareSector(item.title),
+      }));
 
   return (
     <section
       id="digitalizacion"
-      className="py-32 sm:py-40 px-6 bg-[#020408] relative overflow-hidden border-t border-white/5"
+      className="relative bg-transparent px-4 pb-12 pt-4 scroll-mt-24 sm:px-6 sm:pb-16 sm:pt-5 md:scroll-mt-28"
     >
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#020408] via-[#020408]/94 to-transparent" />
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="flex flex-col lg:flex-row justify-between items-start mb-20 sm:mb-28 gap-12">
-          <div className="section-heading max-w-3xl">
-            <div className="flex justify-center lg:justify-start">
-              <div className="tag border-white/15 text-white/80 bg-white/5">
-                {isTelecom ? "Estrategia de Red" : "Estrategia de Crecimiento"}
-              </div>
+      <div className="mx-auto max-w-7xl">
+        <MotionInView className="mb-8 flex flex-col gap-5 lg:mb-10 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-2xl">
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="section-eyebrow-dark">
+                {theme.isTelecom ? "Estrategia de Red" : "Estrategia de Crecimiento"}
+              </p>
+              <span className="rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
+                2 fases · {sectorCount} {theme.isTelecom ? "capacidades" : "sectores"}
+              </span>
             </div>
-            <h2 className="mt-5 text-left text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight leading-[0.95] break-words bg-gradient-to-b from-white to-[#7fb7ff] text-transparent bg-clip-text">
-              {isTelecom
+            <h2 className="section-title-dark">
+              {theme.isTelecom
                 ? "Operación telecom inteligente"
                 : "Software integral inteligente"}
             </h2>
-            <p className="mt-5 text-base sm:text-lg md:text-xl font-medium leading-relaxed text-slate-400">
-              {isTelecom
-                ? "Acompañamos despliegues, integración, optimización y soporte RAN con procesos claros y automatización operativa."
-                : "Desde el diagnóstico de procesos hasta plataformas a medida, automatizaciones e IA aplicada a tu operación."}
+            <p className="section-desc-dark">
+              {theme.isTelecom
+                ? "Despliegue, integración y soporte RAN con procesos claros."
+                : "Diagnóstico, plataformas a medida, automatización e IA aplicada."}
             </p>
           </div>
-        </div>
+        </MotionInView>
 
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
-          <div className="rounded-[3rem] border border-cyan-500/20 bg-white/[0.02] backdrop-blur-xl p-8 sm:p-12 md:p-16 transition-all hover:border-cyan-500/40">
-            <div className="flex items-center gap-5 mb-10">
-              <div className="h-16 w-16 sm:h-20 sm:w-20 bg-cyan-500 rounded-3xl flex items-center justify-center shadow-[0_0_40px_rgba(6,182,212,0.3)]">
-                <svg
-                  className="h-8 w-8 sm:h-10 sm:w-10 text-black"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.5"
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tighter">
-                  {isTelecom ? "FASE 01: DESPLEGAR" : "FASE 01: INICIAR"}
-                </h3>
-                <span className="text-cyan-400 text-[10px] font-black uppercase tracking-[0.3em]">
-                  {isTelecom ? "Integración RAN" : "Digitalización Integral"}
-                </span>
-              </div>
-            </div>
-
-            <p className="text-slate-300 text-base sm:text-lg mb-10 leading-relaxed">
-              {isTelecom
-                ? "Ordenamos tareas de rollout, comisionamiento, parametrización y validación para acelerar la puesta en servicio."
-                : "Llevamos tu operación física al entorno digital. Ideal para negocios que buscan modernizar su atención y gestión interna."}
-            </p>
-
-            {isTelecom && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-10">
-                <SectorItem
-                  icon="5G"
-                  title="Rollout RAN"
-                  desc="Sites, BBU y puesta ON AIR"
-                />
-                <SectorItem
-                  icon="TX"
-                  title="Transmisión"
-                  desc="Rutas, enlaces y validación"
-                />
-                <SectorItem
-                  icon="KPI"
-                  title="Optimización"
-                  desc="KPIs, alarmas y performance"
-                />
-                <SectorItem
-                  icon="DT"
-                  title="Drive Test"
-                  desc="Site survey y mediciones"
-                />
-                <SectorItem
-                  icon="OyM"
-                  title="Soporte OyM"
-                  desc="NOC, averias y monitoreo"
-                />
-                <SectorItem
-                  icon="AUTO"
-                  title="Automatización"
-                  desc="Scripts, XML y reportes"
-                />
-              </div>
-            )}
-
-            <div
-              className={`grid grid-cols-1 sm:grid-cols-2 gap-5 mb-10 ${
-                isTelecom ? "hidden" : ""
-              }`}
-            >
-              <SectorItem
-                icon="🍽️"
-                title="Restaurantes"
-                desc="Menús QR, Pedidos Online"
-                onClick={() => {
-                  setSelectedSector("Restaurantes");
-                  setIsSectorModalOpen(true);
-                }}
-              />
-              <SectorItem
-                icon="🛍️"
-                title="Comercio"
-                desc="E-commerce & Inventario"
-                onClick={() => {
-                  setSelectedSector("Comercio");
-                  setIsSectorModalOpen(true);
-                }}
-              />
-              <SectorItem
-                icon="📊"
-                title="Estudios Contables"
-                desc="Digitalización Documental"
-                onClick={() => {
-                  setSelectedSector("Estudios Contables");
-                  setIsSectorModalOpen(true);
-                }}
-              />
-              <SectorItem
-                icon="🚚"
-                title="Logística"
-                desc="Tracking en Tiempo Real"
-                onClick={() => {
-                  setSelectedSector("Logística");
-                  setIsSectorModalOpen(true);
-                }}
-              />
-              <SectorItem
-                icon="✨"
-                title="Belleza"
-                desc="Reservas & Agendas"
-                onClick={() => {
-                  setSelectedSector("Belleza");
-                  setIsSectorModalOpen(true);
-                }}
-              />
-              <SectorItem
-                icon="📣"
-                title="Marketing"
-                desc="CRM & Gestión de Leads"
-                onClick={() => {
-                  setSelectedSector("Marketing");
-                  setIsSectorModalOpen(true);
-                }}
-              />
-            </div>
-
-            <a
-              href="#contacto"
-              className="inline-flex px-5 py-3 sm:px-6 sm:py-3.5 bg-white/5 border border-white/10 rounded-2xl text-white font-black uppercase tracking-widest text-[10px] transition-all text-center hover:bg-white hover:text-black hover:shadow-[0_0_40px_rgba(6,182,212,0.35)] hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/70 animate-pulse"
-            >
-              {isTelecom ? "Planificar despliegue" : "Empezar digitalización"}
-            </a>
-          </div>
-
-          <div className="rounded-[3rem] border border-blue-500/20 bg-white/[0.02] backdrop-blur-xl p-8 sm:p-12 md:p-16 transition-all hover:border-blue-500/40">
-            <div className="flex items-center gap-5 mb-10">
-              <div className="h-16 w-16 sm:h-20 sm:w-20 bg-blue-600 rounded-3xl flex items-center justify-center shadow-[0_0_40px_rgba(37,99,235,0.3)]">
-                <svg
-                  className="h-8 w-8 sm:h-10 sm:w-10 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2.5"
-                    d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0012 18.75c-1.03 0-1.9-.4-2.593-1.026l-.547-.547z"
-                  />
-                </svg>
-              </div>
-              <div>
-                <h3 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tighter">
-                  {isTelecom ? "FASE 02: OPTIMIZAR" : "FASE 02: EVOLUCIONAR"}
-                </h3>
-                <span className="text-blue-400 text-[10px] font-black uppercase tracking-[0.3em]">
-                  {isTelecom ? "OyM & Automatización" : "IA & Automatización"}
-                </span>
-              </div>
-            </div>
-
-            <p className="text-slate-300 text-base sm:text-lg mb-10 leading-relaxed">
-              {isTelecom
-                ? "Para operaciones que necesitan visibilidad, troubleshooting y control de KPIs en redes móviles de misión crítica."
-                : "Para empresas digitales que buscan competitividad internacional. Optimizamos flujos con IA y herramientas de vanguardia."}
-            </p>
-
-            <div className="space-y-5 sm:space-y-6 mb-10">
-              <FeatureItem
-                title="Orquestación con Workflows"
-                desc="Conectamos todas tus herramientas (Google, Shopify, Slack) en flujos automáticos sin errores."
-              />
-              <FeatureItem
-                title="Inteligencia Artificial Aplicada"
-                desc="Implementamos modelos de Gemini AI para análisis predictivo, chatbots expertos y visión computacional."
-              />
-              <FeatureItem
-                title="Dashboards de Misión Crítica"
-                desc="Visualización de KPIs en tiempo real para toma de decisiones basada en datos."
-              />
-            </div>
-
-            <a
-              href="#contacto"
-              className="inline-flex px-5 py-3 sm:px-6 sm:py-3.5 bg-blue-600 text-white rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all shadow-xl shadow-blue-900/20 text-center hover:bg-white hover:text-black hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300/70"
-            >
-              {isTelecom ? "Optimizar red" : "Optimizar con IA"}
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {isSectorModalOpen && activeSector && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-10"
-          role="dialog"
-          aria-modal="true"
-          aria-label={`Detalles de ${activeSector.label}`}
-          onClick={() => setIsSectorModalOpen(false)}
+        <motion.div
+          className="relative grid gap-5 lg:grid-cols-2 lg:gap-6"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-40px" }}
         >
           <div
-            className="w-full max-w-3xl rounded-[2.5rem] border border-white/10 bg-[#0b1322] p-6 sm:p-10 shadow-2xl"
-            onClick={(event) => event.stopPropagation()}
+            className="pointer-events-none absolute left-1/2 top-24 hidden h-[calc(100%-6rem)] w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-white/20 to-transparent lg:block"
+            aria-hidden="true"
+          />
+
+          <PhaseCard
+            phase="01"
+            title={theme.isTelecom ? "Desplegar" : "Iniciar"}
+            subtitle={theme.isTelecom ? "Integración RAN" : "Digitalización integral"}
+            description={
+              theme.isTelecom
+                ? "Rollout, comisionamiento y validación para acelerar la puesta en servicio."
+                : "Modernizamos atención y gestión interna con un plan por sectores."
+            }
+            icon={
+              theme.isTelecom ? (
+                <PhaseIcon icon={Antenna} className="h-7 w-7 sm:h-8 sm:w-8" />
+              ) : (
+                <PhaseIcon icon={Rocket} className="h-7 w-7 sm:h-8 sm:w-8" />
+              )
+            }
+            iconClass={theme.phase1Icon}
+            borderClass={theme.phase1Border}
+            glowClass={theme.phase1Glow}
+            accentRgb={theme.accentRgb}
+            ctaLabel={theme.isTelecom ? "Planificar despliegue" : "Empezar digitalización"}
+            ctaClass="btn-ghost-light"
           >
-            <div className="flex items-start justify-between gap-6">
+            <div className="flex flex-wrap gap-2">
+              {sectorItems.map((item) => (
+                <SectorChip
+                  key={item.title}
+                  badge={item.badge}
+                  title={item.title}
+                  accentRgb={theme.accentRgb}
+                  onClick={item.onClick}
+                />
+              ))}
+            </div>
+          </PhaseCard>
+
+          <PhaseCard
+            phase="02"
+            title={theme.isTelecom ? "Optimizar" : "Evolucionar"}
+            subtitle={theme.isTelecom ? "OyM & Automatización" : "IA & Automatización"}
+            description={
+              theme.isTelecom
+                ? "Visibilidad, troubleshooting y KPIs en redes de misión crítica."
+                : "IA, workflows y dashboards para escalar tu operación digital."
+            }
+            icon={
+              theme.isTelecom ? (
+                <PhaseIcon icon={Gauge} className="h-7 w-7 sm:h-8 sm:w-8" />
+              ) : (
+                <PhaseIcon icon={Brain} className="h-7 w-7 sm:h-8 sm:w-8" />
+              )
+            }
+            iconClass={theme.phase2Icon}
+            borderClass={theme.phase2Border}
+            glowClass={theme.phase1Glow}
+            accentRgb={theme.accentRgb}
+            ctaLabel={theme.isTelecom ? "Optimizar red" : "Optimizar con IA"}
+            ctaClass={`btn-accent ${theme.ctaPrimary}`}
+          >
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {phase2Features.map((feature, index) => (
+                <FeatureItem
+                  key={feature.title}
+                  index={index + 1}
+                  title={feature.title}
+                  desc={feature.desc}
+                  accentRgb={theme.accentRgb}
+                />
+              ))}
+            </div>
+          </PhaseCard>
+        </motion.div>
+      </div>
+
+      <AppModal
+        isOpen={isModalOpen && !!activeDetail}
+        onClose={closeModal}
+        ariaLabel={activeDetail ? `Detalles de ${activeDetail.label}` : "Detalles"}
+        panelClassName="glass-panel border-white/15 p-6 sm:p-10"
+      >
+        {activeDetail && (
+          <>
+            <div
+              className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full blur-3xl"
+              style={{
+                background: `radial-gradient(circle, rgba(${theme.accentRgb}, 0.2), transparent 70%)`,
+              }}
+            />
+
+            <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-300/80">
-                  Sector
+                <span
+                  className="text-[10px] font-black uppercase tracking-[0.3em]"
+                  style={{ color: theme.accent }}
+                >
+                  {activeDetail.categoryLabel}
                 </span>
-                <h3 className="mt-3 text-2xl sm:text-3xl font-black text-white uppercase tracking-tight">
-                  {activeSector.label}
+                <h3 className="mt-3 text-2xl font-black uppercase tracking-tight text-white sm:text-3xl">
+                  {activeDetail.label}
                 </h3>
               </div>
               <button
                 type="button"
-                onClick={() => setIsSectorModalOpen(false)}
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20"
+                onClick={closeModal}
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white transition hover:bg-white/12"
                 aria-label="Cerrar"
               >
                 ✕
               </button>
             </div>
 
-            <div className="mt-8 grid gap-8 md:grid-cols-2">
+            <div className="relative mt-8 grid gap-8 md:grid-cols-2">
               <div>
-                <h4 className="text-sm font-black uppercase tracking-[0.2em] text-cyan-300 mb-4">
+                <h4 className="mb-4 text-xs font-black uppercase tracking-[0.24em] text-slate-400">
                   Soluciones sugeridas
                 </h4>
                 <ul className="space-y-3">
-                  {activeSector.solutions.map((solution) => (
+                  {activeDetail.solutions.map((solution) => (
                     <li
                       key={solution.name}
-                      className="group relative flex flex-col gap-1 rounded-2xl border border-white/10 bg-white/[0.03] p-4 overflow-visible"
+                      className="group relative overflow-visible rounded-2xl border border-white/[0.08] bg-gradient-to-br from-white/[0.06] to-transparent p-4 transition hover:border-white/20"
                     >
-                      <span className="text-white font-semibold">
-                        {solution.name}
-                      </span>
+                      <span className="font-semibold text-white">{solution.name}</span>
                       <a
                         href={solution.link}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 hover:text-cyan-300 focus-visible:text-cyan-300"
-                        aria-label={`${solution.name}: ${solution.summary}`}
-                        title={solution.summary}
+                        target={solution.link.startsWith("#") ? undefined : "_blank"}
+                        rel={solution.link.startsWith("#") ? undefined : "noreferrer"}
+                        className="mt-1 block text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 transition hover:text-white"
                       >
                         {solution.provider}
                       </a>
-                      <div className="pointer-events-none absolute left-1/2 top-full z-10 mt-3 w-64 -translate-x-1/2 rounded-2xl border border-cyan-400/30 bg-[#0b1322] px-4 py-3 text-xs font-semibold text-white shadow-[0_20px_45px_rgba(6,182,212,0.18)] opacity-0 transition-all group-hover:opacity-100 group-hover:translate-y-1 group-focus-within:opacity-100 group-focus-within:translate-y-1">
+                      <div className="pointer-events-none absolute left-1/2 top-full z-10 mt-2 w-64 -translate-x-1/2 rounded-xl border border-white/10 bg-[#0b1322] px-4 py-3 text-xs text-slate-300 opacity-0 shadow-2xl transition group-hover:opacity-100 group-hover:translate-y-1">
                         {solution.summary}
                       </div>
                     </li>
@@ -671,25 +276,29 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
                 </ul>
               </div>
               <div>
-                <h4 className="text-sm font-black uppercase tracking-[0.2em] text-blue-300 mb-4">
+                <h4 className="mb-4 text-xs font-black uppercase tracking-[0.24em] text-slate-400">
                   Roadmap recomendado
                 </h4>
-                <ul className="space-y-4">
-                  {activeSector.roadmap.map((step) => (
+                <ul className="space-y-3">
+                  {activeDetail.roadmap.map((step) => (
                     <li
                       key={step.step}
-                      className="flex gap-4 rounded-2xl border border-blue-400/20 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent p-4 transition-all hover:border-blue-300/50 hover:shadow-[0_12px_30px_rgba(37,99,235,0.2)]"
+                      className="flex gap-4 rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4 transition hover:bg-white/[0.06]"
                     >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-blue-300/30 bg-blue-500/10 text-blue-100 shadow-[0_0_16px_rgba(37,99,235,0.25)]">
+                      <div
+                        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border text-white"
+                        style={{
+                          borderColor: `rgba(${theme.accentRgb}, 0.3)`,
+                          background: `rgba(${theme.accentRgb}, 0.1)`,
+                        }}
+                      >
                         {step.icon}
                       </div>
                       <div>
-                        <span className="text-[10px] uppercase tracking-[0.3em] text-blue-200/80">
+                        <span className="text-[10px] font-bold uppercase tracking-[0.28em] text-slate-500">
                           Paso {step.step}
                         </span>
-                        <div className="text-white font-semibold">
-                          {step.title}
-                        </div>
+                        <div className="font-semibold text-white">{step.title}</div>
                         <p className="text-sm text-slate-400">{step.desc}</p>
                       </div>
                     </li>
@@ -698,71 +307,165 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
               </div>
             </div>
 
-            <div className="mt-10 flex flex-col sm:flex-row gap-4">
-              <button
-                type="button"
-                onClick={() => setIsSectorModalOpen(false)}
-                className="w-full sm:w-auto rounded-xl border border-white/20 px-6 py-3 text-xs font-semibold uppercase tracking-[0.25em] text-white/80"
-              >
+            <div className="relative mt-10 flex flex-col gap-3 sm:flex-row">
+              <button type="button" onClick={closeModal} className="btn-ghost-light flex-1 sm:flex-none">
                 Cerrar
               </button>
               <a
                 href="https://docs.google.com/forms/d/e/1FAIpQLSdfgHkDApUgxqeuqpwoaJPVWo6nQjS7NI9wtpB_W7f0RCddpQ/viewform?usp=publish-editor"
                 target="_blank"
                 rel="noreferrer"
-                className="w-full sm:w-auto rounded-xl bg-cyan-500 px-6 py-3 text-xs font-semibold uppercase tracking-[0.25em] text-black text-center"
+                className={`btn-accent flex-1 sm:flex-none ${theme.ctaPrimary}`}
               >
                 Agendar reunión
               </a>
             </div>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </AppModal>
     </section>
   );
 };
 
-function SectorItem({
-  icon,
+function PhaseCard({
+  phase,
   title,
-  desc,
+  subtitle,
+  description,
+  icon,
+  iconClass,
+  borderClass,
+  glowClass,
+  accentRgb,
+  ctaLabel,
+  ctaClass,
+  children,
+}: {
+  phase: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  icon: ReactNode;
+  iconClass: string;
+  borderClass: string;
+  glowClass: string;
+  accentRgb: string;
+  ctaLabel: string;
+  ctaClass: string;
+  children: ReactNode;
+}) {
+  return (
+    <motion.article
+      variants={staggerItem}
+      whileHover={{ y: -4 }}
+      transition={{ type: "spring", stiffness: 400, damping: 28 }}
+      className={`glass-panel group p-4 transition duration-500 sm:p-5 ${borderClass} ${glowClass}`}
+    >
+      <div
+        className="pointer-events-none absolute -bottom-20 -right-20 h-56 w-56 rounded-full blur-3xl transition duration-500 group-hover:opacity-100 opacity-60"
+        style={{
+          background: `radial-gradient(circle, rgba(${accentRgb}, 0.14), transparent 70%)`,
+        }}
+      />
+
+      <div className="relative flex items-center gap-4">
+        <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${iconClass}`}>
+          {icon}
+        </div>
+        <div className="min-w-0 flex-1">
+          <span
+            className="rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.24em]"
+            style={{
+              color: `rgb(${accentRgb})`,
+              background: `rgba(${accentRgb}, 0.12)`,
+              border: `1px solid rgba(${accentRgb}, 0.25)`,
+            }}
+          >
+            Fase {phase}
+          </span>
+          <h3 className="mt-1 text-lg font-black uppercase tracking-tight text-white sm:text-xl">
+            {title}
+          </h3>
+          <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-slate-500">
+            {subtitle}
+          </p>
+        </div>
+      </div>
+
+      <p className="relative mt-3 text-sm leading-relaxed text-slate-400">
+        {description}
+      </p>
+
+      <div className="relative mt-4">{children}</div>
+
+      <a href="#contacto" className={`relative mt-4 inline-flex text-[10px] ${ctaClass}`}>
+        {ctaLabel}
+      </a>
+    </motion.article>
+  );
+}
+
+function SectorChip({
+  badge,
+  title,
+  accentRgb,
   onClick,
 }: {
-  icon: string;
+  badge: string;
   title: string;
-  desc: string;
+  accentRgb: string;
   onClick?: () => void;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className="p-6 text-left bg-white/[0.03] border border-white/5 rounded-2xl transition-all group cursor-pointer hover:bg-white/[0.08] hover:border-cyan-500/40 hover:shadow-[0_14px_30px_rgba(6,182,212,0.2)] hover:-translate-y-1 active:translate-y-0 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/70"
+      className="inline-flex w-full items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-left transition hover:border-white/20 hover:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 sm:w-auto"
     >
-      <div className="text-3xl mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 border border-white/10 group-hover:border-cyan-400/40 group-hover:shadow-[0_0_18px_rgba(6,182,212,0.35)]">
-        {icon}
-      </div>
-      <h4 className="text-sm font-black text-white uppercase tracking-tighter mb-1 group-hover:text-cyan-400 transition-colors">
+      <span
+        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[9px] font-black uppercase text-white"
+        style={{
+          border: `1px solid rgba(${accentRgb}, 0.3)`,
+          background: `rgba(${accentRgb}, 0.12)`,
+        }}
+      >
+        {badge}
+      </span>
+      <span className="text-[11px] font-bold uppercase tracking-tight text-white">
         {title}
-      </h4>
-      <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">
-        {desc}
-      </p>
+      </span>
     </button>
   );
 }
 
-function FeatureItem({ title, desc }: { title: string; desc: string }) {
+function FeatureItem({
+  index,
+  title,
+  desc,
+  accentRgb,
+}: {
+  index: number;
+  title: string;
+  desc: string;
+  accentRgb: string;
+}) {
   return (
-    <div className="flex gap-6 p-6 bg-white/[0.02] border border-white/5 rounded-2xl hover:bg-white/[0.05] transition-all group">
-      <div className="mt-1">
-        <div className="w-3 h-3 bg-blue-500 rounded-full shadow-[0_0_10px_rgba(37,99,235,0.5)] group-hover:scale-125 transition-transform" />
+    <div className="flex gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-3 transition hover:border-white/12 hover:bg-white/[0.05]">
+      <div
+        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[10px] font-black"
+        style={{
+          background: `rgba(${accentRgb}, 0.15)`,
+          border: `1px solid rgba(${accentRgb}, 0.3)`,
+          color: `rgb(${accentRgb})`,
+        }}
+      >
+        {String(index).padStart(2, "0")}
       </div>
-      <div>
-        <h4 className="text-base sm:text-lg font-black text-white uppercase tracking-tighter mb-2 group-hover:text-blue-400 transition-colors">
+      <div className="min-w-0">
+        <h4 className="text-xs font-black uppercase tracking-tight text-white sm:text-sm">
           {title}
         </h4>
-        <p className="text-sm text-slate-400 leading-relaxed font-medium">
+        <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-slate-500">
           {desc}
         </p>
       </div>

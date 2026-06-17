@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
 type DotGridProps = {
@@ -28,7 +28,7 @@ const hexToRgb = (hex: string) => {
   return { r, g, b };
 };
 
-export const DotGrid = ({
+const DotGridCanvas = ({
   dotSize = 4,
   gap = 16,
   baseColor = "#0b1d3a",
@@ -228,5 +228,61 @@ export const DotGrid = ({
       aria-hidden="true"
       className={twMerge("absolute inset-0 h-full w-full", className)}
     />
+  );
+};
+
+export const DotGrid = (props: DotGridProps) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updateMotionPreference = () => {
+      setPrefersReducedMotion(mediaQuery.matches);
+    };
+
+    updateMotionPreference();
+    mediaQuery.addEventListener("change", updateMotionPreference);
+
+    return () => {
+      mediaQuery.removeEventListener("change", updateMotionPreference);
+    };
+  }, []);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || prefersReducedMotion) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry?.isIntersecting ?? false);
+      },
+      { rootMargin: "120px 0px", threshold: 0.01 },
+    );
+
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [prefersReducedMotion]);
+
+  return (
+    <div ref={containerRef} className="absolute inset-0">
+      {prefersReducedMotion ? (
+        <div
+          aria-hidden="true"
+          className={twMerge(
+            "absolute inset-0 opacity-20 [background-image:radial-gradient(circle_at_1px_1px,rgba(47,158,219,0.35)_1px,transparent_0)] [background-size:18px_18px]",
+            props.className,
+          )}
+        />
+      ) : (
+        isVisible && <DotGridCanvas {...props} />
+      )}
+    </div>
   );
 };

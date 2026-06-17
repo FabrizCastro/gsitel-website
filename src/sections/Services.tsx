@@ -3,10 +3,13 @@
 import CheckIcon from "@/assets/icons/check.svg";
 import automateBackground from "@/assets/backgrounds/services_background_automate.png";
 import telecomBackground from "@/assets/backgrounds/services_background_telecom.png";
-import { DotGrid } from "@/components/DotGrid";
+import { AppModal } from "@/components/AppModal";
+import { MotionInView, staggerContainer, staggerItem } from "@/components/MotionInView";
 import TypeText from "@/components/TypeText";
+import { getModeTheme } from "@/lib/modeTheme";
 import type { SiteMode } from "@/lib/siteMode";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { useState } from "react";
 
 type ServiceItem = {
@@ -17,58 +20,27 @@ type ServiceItem = {
   title: React.ReactNode;
   description: string;
   activities: string[];
-  ctaClass: string;
+  accent: string;
+  accentRgb: string;
   background: typeof automateBackground;
 };
 
 const AutomationIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.8"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
     <path d="M12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8z" />
     <path d="M3 12h2m14 0h2M12 3v2m0 14v2M5.6 5.6l1.4 1.4m10 10 1.4 1.4M18.4 5.6 17 7m-10 10-1.4 1.4" />
   </svg>
 );
 
 const RanIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.8"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <path d="M12 3v6" />
-    <path d="M9 9h6" />
-    <path d="M5 20h14" />
-    <path d="M8 20l4-7 4 7" />
-    <path d="M4.5 9a7.5 7.5 0 0 1 15 0" />
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M12 3v6" /><path d="M9 9h6" /><path d="M5 20h14" /><path d="M8 20l4-7 4 7" /><path d="M4.5 9a7.5 7.5 0 0 1 15 0" />
   </svg>
 );
 
 const ConsultingIcon = ({ className }: { className?: string }) => (
-  <svg
-    className={className}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.8"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    aria-hidden="true"
-  >
-    <rect x="5" y="3" width="14" height="18" rx="2" />
-    <path d="M9 7h6M9 11h6M9 15h4" />
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 7h6M9 11h6M9 15h4" />
   </svg>
 );
 
@@ -76,13 +48,12 @@ const services: ServiceItem[] = [
   {
     id: "automation",
     label: "Automatización & Software",
-    imageAlt:
-      "Ilustración de automatización y software para operaciones críticas",
-    icon: <AutomationIcon className="h-6 w-6 text-[#ff7a7a]" />,
+    imageAlt: "Ilustración de automatización y software para operaciones críticas",
+    icon: <AutomationIcon className="h-6 w-6 text-[#ff8a8a]" />,
     title: (
       <>
         Automatización y software para operaciones{" "}
-        <span className="text-[#ff7a7a]">críticas</span>.
+        <span className="text-[#ff8a8a]">críticas</span>.
       </>
     ),
     description:
@@ -90,11 +61,13 @@ const services: ServiceItem[] = [
     activities: [
       "Automatización de ventas, compras y cobranzas",
       "Desarrollo de aplicaciones web, páginas web y diseño web",
+      "Apps móviles con Flutter/React Native y APIs backend",
       "Reportes simples y paneles para microempresas y empresas",
       "Control de clientes, inventario y operaciones diarias",
       "Alertas y flujos de trabajo para reducir errores",
     ],
-    ctaClass: "bg-[#e25555] hover:bg-[#cc4a4a]",
+    accent: "#e25555",
+    accentRgb: "226, 85, 85",
     background: automateBackground,
   },
   {
@@ -114,10 +87,12 @@ const services: ServiceItem[] = [
       "Comisionamiento y capacitación de BBU",
       "Integración y configuración de nodos RAN",
       "Diseño Drive Test & Site Survey",
+      "Transmisión y backhaul: rutas MW, enlaces y validación",
       "Soporte, optimización y monitoreo OyM RAN",
       "Consultoría de implementación de controladores",
     ],
-    ctaClass: "bg-[#f39c36] hover:bg-[#da862b] text-black",
+    accent: "#f39c36",
+    accentRgb: "243, 156, 54",
     background: telecomBackground,
   },
   {
@@ -139,127 +114,142 @@ const services: ServiceItem[] = [
       "Automatización con IA para ahorrar tiempo y errores",
       "Implementación y acompañamiento en cada etapa del proceso",
     ],
-    ctaClass: "bg-[#2f9edb] hover:bg-[#2583b8]",
+    accent: "#2f9edb",
+    accentRgb: "47, 158, 219",
     background: automateBackground,
   },
 ];
 
 export const Services = ({ mode }: { mode: SiteMode }) => {
   const [activeService, setActiveService] = useState<ServiceItem | null>(null);
-  const isTelecom = mode === "telecom";
-  const orderedServices = isTelecom
+  const theme = getModeTheme(mode);
+  const orderedServices = theme.isTelecom
     ? [services[1], services[0], services[2]]
     : [services[0], services[2]];
-  const focusTags = isTelecom
+  const focusTags = theme.isTelecom
     ? ["RAN", "Drive test", "OyM", "Automatización"]
     : ["Apps web", "Dashboards", "APIs", "IA aplicada"];
 
   return (
     <section
       id="servicios"
-      className="relative overflow-hidden bg-[#020408] px-4 py-20 text-white scroll-mt-24 sm:px-6 md:py-28 md:scroll-mt-28"
+      className="relative bg-transparent px-4 section-shell scroll-mt-24 sm:px-6 md:scroll-mt-28"
     >
-      <DotGrid
-        dotSize={4}
-        gap={18}
-        baseColor="#15304f"
-        activeColor={isTelecom ? "#f39c36" : "#2f9edb"}
-        proximity={140}
-        shockRadius={260}
-        shockStrength={3}
-        resistance={800}
-        returnDuration={1.4}
-        className="opacity-25"
-      />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_12%,rgba(47,158,219,0.18),transparent_34%),radial-gradient(circle_at_84%_14%,rgba(243,156,54,0.14),transparent_28%),linear-gradient(180deg,rgba(2,4,8,0.98)_0%,rgba(2,4,8,0.94)_34%,rgba(5,14,28,0.92)_72%,rgba(12,26,46,0.88)_100%)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#020408] via-[#020408]/92 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent via-[#1b3354]/55 to-[#EAEEFE]" />
-
-      <div className="container relative">
-        <div className="section-heading max-w-4xl">
-          <div className="flex justify-center">
-            <div className="tag border-white/20 bg-white/10 text-white">
-              Especificación de servicios
-            </div>
-          </div>
-          <h2 className="mt-5">
+      <div className="mx-auto max-w-7xl">
+        <MotionInView className="max-w-2xl">
+          <p className="section-eyebrow-dark">Especificación de servicios</p>
+          <h2 className="section-title-dark">
             <TypeText
               text={
-                isTelecom
+                theme.isTelecom
                   ? "Soluciones telecom y RAN"
                   : "Soluciones integrales de software"
               }
-              className="block text-center text-3xl font-black uppercase leading-[0.95] text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.45)] sm:text-4xl md:text-6xl"
+              className="block"
               speed={28}
               startDelay={200}
               cursor
             />
           </h2>
-          <p className="mx-auto mt-5 max-w-3xl text-center text-base font-medium leading-7 text-white/80 sm:text-lg md:text-xl">
-            {isTelecom
+          <p className="section-desc-dark">
+            {theme.isTelecom
               ? "Servicios especializados para despliegue, integración, soporte y optimización de redes móviles."
               : "Diseñamos, integramos y automatizamos sistemas para que tu operación funcione como una sola plataforma."}
           </p>
-          <div className="mx-auto mt-7 flex max-w-3xl flex-wrap justify-center gap-2 text-xs font-black uppercase tracking-[0.18em] text-white/80">
+          <div className="mt-6 flex flex-wrap gap-2">
             {focusTags.map((item) => (
               <span
                 key={item}
-                className="rounded-full border border-white/15 bg-white/[0.07] px-3 py-2 backdrop-blur"
+                className="rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/75 backdrop-blur transition hover:border-white/25 hover:bg-white/[0.08]"
               >
                 {item}
               </span>
             ))}
           </div>
-        </div>
+        </MotionInView>
 
-        <div className="mt-12 grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 xl:grid-cols-2">
-          {orderedServices.map((service) => (
-            <article
+        <motion.div
+          className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-40px" }}
+        >
+          {orderedServices.map((service, index) => (
+            <motion.article
               key={service.id}
-              className="group relative flex min-h-[430px] overflow-hidden rounded-[1.75rem] border border-white/15 bg-[#0a1627] shadow-[0_24px_60px_rgba(0,0,0,0.35)] transition duration-300 hover:-translate-y-1 hover:border-white/35 hover:shadow-[0_34px_90px_rgba(0,0,0,0.48)] focus-within:-translate-y-1 focus-within:border-white/35 sm:min-h-[460px]"
+              variants={staggerItem}
+              whileHover={{ y: -4 }}
+              transition={{ type: "spring", stiffness: 400, damping: 28 }}
+              className="group relative flex min-h-[300px] overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#060d18] shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:min-h-[360px] md:min-h-[400px]"
             >
-              <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                <div className="absolute -right-20 -top-20 h-48 w-48 rounded-full bg-white/20 blur-3xl" />
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_10%,rgba(255,255,255,0.26),transparent_42%)]" />
-              </div>
+              <div
+                className="absolute inset-x-0 top-0 h-1 opacity-80 transition group-hover:opacity-100"
+                style={{
+                  background: `linear-gradient(90deg, transparent, ${service.accent}, transparent)`,
+                }}
+              />
+
               <div className="absolute inset-0">
                 <Image
                   src={service.background}
                   alt={service.imageAlt}
                   fill
-                  quality={90}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                  className="object-cover transition duration-700 group-hover:scale-105"
+                  quality={75}
+                  loading="lazy"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover opacity-90 transition duration-700 group-hover:scale-[1.04]"
                 />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(3,8,17,0.38)_0%,rgba(3,8,17,0.74)_38%,rgba(3,8,17,0.98)_100%)]" />
-                <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,8,17,0.55),transparent_55%)]" />
-                <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.2)_1px,transparent_0)] [background-size:22px_22px]" />
+                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,6,14,0.2)_0%,rgba(2,6,14,0.55)_35%,rgba(2,6,14,0.97)_100%)]" />
+                <div
+                  className="absolute inset-0 opacity-40 transition duration-500 group-hover:opacity-60"
+                  style={{
+                    background: `radial-gradient(circle at 20% 0%, rgba(${service.accentRgb}, 0.25), transparent 50%)`,
+                  }}
+                />
               </div>
 
-              <div className="relative z-10 flex w-full flex-col justify-between p-4 sm:p-5 lg:p-6">
+              <div className="relative z-10 flex w-full flex-col p-5 sm:p-6 lg:p-7">
                 <div className="flex items-start justify-between gap-4">
-                  <div className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-black/35 shadow-[0_12px_30px_rgba(0,0,0,0.28)] backdrop-blur">
-                    {service.icon}
+                  <div className="flex items-center gap-3">
+                    <span
+                      className="text-[10px] font-black uppercase tracking-[0.28em]"
+                      style={{ color: service.accent }}
+                    >
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <div
+                      className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border backdrop-blur-md"
+                      style={{
+                        borderColor: `rgba(${service.accentRgb}, 0.35)`,
+                        background: `rgba(${service.accentRgb}, 0.12)`,
+                      }}
+                    >
+                      {service.icon}
+                    </div>
                   </div>
-                  <span className="rounded-full border border-white/15 bg-black/35 px-3 py-2 text-right text-[10px] font-black uppercase tracking-[0.18em] text-white/85 backdrop-blur">
+                  <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.18em] text-white/80 backdrop-blur">
                     {service.label}
                   </span>
                 </div>
 
-                <div className="mt-auto rounded-3xl border border-white/15 bg-[#030817]/70 p-5 shadow-[0_18px_50px_rgba(0,0,0,0.42)] backdrop-blur-md sm:p-6">
-                  <h3 className="text-2xl font-black leading-tight text-white drop-shadow-[0_3px_12px_rgba(0,0,0,0.55)] sm:text-3xl">
+                <div className="mt-auto rounded-[1.35rem] border border-white/10 bg-[#030817]/75 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] backdrop-blur-xl sm:p-6">
+                  <h3 className="text-xl font-black leading-tight text-white sm:text-2xl lg:text-[1.65rem]">
                     {service.title}
                   </h3>
-                  <p className="mt-4 text-sm font-medium leading-6 text-white/80 sm:text-base">
+                  <p className="mt-3 text-sm leading-6 text-slate-300 sm:text-base">
                     {service.description}
                   </p>
-                  <ul className="mt-5 space-y-2">
+                  <ul className="mt-5 space-y-2.5">
                     {service.activities.slice(0, 3).map((activity) => (
                       <li
                         key={activity}
-                        className="flex items-start gap-2 text-xs font-semibold leading-5 text-white/80 sm:text-sm"
+                        className="flex items-start gap-2.5 text-xs font-medium leading-5 text-slate-300 sm:text-sm"
                       >
-                        <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-300" />
+                        <span
+                          className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
+                          style={{ backgroundColor: service.accent }}
+                        />
                         <span>{activity}</span>
                       </li>
                     ))}
@@ -267,70 +257,88 @@ export const Services = ({ mode }: { mode: SiteMode }) => {
                   <button
                     type="button"
                     onClick={() => setActiveService(service)}
-                    className={`mt-6 inline-flex w-full items-center justify-center rounded-2xl px-5 py-3 text-[11px] font-black uppercase tracking-[0.2em] text-white transition hover:brightness-110 sm:w-auto ${service.ctaClass}`}
+                    className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-[11px] font-black uppercase tracking-[0.2em] text-white transition hover:-translate-y-0.5 hover:brightness-110 sm:w-auto"
+                    style={{
+                      background: `linear-gradient(135deg, ${service.accent}, rgba(${service.accentRgb}, 0.7))`,
+                      boxShadow: `0 12px 32px rgba(${service.accentRgb}, 0.35)`,
+                    }}
                   >
                     Ver más
+                    <span aria-hidden="true">→</span>
                   </button>
                 </div>
               </div>
-            </article>
+            </motion.article>
           ))}
-        </div>
+        </motion.div>
       </div>
 
-      {activeService && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-10"
-          role="dialog"
-          aria-modal="true"
-          aria-label={`Detalles de ${activeService.label}`}
-          onClick={() => setActiveService(null)}
-        >
-          <div
-            className="w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl border border-white/15 bg-[#0b1322] p-6 sm:p-10 shadow-2xl"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="flex items-start justify-between gap-6">
+      <AppModal
+        isOpen={!!activeService}
+        onClose={() => setActiveService(null)}
+        ariaLabel={activeService ? `Detalles de ${activeService.label}` : "Detalles"}
+        maxWidth="2xl"
+        panelClassName="glass-panel border-white/15 p-6 sm:p-10"
+      >
+        {activeService && (
+          <>
+            <div
+              className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full blur-3xl"
+              style={{
+                background: `radial-gradient(circle, rgba(${activeService.accentRgb}, 0.25), transparent 70%)`,
+              }}
+            />
+
+            <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div className="min-w-0">
-                <span className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-300/80">
+                <span
+                  className="text-[10px] font-black uppercase tracking-[0.3em]"
+                  style={{ color: activeService.accent }}
+                >
                   Actividades incluidas
                 </span>
-                <h3 className="mt-4 text-2xl sm:text-3xl font-black text-white uppercase tracking-tight break-words">
+                <h3 className="mt-3 text-2xl font-black uppercase tracking-tight text-white sm:text-3xl">
                   {activeService.label}
                 </h3>
-                <p className="mt-3 text-sm sm:text-base text-white/75">
+                <p className="mt-3 text-sm text-slate-400 sm:text-base">
                   {activeService.description}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setActiveService(null)}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white hover:bg-white/12"
                 aria-label="Cerrar"
               >
                 ×
               </button>
             </div>
-            <ul className="mt-8 space-y-4">
-              {activeService.activities.map((activity) => (
+
+            <ul className="relative mt-8 space-y-3">
+              {activeService.activities.map((activity, i) => (
                 <li
                   key={activity}
-                  className="flex items-start gap-3 text-white/85"
+                  className="flex items-start gap-3 rounded-xl border border-white/[0.06] bg-white/[0.03] p-4"
                 >
-                  <span className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/20 bg-white/10">
-                    <CheckIcon className="h-4 w-4" />
+                  <span
+                    className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-xs font-black text-white"
+                    style={{
+                      background: `rgba(${activeService.accentRgb}, 0.15)`,
+                      color: activeService.accent,
+                    }}
+                  >
+                    {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span className="text-sm sm:text-base break-words">
-                    {activity}
-                  </span>
+                  <span className="text-sm text-slate-200 sm:text-base">{activity}</span>
                 </li>
               ))}
             </ul>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4">
+
+            <div className="relative mt-10 flex flex-col gap-3 sm:flex-row">
               <button
                 type="button"
                 onClick={() => setActiveService(null)}
-                className="w-full sm:w-auto rounded-xl border border-white/20 px-6 py-3 text-xs font-semibold uppercase tracking-[0.25em] text-white/80"
+                className="btn-ghost-light flex-1 sm:flex-none"
               >
                 Cerrar
               </button>
@@ -338,14 +346,18 @@ export const Services = ({ mode }: { mode: SiteMode }) => {
                 href="https://docs.google.com/forms/d/e/1FAIpQLSdfgHkDApUgxqeuqpwoaJPVWo6nQjS7NI9wtpB_W7f0RCddpQ/viewform?usp=publish-editor"
                 target="_blank"
                 rel="noreferrer"
-                className="w-full sm:w-auto rounded-xl bg-cyan-500 px-6 py-3 text-xs font-semibold uppercase tracking-[0.25em] text-black text-center"
+                className="btn-accent flex-1 sm:flex-none"
+                style={{
+                  background: `linear-gradient(135deg, ${activeService.accent}, rgba(${activeService.accentRgb}, 0.75))`,
+                  boxShadow: `0 12px 32px rgba(${activeService.accentRgb}, 0.3)`,
+                }}
               >
                 Agendar reunión
               </a>
             </div>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </AppModal>
     </section>
   );
 };

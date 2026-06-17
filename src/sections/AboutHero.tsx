@@ -9,7 +9,24 @@ import antenaDarkIcon from "@/assets/tech-icon/antena-dark.png";
 import routerDarkIcon from "@/assets/tech-icon/router-dark.png";
 import sateliteDarkIcon from "@/assets/tech-icon/satelite-dark.png";
 import type { SiteMode } from "@/lib/siteMode";
+import dynamic from "next/dynamic";
 import Image, { type StaticImageData } from "next/image";
+
+const ConnectedEcosystemVisual = dynamic(
+  () =>
+    import("@/components/ConnectedEcosystemVisual").then(
+      (module) => module.ConnectedEcosystemVisual,
+    ),
+  {
+    ssr: false,
+    loading: () => (
+      <div
+        className="h-full min-h-[420px] w-full rounded-3xl bg-white/[0.03] ring-1 ring-white/10 sm:min-h-[480px] lg:min-h-[560px]"
+        aria-hidden="true"
+      />
+    ),
+  },
+);
 
 type AboutHeroProps = {
   mode: SiteMode;
@@ -17,8 +34,7 @@ type AboutHeroProps = {
 
 type HeroConfig = {
   eyebrow: string;
-  modeLabel: string;
-  lines: string[];
+  headline: string;
   description: string;
   chips: string[];
   primary: string;
@@ -26,62 +42,44 @@ type HeroConfig = {
   overlay: string;
   button: string;
   panel: string;
-  iconGlow: string;
-  iconBorder: string;
   icons: { src: StaticImageData; alt: string; label: string }[];
 };
 
 const heroCopy: Record<SiteMode, HeroConfig> = {
   software: {
     eyebrow: "Soluciones integrales de software",
-    modeLabel: "Software",
-    lines: ["Construimos", "software que", "mueve empresas"],
+    headline: "Construimos software que mueve empresas",
     description:
-      "Disenamos plataformas, automatizaciones e integraciones que ordenan procesos, conectan datos y aceleran decisiones.",
-    chips: [
-      "Aplicaciones web",
-      "Automatizacion",
-      "Integraciones API",
-      "Consultoria TI",
-    ],
-    primary: "Agendar diagnostico",
+      "Plataformas, automatizaciones e integraciones que ordenan procesos y aceleran decisiones.",
+    chips: ["Apps web", "Automatización", "APIs", "Consultoría TI"],
+    primary: "Agendar diagnóstico",
     secondary: "Ver soluciones",
     overlay:
-      "bg-[linear-gradient(90deg,rgba(4,15,34,0.96)_0%,rgba(7,22,46,0.86)_26%,rgba(7,22,46,0.52)_46%,rgba(7,22,46,0.16)_63%,rgba(7,22,46,0)_78%)]",
+      "bg-[linear-gradient(270deg,rgba(4,15,34,0.96)_0%,rgba(7,22,46,0.86)_30%,rgba(7,22,46,0.4)_55%,rgba(7,22,46,0)_78%)]",
     button:
       "bg-[#1e63c6] hover:bg-[#1955a8] ring-cyan-300/70 shadow-[0_0_25px_rgba(34,211,238,0.45)] hover:shadow-[0_0_40px_rgba(34,211,238,0.65)]",
     panel:
-      "border-cyan-200/20 bg-[linear-gradient(145deg,rgba(5,18,39,0.86),rgba(7,27,58,0.68)_56%,rgba(5,18,39,0.48))] shadow-[0_26px_80px_rgba(0,10,30,0.46)]",
-    iconGlow: "shadow-[0_0_32px_rgba(59,130,246,0.28)]",
-    iconBorder: "border-cyan-300/20",
+      "border-cyan-200/20 bg-[linear-gradient(145deg,rgba(5,18,39,0.88),rgba(7,27,58,0.72)_56%,rgba(5,18,39,0.52))] shadow-[0_20px_60px_rgba(0,10,30,0.42)]",
     icons: [
       { src: hackerDarkIcon, alt: "Arquitectura de software", label: "Arquitectura" },
       { src: monitorDarkIcon, alt: "Monitor de aplicaciones", label: "Apps web" },
-      { src: botDarkIcon, alt: "Automatizacion inteligente", label: "Automatizacion" },
+      { src: botDarkIcon, alt: "Automatización inteligente", label: "Automatización" },
     ],
   },
   telecom: {
-    eyebrow: "Modo telecom activo",
-    modeLabel: "Telecom",
-    lines: ["Ingenieria", "RAN para", "redes criticas"],
+    eyebrow: "Ingeniería RAN multivendor",
+    headline: "Ingeniería RAN para redes críticas",
     description:
-      "Integramos, configuramos y optimizamos redes moviles 2G/3G/4G/5G con experiencia multivendor y foco operativo.",
-    chips: [
-      "Integracion RAN",
-      "Drive Test",
-      "Optimizacion OyM",
-      "Soporte multivendor",
-    ],
+      "Integración y optimización 2G/3G/4G/5G con foco operativo y soporte en campo.",
+    chips: ["Integración RAN", "Drive Test", "OyM", "Multivendor"],
     primary: "Coordinar soporte",
     secondary: "Ver telecom",
     overlay:
-      "bg-[linear-gradient(270deg,rgba(31,14,3,0.94)_0%,rgba(40,21,4,0.86)_18%,rgba(12,25,45,0.54)_42%,rgba(7,22,46,0.14)_62%,rgba(7,22,46,0)_78%)]",
+      "bg-[linear-gradient(270deg,rgba(31,14,3,0.94)_0%,rgba(40,21,4,0.86)_22%,rgba(12,25,45,0.5)_48%,rgba(7,22,46,0)_78%)]",
     button:
       "bg-[#f39c36] hover:bg-[#da862b] text-white ring-amber-200/70 shadow-[0_0_25px_rgba(243,156,54,0.45)] hover:shadow-[0_0_40px_rgba(243,156,54,0.62)]",
     panel:
-      "border-amber-100/20 bg-[linear-gradient(145deg,rgba(26,13,4,0.84),rgba(9,24,48,0.66)_56%,rgba(5,18,39,0.48))] shadow-[0_26px_80px_rgba(20,8,2,0.44)]",
-    iconGlow: "shadow-[0_0_32px_rgba(243,156,54,0.24)]",
-    iconBorder: "border-amber-200/20",
+      "border-amber-100/20 bg-[linear-gradient(145deg,rgba(26,13,4,0.86),rgba(9,24,48,0.68)_56%,rgba(5,18,39,0.5))] shadow-[0_20px_60px_rgba(20,8,2,0.4)]",
     icons: [
       { src: routerDarkIcon, alt: "Router telecom", label: "Core y TX" },
       { src: antenaDarkIcon, alt: "Antena telecom", label: "RAN" },
@@ -97,14 +95,14 @@ export const AboutHero = ({ mode }: AboutHeroProps) => {
   return (
     <section
       id="acerca"
-      className="relative min-h-[100svh] overflow-hidden bg-[#0b1d3a] pt-24 pb-6 scroll-mt-24 md:h-[100svh] md:min-h-0 md:pt-28 md:pb-6 md:scroll-mt-28"
+      className="relative flex flex-1 flex-col justify-center overflow-hidden bg-[#0b1d3a] scroll-mt-20 pt-24 sm:pt-28 md:scroll-mt-24"
     >
       <Image
         src={backgroundHeroImage}
-        alt="Fondo tecnologico con tonos azules de GSITEL"
+        alt="Fondo tecnológico con tonos azules de GSITEL"
         fill
         priority
-        quality={100}
+        quality={85}
         sizes="100vw"
         className={`object-cover object-[70%_center] transition-opacity duration-700 ease-out ${
           isTelecom ? "opacity-0" : "opacity-100"
@@ -115,157 +113,114 @@ export const AboutHero = ({ mode }: AboutHeroProps) => {
         alt="Fondo telecom con infraestructura de red GSITEL"
         fill
         priority
-        quality={100}
+        quality={85}
         sizes="100vw"
         className={`object-cover object-[58%_center] transition-opacity duration-700 ease-out ${
           isTelecom ? "opacity-100" : "opacity-0"
         }`}
       />
       <div className={`pointer-events-none absolute inset-0 ${copy.overlay}`} />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_100%,rgba(59,130,246,0.16),transparent_32%)]" />
+      <div
+        className={`pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(34,211,238,0.08),transparent_55%)] ${
+          isTelecom
+            ? "lg:bg-[radial-gradient(ellipse_at_80%_50%,rgba(34,211,238,0.08),transparent_55%)]"
+            : "lg:bg-[radial-gradient(ellipse_at_20%_50%,rgba(34,211,238,0.08),transparent_55%)]"
+        }`}
+      />
 
-      <div className="relative z-10 mx-auto flex min-h-[calc(100svh-7rem)] w-full max-w-[1440px] items-center px-6 sm:px-8 lg:px-12 xl:px-16 md:min-h-[calc(100svh-7.5rem)]">
+      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 py-8 sm:px-8 sm:py-10 lg:px-12 xl:px-16">
         <div
-          className={`grid w-full grid-cols-1 items-center gap-10 lg:grid-cols-12 ${
-            isTelecom ? "" : ""
+          className={`mx-auto w-full ${
+            isTelecom
+              ? "max-w-3xl lg:max-w-4xl"
+              : "grid grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-10 xl:gap-14"
           }`}
         >
-          <div
-            className={`${
-              isTelecom
-                ? "lg:col-start-7 lg:col-span-6 lg:justify-self-end"
-                : "lg:col-start-1 lg:col-span-6 lg:justify-self-start"
-            }`}
-          >
-            <div
-              className={`relative w-full max-w-[40rem] overflow-hidden rounded-[1.5rem] border px-5 py-5 backdrop-blur-xl ring-1 ring-white/10 sm:px-6 sm:py-6 lg:px-7 lg:py-7 ${copy.panel}`}
-            >
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/60 to-transparent" />
-              <div
-                className={`pointer-events-none absolute -top-24 h-48 w-48 rounded-full blur-3xl ${
-                  isTelecom
-                    ? "right-8 bg-[#f39c36]/18"
-                    : "left-8 bg-[#2f9edb]/18"
-                }`}
-              />
-
-              <div
-                className={`relative z-10 flex items-center gap-3 ${
-                  isTelecom ? "justify-end" : "justify-start"
-                }`}
-              >
-                <div
-                  className={`flex min-w-0 items-center gap-2 rounded-full border border-white/20 bg-white/[0.08] px-3.5 py-1.5 text-xs font-semibold !text-white shadow-[0_10px_26px_rgba(0,0,0,0.22)] backdrop-blur ${
-                    isTelecom ? "flex-row-reverse" : ""
-                  }`}
-                >
-                  <span
-                    className={`h-1.5 w-1.5 shrink-0 rounded-full shadow-[0_0_14px_currentColor] ${
-                      isTelecom ? "bg-[#f39c36] text-[#f39c36]" : "bg-cyan-300 text-cyan-300"
-                    }`}
-                  />
-                  <span className="truncate !text-white">{copy.eyebrow}</span>
-                </div>
-              </div>
-
-              <h1
-                className={`relative z-10 mt-4 space-y-0.5 text-[3rem] font-black leading-[0.92] tracking-tight !text-white drop-shadow-[0_4px_22px_rgba(0,0,0,0.55)] sm:text-[3.45rem] lg:text-[4.55rem] ${
-                  isTelecom ? "text-right" : "text-left"
-                }`}
-              >
-                {copy.lines.map((line) => (
-                  <span key={`${mode}-${line}`} className="block">
-                    {line}
-                  </span>
-                ))}
-              </h1>
-
-              <p
-                className={`relative z-10 mt-4 text-base leading-7 !text-[#eaf3ff] sm:text-lg ${
-                  isTelecom ? "ml-auto max-w-[34rem] text-right" : "max-w-[34rem]"
-                }`}
-              >
-                {copy.description}
-              </p>
-
-              <div
-                className={`relative z-10 mt-4 flex flex-wrap gap-2 text-xs sm:text-sm ${
-                  isTelecom ? "md:justify-end" : ""
-                }`}
-              >
-                {copy.chips.map((chip) => (
-                  <span
-                    key={chip}
-                    className="rounded-full border border-white/20 bg-white/[0.1] px-3 py-1.5 !text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_10px_22px_rgba(0,0,0,0.16)]"
-                  >
-                    {chip}
-                  </span>
-                ))}
-              </div>
-
-              <div
-                className={`relative z-10 mt-6 flex flex-wrap items-center gap-3 ${
-                  isTelecom ? "md:justify-end" : ""
-                }`}
-              >
-                <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSdfgHkDApUgxqeuqpwoaJPVWo6nQjS7NI9wtpB_W7f0RCddpQ/viewform?usp=publish-editor"
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`btn relative overflow-hidden !text-white ring-2 transition duration-300 hover:-translate-y-1 active:translate-y-0 active:scale-[0.98] ${copy.button}`}
-                >
-                  <span className="pointer-events-none absolute inset-x-0 top-0 h-1/2 bg-white/[0.18]" />
-                  <span className="relative z-10 !text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.35)]">
-                    {copy.primary}
-                  </span>
-                </a>
-                <a
-                  href="#servicios"
-                  className="btn border border-white/30 bg-white/[0.08] !text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_14px_30px_rgba(0,0,0,0.24)] transition duration-300 hover:-translate-y-1 hover:bg-white/[0.14] hover:!text-white active:translate-y-0 active:scale-[0.98]"
-                >
-                  {copy.secondary}
-                </a>
-              </div>
-
-              <div
-                className={`relative z-10 mt-6 grid grid-cols-3 gap-2.5 ${
-                  isTelecom ? "md:ml-auto md:max-w-[28rem]" : "md:max-w-[28rem]"
-                }`}
-              >
-                {copy.icons.map((icon) => (
-                  <div
-                    key={icon.label}
-                    className="group flex min-h-[5.5rem] flex-col items-center justify-center rounded-[1rem] border border-white/20 bg-[linear-gradient(180deg,rgba(255,255,255,0.14),rgba(255,255,255,0.06))] px-2.5 py-2.5 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_16px_34px_rgba(0,0,0,0.24)] backdrop-blur transition duration-300 hover:-translate-y-1 hover:border-white/30 hover:bg-white/[0.13] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_24px_44px_rgba(0,0,0,0.34)]"
-                  >
-                    <div
-                      className={`relative flex h-12 w-12 items-center justify-center rounded-[0.9rem] border bg-[linear-gradient(145deg,rgba(255,255,255,1),rgba(216,231,255,0.92))] shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_12px_24px_rgba(0,0,0,0.28)] transition duration-300 group-hover:scale-105 ${
-                        isTelecom ? "border-amber-100/70" : "border-cyan-100/70"
-                      } ${copy.iconGlow}`}
-                    >
-                      <span className="pointer-events-none absolute inset-x-2 top-1 h-3 rounded-full bg-white/55 blur-sm" />
-                      <Image
-                        src={icon.src}
-                        alt={icon.alt}
-                        width={34}
-                        height={34}
-                        className="relative z-10 h-8 w-8 object-contain drop-shadow-[0_7px_10px_rgba(0,0,0,0.35)]"
-                      />
-                    </div>
-                    <div className="mt-2 text-[10px] font-black uppercase tracking-[0.16em] !text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)]">
-                      {icon.label}
-                    </div>
-                  </div>
-                ))}
+          {!isTelecom && (
+            <div className="relative order-2 flex h-[min(420px,75vw)] items-center justify-center sm:h-[480px] lg:order-1 lg:h-[min(600px,52vw)] lg:max-h-[600px]">
+              <div className="pointer-events-none absolute inset-0 rounded-3xl bg-[radial-gradient(ellipse_at_center,rgba(29,111,255,0.12),transparent_70%)]" />
+              <div className="relative mx-auto w-full max-w-[600px] origin-center scale-[0.78] sm:scale-[0.88] lg:scale-100">
+                <ConnectedEcosystemVisual />
               </div>
             </div>
-          </div>
+          )}
 
           <div
-            className={`hidden lg:block ${
-              isTelecom ? "lg:col-start-1 lg:col-span-5" : "lg:col-start-8 lg:col-span-5"
-            }`}
-            aria-hidden="true"
-          />
+            className={`relative order-1 overflow-hidden rounded-2xl border px-5 py-5 backdrop-blur-xl ring-1 ring-white/10 sm:px-8 sm:py-8 lg:order-2 lg:ml-auto ${copy.panel}`}
+          >
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/60 to-transparent" />
+
+            <div className="flex flex-wrap items-center gap-2 justify-start lg:justify-end">
+              <div
+                className={`flex items-center gap-2 rounded-full border border-white/25 bg-white/[0.1] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] !text-white backdrop-blur ${
+                  isTelecom ? "flex-row-reverse" : ""
+                }`}
+              >
+                <span
+                  className={`h-1.5 w-1.5 shrink-0 rounded-full ${
+                    isTelecom ? "bg-[#f39c36]" : "bg-cyan-300"
+                  }`}
+                />
+                <span className="!text-white">{copy.eyebrow}</span>
+              </div>
+            </div>
+
+            <h1 className="mt-4 text-2xl font-black leading-[0.95] tracking-tight !text-white sm:text-4xl md:text-5xl lg:text-[3.25rem] text-left lg:text-right">
+              {copy.headline}
+            </h1>
+
+            <p className="mt-4 max-w-lg text-sm leading-7 !text-[#eaf3ff]/90 sm:text-base md:text-lg text-left lg:ml-auto lg:max-w-md lg:text-right">
+              {copy.description}
+            </p>
+
+            <div className="mt-4 flex flex-wrap gap-2 justify-start lg:justify-end">
+              {copy.chips.map((chip) => (
+                <span
+                  key={chip}
+                  className="rounded-full border border-white/20 bg-white/[0.08] px-3 py-1.5 text-[10px] font-bold !text-white sm:text-xs"
+                >
+                  {chip}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-5 flex flex-wrap items-center gap-3 justify-start lg:justify-end">
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSdfgHkDApUgxqeuqpwoaJPVWo6nQjS7NI9wtpB_W7f0RCddpQ/viewform?usp=publish-editor"
+                target="_blank"
+                rel="noreferrer"
+                className={`btn relative w-full overflow-hidden px-5 py-3 text-sm !text-white ring-2 transition hover:-translate-y-0.5 sm:w-auto sm:text-base ${copy.button}`}
+              >
+                {copy.primary}
+              </a>
+              <a
+                href="#servicios"
+                className="btn w-full border border-white/30 bg-white/[0.08] px-5 py-3 text-sm !text-white transition hover:bg-white/[0.14] sm:w-auto sm:text-base"
+              >
+                {copy.secondary}
+              </a>
+            </div>
+
+            <div className="mt-5 flex flex-wrap gap-2.5 justify-start lg:justify-end">
+              {copy.icons.map((icon) => (
+                <div
+                  key={icon.label}
+                  className="inline-flex items-center gap-2.5 rounded-xl border border-white/15 bg-white/[0.06] px-3 py-2 transition hover:border-white/30 hover:bg-white/[0.1]"
+                >
+                  <Image
+                    src={icon.src}
+                    alt={icon.alt}
+                    width={24}
+                    height={24}
+                    className="h-6 w-6 object-contain"
+                  />
+                  <span className="text-[10px] font-bold uppercase tracking-wide !text-white sm:text-xs">
+                    {icon.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

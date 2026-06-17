@@ -116,43 +116,39 @@ const TestimonialsColumn = ({
         ease: "linear",
         repeatType: "loop",
       }}
-      className="flex flex-col gap-6 pb-6"
+      className="flex flex-col gap-4 pb-4"
     >
       {[0, 1].map((index) => (
         <React.Fragment key={index}>
           {testimonials.map(({ text, imageSrc, name, role, tag }) => (
             <article
               key={`${name}-${role}-${index}`}
-              className="relative overflow-hidden rounded-[1.75rem] border border-white/70 bg-white/92 p-6 shadow-[0_20px_45px_rgba(15,23,42,0.1)] backdrop-blur"
+              className="relative overflow-hidden rounded-2xl border border-white/70 bg-white/92 p-4 shadow-[0_12px_32px_rgba(15,23,42,0.08)] backdrop-blur sm:p-5"
             >
-              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.92),rgba(255,255,255,0.78))]" />
               <div className="relative z-10">
-                <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center justify-between gap-2">
                   <span
-                    className={`inline-flex items-center rounded-full px-3 py-1 text-[11px] font-black uppercase tracking-[0.18em] ${tagStyles[tag]}`}
+                    className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-[0.16em] ${tagStyles[tag]}`}
                   >
                     {tag}
                   </span>
-                  <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-                    Testimonio
-                  </span>
                 </div>
-                <p className="mt-4 text-base font-medium leading-7 text-[#0b1d3a]/82">
+                <p className="mt-3 text-sm font-medium leading-6 text-[#0b1d3a]/82 line-clamp-4">
                   {text}
                 </p>
-                <div className="mt-6 flex items-center gap-3">
+                <div className="mt-4 flex items-center gap-2.5">
                   <Image
                     src={imageSrc}
                     alt={name}
-                    width={44}
-                    height={44}
-                    className="h-11 w-11 rounded-full border border-white/80"
+                    width={36}
+                    height={36}
+                    className="h-9 w-9 rounded-full border border-white/80"
                   />
-                  <div className="flex flex-col">
-                    <div className="text-sm font-bold tracking-tight text-slate-900">
+                  <div className="min-w-0">
+                    <div className="truncate text-xs font-bold tracking-tight text-slate-900">
                       {name}
                     </div>
-                    <div className="text-sm font-medium leading-6 text-slate-500">
+                    <div className="truncate text-[11px] font-medium text-slate-500">
                       {role}
                     </div>
                   </div>
@@ -175,46 +171,43 @@ export const Testimonials = ({ mode }: { mode: SiteMode }) => {
   return (
     <section
       id="clientes"
-      className="relative overflow-hidden bg-[#EAEEFE] px-4 py-20 scroll-mt-24 md:scroll-mt-28 sm:px-6"
+      className="relative overflow-hidden bg-[#EAEEFE] px-4 section-shell scroll-mt-24 sm:px-6 md:scroll-mt-28"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.16),transparent_45%),radial-gradient(circle_at_80%_80%,rgba(29,78,216,0.14),transparent_45%)]" />
-      <div className="pointer-events-none absolute inset-0 opacity-20 [background-image:linear-gradient(90deg,rgba(15,23,42,0.06)_1px,transparent_1px),linear-gradient(0deg,rgba(15,23,42,0.06)_1px,transparent_1px)] [background-size:28px_28px]" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(234,238,254,0.96),rgba(234,238,254,0.82)_48%,rgba(234,238,254,0.96))]" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-[#081d3f]/18" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.12),transparent_45%),radial-gradient(circle_at_80%_80%,rgba(29,78,216,0.1),transparent_45%)]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-[#081d3f]/14" />
 
       <div className="container relative z-10">
-        <div className="rounded-[2rem] border border-white/80 bg-white/75 p-6 shadow-[0_24px_70px_rgba(15,23,42,0.12)] backdrop-blur-xl sm:p-8 lg:p-10">
-          <div className="flex justify-start">
-            <div className="tag mb-6 border-[#0b1d3a]/10 bg-[#0b1d3a]/5 text-[#0b1d3a]">
-              Testimonios
-            </div>
-          </div>
-          <div className="max-w-3xl">
-            <h2 className="text-left text-3xl font-black uppercase leading-[0.92] tracking-tight text-[#06111f] drop-shadow-[0_2px_0_rgba(255,255,255,0.8)] sm:text-4xl md:text-6xl">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="section-eyebrow-light">Testimonios</p>
+            <h2 className="section-title-light">
               {isTelecom ? "Resultados en red" : "Resultados reales"}
             </h2>
-            <p className="mt-6 max-w-2xl text-base font-medium leading-7 text-[#0b1d3a]/75 sm:text-lg md:text-xl">
+            <p className="section-desc-light">
               {isTelecom
-                ? "Despliegue, soporte y continuidad operativa para redes moviles."
-                : "Equipos con menos friccion, mas visibilidad y una solucion de software que acompana la operacion real."}
+                ? "Despliegue, soporte y continuidad operativa para redes móviles."
+                : "Equipos con menos fricción, más visibilidad y software que acompaña la operación."}
             </p>
           </div>
+          <span className="w-fit rounded-full border border-[#0b1d3a]/10 bg-white/80 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-[#0b1d3a]/65">
+            {isTelecom ? "Modo telecom" : "Modo software"}
+          </span>
         </div>
 
-        <div className="mt-14 flex justify-center gap-6 [mask-image:linear-gradient(to_bottom,transparent,black_16%,black_84%,transparent)] max-h-[760px] overflow-hidden">
-          <TestimonialsColumn testimonials={firstColumn} duration={16} />
+        <div className="mt-8 flex justify-center gap-3 [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] max-h-[380px] overflow-hidden sm:mt-8 sm:max-h-[480px] sm:gap-5">
+          <TestimonialsColumn testimonials={firstColumn} duration={18} />
           {secondColumn.length > 0 && (
             <TestimonialsColumn
               testimonials={secondColumn}
               className="hidden md:block"
-              duration={20}
+              duration={22}
             />
           )}
           {thirdColumn.length > 0 && (
             <TestimonialsColumn
               testimonials={thirdColumn}
               className="hidden lg:block"
-              duration={18}
+              duration={20}
             />
           )}
         </div>
