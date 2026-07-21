@@ -8,6 +8,7 @@ import { Header } from "@/sections/Header";
 import { AboutHero } from "@/sections/AboutHero";
 import { ClientsTicker } from "@/sections/ClientsTicker";
 import { Services } from "@/sections/Services";
+import { WorkProcess } from "@/sections/WorkProcess";
 import { DarkSectionsShell } from "@/components/DarkSectionsShell";
 import { CtaFooterShell } from "@/components/CtaFooterShell";
 import { Footer } from "@/sections/Footer";
@@ -122,6 +123,7 @@ export const HomeShell = () => {
             <ClientsTicker mode={mode} />
             <DigitalTransformation mode={mode} />
             <Services mode={mode} />
+            <WorkProcess mode={mode} />
           </DarkSectionsShell>
           {mode === "software" && <KnowledgeStack mode={mode} />}
           <Projects mode={mode} />

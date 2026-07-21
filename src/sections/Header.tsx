@@ -15,6 +15,7 @@ type HeaderProps = {
 const navLinks = [
   { href: "/aboutus", label: "Nosotros" },
   { href: "/#servicios", label: "Servicios" },
+  { href: "/#metodologia", label: "Cómo trabajamos" },
   { href: "/#clientes", label: "Clientes" },
   { href: "/#proyectos", label: "Proyectos" },
   { href: "/#contacto", label: "Contacto" },

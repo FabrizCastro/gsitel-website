@@ -102,38 +102,38 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
       className="relative bg-transparent px-4 pb-12 pt-4 scroll-mt-24 sm:px-6 sm:pb-16 sm:pt-5 md:scroll-mt-28"
     >
       <div className="mx-auto max-w-7xl">
-        <MotionInView className="mb-8 flex flex-col gap-5 lg:mb-10 lg:flex-row lg:items-end lg:justify-between">
+        <MotionInView className="mb-12 flex flex-col gap-5 lg:mb-16 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             <div className="flex flex-wrap items-center gap-2">
               <p className="section-eyebrow-dark">
                 {theme.isTelecom ? "Estrategia de Red" : "Estrategia de Crecimiento"}
               </p>
-              <span className="rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
+              <span className="border-l border-white/15 pl-3 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
                 2 fases · {sectorCount} {theme.isTelecom ? "capacidades" : "sectores"}
               </span>
             </div>
             <h2 className="section-title-dark">
               {theme.isTelecom
-                ? "Operación telecom inteligente"
-                : "Software integral inteligente"}
+                ? "Estrategia para redes de misión crítica"
+                : "Estrategia digital orientada a resultados"}
             </h2>
             <p className="section-desc-dark">
               {theme.isTelecom
-                ? "Despliegue, integración y soporte RAN con procesos claros."
-                : "Diagnóstico, plataformas a medida, automatización e IA aplicada."}
+                ? "Planificación, despliegue y optimización con control técnico de principio a fin."
+                : "Diagnóstico, implementación y evolución tecnológica con objetivos verificables."}
             </p>
           </div>
         </MotionInView>
 
         <motion.div
-          className="relative grid gap-5 lg:grid-cols-2 lg:gap-6"
+          className="relative grid gap-12 border-y border-white/10 py-10 lg:grid-cols-2 lg:gap-0 lg:py-12"
           variants={staggerContainer}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-40px" }}
         >
           <div
-            className="pointer-events-none absolute left-1/2 top-24 hidden h-[calc(100%-6rem)] w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-white/20 to-transparent lg:block"
+            className="pointer-events-none absolute left-1/2 top-0 hidden h-full w-px bg-white/10 lg:block"
             aria-hidden="true"
           />
 
@@ -157,8 +157,6 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
             borderClass={theme.phase1Border}
             glowClass={theme.phase1Glow}
             accentRgb={theme.accentRgb}
-            ctaLabel={theme.isTelecom ? "Planificar despliegue" : "Empezar digitalización"}
-            ctaClass="btn-ghost-light"
           >
             <div className="flex flex-wrap gap-2">
               {sectorItems.map((item) => (
@@ -193,8 +191,6 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
             borderClass={theme.phase2Border}
             glowClass={theme.phase1Glow}
             accentRgb={theme.accentRgb}
-            ctaLabel={theme.isTelecom ? "Optimizar red" : "Optimizar con IA"}
-            ctaClass={`btn-accent ${theme.ctaPrimary}`}
           >
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {phase2Features.map((feature, index) => (
@@ -337,8 +333,6 @@ function PhaseCard({
   borderClass,
   glowClass,
   accentRgb,
-  ctaLabel,
-  ctaClass,
   children,
 }: {
   phase: string;
@@ -350,26 +344,15 @@ function PhaseCard({
   borderClass: string;
   glowClass: string;
   accentRgb: string;
-  ctaLabel: string;
-  ctaClass: string;
   children: ReactNode;
 }) {
   return (
     <motion.article
       variants={staggerItem}
-      whileHover={{ y: -4 }}
-      transition={{ type: "spring", stiffness: 400, damping: 28 }}
-      className={`glass-panel group p-4 transition duration-500 sm:p-5 ${borderClass} ${glowClass}`}
+      className={`relative px-0 lg:px-10 lg:first:pl-0 lg:last:pr-0 ${borderClass}`}
     >
-      <div
-        className="pointer-events-none absolute -bottom-20 -right-20 h-56 w-56 rounded-full blur-3xl transition duration-500 group-hover:opacity-100 opacity-60"
-        style={{
-          background: `radial-gradient(circle, rgba(${accentRgb}, 0.14), transparent 70%)`,
-        }}
-      />
-
       <div className="relative flex items-center gap-4">
-        <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${iconClass}`}>
+        <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] ${iconClass.replace(/bg-gradient[^ ]*|from-[^ ]*|to-[^ ]*|shadow-\[[^\]]*\]/g, "")}`}>
           {icon}
         </div>
         <div className="min-w-0 flex-1">
@@ -383,7 +366,7 @@ function PhaseCard({
           >
             Fase {phase}
           </span>
-          <h3 className="mt-1 text-lg font-black uppercase tracking-tight text-white sm:text-xl">
+          <h3 className="mt-2 text-xl font-black tracking-tight text-white sm:text-2xl">
             {title}
           </h3>
           <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-slate-500">
@@ -392,15 +375,11 @@ function PhaseCard({
         </div>
       </div>
 
-      <p className="relative mt-3 text-sm leading-relaxed text-slate-400">
+      <p className="relative mt-5 max-w-lg text-sm leading-7 text-slate-400">
         {description}
       </p>
 
-      <div className="relative mt-4">{children}</div>
-
-      <a href="#contacto" className={`relative mt-4 inline-flex text-[10px] ${ctaClass}`}>
-        {ctaLabel}
-      </a>
+      <div className="relative mt-7">{children}</div>
     </motion.article>
   );
 }
@@ -420,13 +399,12 @@ function SectorChip({
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex w-full items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-left transition hover:border-white/20 hover:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 sm:w-auto"
+      className="inline-flex w-full items-center gap-2 border-b border-white/10 px-0 py-2.5 text-left transition hover:border-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 sm:w-auto sm:min-w-40"
     >
       <span
-        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[9px] font-black uppercase text-white"
+        className="flex h-6 w-6 shrink-0 items-center justify-center text-[9px] font-black uppercase"
         style={{
-          border: `1px solid rgba(${accentRgb}, 0.3)`,
-          background: `rgba(${accentRgb}, 0.12)`,
+          color: `rgb(${accentRgb})`,
         }}
       >
         {badge}
@@ -450,12 +428,10 @@ function FeatureItem({
   accentRgb: string;
 }) {
   return (
-    <div className="flex gap-3 rounded-xl border border-white/[0.06] bg-white/[0.02] p-3 transition hover:border-white/12 hover:bg-white/[0.05]">
+    <div className="flex gap-3 border-t border-white/[0.08] py-3">
       <div
-        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-[10px] font-black"
+        className="flex h-8 w-8 shrink-0 items-center justify-center text-[10px] font-black"
         style={{
-          background: `rgba(${accentRgb}, 0.15)`,
-          border: `1px solid rgba(${accentRgb}, 0.3)`,
           color: `rgb(${accentRgb})`,
         }}
       >

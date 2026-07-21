@@ -5,10 +5,8 @@ import automateBackground from "@/assets/backgrounds/services_background_automat
 import telecomBackground from "@/assets/backgrounds/services_background_telecom.png";
 import { AppModal } from "@/components/AppModal";
 import { MotionInView, staggerContainer, staggerItem } from "@/components/MotionInView";
-import TypeText from "@/components/TypeText";
 import { getModeTheme } from "@/lib/modeTheme";
 import type { SiteMode } from "@/lib/siteMode";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -137,30 +135,22 @@ export const Services = ({ mode }: { mode: SiteMode }) => {
     >
       <div className="mx-auto max-w-7xl">
         <MotionInView className="max-w-2xl">
-          <p className="section-eyebrow-dark">Especificación de servicios</p>
+          <p className="section-eyebrow-dark">Servicios</p>
           <h2 className="section-title-dark">
-            <TypeText
-              text={
-                theme.isTelecom
-                  ? "Soluciones telecom y RAN"
-                  : "Soluciones integrales de software"
-              }
-              className="block"
-              speed={28}
-              startDelay={200}
-              cursor
-            />
+            {theme.isTelecom
+              ? "Capacidad técnica para infraestructura telecom"
+              : "Soluciones digitales para operaciones exigentes"}
           </h2>
           <p className="section-desc-dark">
             {theme.isTelecom
-              ? "Servicios especializados para despliegue, integración, soporte y optimización de redes móviles."
-              : "Diseñamos, integramos y automatizamos sistemas para que tu operación funcione como una sola plataforma."}
+              ? "Ingeniería, integración y soporte para redes móviles con altos estándares de operación."
+              : "Diseño, desarrollo y automatización de sistemas alineados con la operación del negocio."}
           </p>
-          <div className="mt-6 flex flex-wrap gap-2">
+          <div className="mt-7 flex flex-wrap gap-x-6 gap-y-2">
             {focusTags.map((item) => (
               <span
                 key={item}
-                className="rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-[10px] font-black uppercase tracking-[0.2em] text-white/75 backdrop-blur transition hover:border-white/25 hover:bg-white/[0.08]"
+                className="border-l border-white/15 pl-3 text-[10px] font-black uppercase tracking-[0.2em] text-white/55"
               >
                 {item}
               </span>
@@ -169,7 +159,7 @@ export const Services = ({ mode }: { mode: SiteMode }) => {
         </MotionInView>
 
         <motion.div
-          className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6"
+          className="mt-14 grid grid-cols-1 gap-10 border-y border-white/10 py-10 md:grid-cols-2 md:gap-0 md:py-14"
           variants={staggerContainer}
           initial="hidden"
           whileInView="show"
@@ -179,95 +169,40 @@ export const Services = ({ mode }: { mode: SiteMode }) => {
             <motion.article
               key={service.id}
               variants={staggerItem}
-              whileHover={{ y: -4 }}
-              transition={{ type: "spring", stiffness: 400, damping: 28 }}
-              className="group relative flex min-h-[300px] overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#060d18] shadow-[0_20px_50px_rgba(0,0,0,0.4)] sm:min-h-[360px] md:min-h-[400px]"
+              className="group relative flex flex-col md:border-r md:border-white/10 md:px-8 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
             >
-              <div
-                className="absolute inset-x-0 top-0 h-1 opacity-80 transition group-hover:opacity-100"
-                style={{
-                  background: `linear-gradient(90deg, transparent, ${service.accent}, transparent)`,
-                }}
-              />
-
-              <div className="absolute inset-0">
-                <Image
-                  src={service.background}
-                  alt={service.imageAlt}
-                  fill
-                  quality={75}
-                  loading="lazy"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover opacity-90 transition duration-700 group-hover:scale-[1.04]"
-                />
-                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(2,6,14,0.2)_0%,rgba(2,6,14,0.55)_35%,rgba(2,6,14,0.97)_100%)]" />
-                <div
-                  className="absolute inset-0 opacity-40 transition duration-500 group-hover:opacity-60"
-                  style={{
-                    background: `radial-gradient(circle at 20% 0%, rgba(${service.accentRgb}, 0.25), transparent 50%)`,
-                  }}
-                />
+              <div className="flex items-center justify-between gap-6">
+                <span className="text-[10px] font-black tracking-[0.28em]" style={{ color: service.accent }}>
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="text-[9px] font-black uppercase tracking-[0.18em] text-white/40">
+                  {service.label}
+                </span>
               </div>
 
-              <div className="relative z-10 flex w-full flex-col p-5 sm:p-6 lg:p-7">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <span
-                      className="text-[10px] font-black uppercase tracking-[0.28em]"
-                      style={{ color: service.accent }}
-                    >
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <div
-                      className="inline-flex h-12 w-12 items-center justify-center rounded-2xl border backdrop-blur-md"
-                      style={{
-                        borderColor: `rgba(${service.accentRgb}, 0.35)`,
-                        background: `rgba(${service.accentRgb}, 0.12)`,
-                      }}
-                    >
-                      {service.icon}
-                    </div>
-                  </div>
-                  <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.18em] text-white/80 backdrop-blur">
-                    {service.label}
-                  </span>
-                </div>
-
-                <div className="mt-auto rounded-[1.35rem] border border-white/10 bg-[#030817]/75 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.4)] backdrop-blur-xl sm:p-6">
-                  <h3 className="text-xl font-black leading-tight text-white sm:text-2xl lg:text-[1.65rem]">
-                    {service.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-300 sm:text-base">
-                    {service.description}
-                  </p>
-                  <ul className="mt-5 space-y-2.5">
-                    {service.activities.slice(0, 3).map((activity) => (
-                      <li
-                        key={activity}
-                        className="flex items-start gap-2.5 text-xs font-medium leading-5 text-slate-300 sm:text-sm"
-                      >
-                        <span
-                          className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full"
-                          style={{ backgroundColor: service.accent }}
-                        />
-                        <span>{activity}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <button
-                    type="button"
-                    onClick={() => setActiveService(service)}
-                    className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-[11px] font-black uppercase tracking-[0.2em] text-white transition hover:-translate-y-0.5 hover:brightness-110 sm:w-auto"
-                    style={{
-                      background: `linear-gradient(135deg, ${service.accent}, rgba(${service.accentRgb}, 0.7))`,
-                      boxShadow: `0 12px 32px rgba(${service.accentRgb}, 0.35)`,
-                    }}
-                  >
-                    Ver más
-                    <span aria-hidden="true">→</span>
-                  </button>
-                </div>
+              <div className="mt-10 inline-flex h-10 w-10 items-center justify-center text-white/80">
+                {service.icon}
               </div>
+              <h3 className="mt-6 text-2xl font-black leading-tight text-white sm:text-3xl">
+                {service.title}
+              </h3>
+              <p className="mt-4 max-w-lg text-sm leading-7 text-white/60 sm:text-base">
+                {service.description}
+              </p>
+              <ul className="mt-8 border-t border-white/10">
+                {service.activities.slice(0, 3).map((activity) => (
+                  <li key={activity} className="border-b border-white/[0.07] py-3 text-sm text-white/60">
+                    {activity}
+                  </li>
+                ))}
+              </ul>
+              <button
+                type="button"
+                onClick={() => setActiveService(service)}
+                className="mt-8 self-start text-[10px] font-black uppercase tracking-[0.22em] text-white transition hover:opacity-60"
+              >
+                Ver alcance
+              </button>
             </motion.article>
           ))}
         </motion.div>
