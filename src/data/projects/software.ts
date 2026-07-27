@@ -1,5 +1,5 @@
 import n8nLogo from "@/assets/logos/n8n logo.png";
-import pichangaAppLogo from "@/assets/logos/pichangapplogo.png";
+import cuadraiAppLogo from "@/assets/logos/cuadrailogo.png";
 import mobileAppImage from "@/assets/illustrations/mobileapp.png";
 import webAppImage from "@/assets/illustrations/webapp.png";
 import type { ProjectCardData } from "@/data/projects/types";
@@ -64,21 +64,21 @@ export const softwareProjects: ProjectCardData[] = [
   },
   {
     id: "pichangapp",
-    title: "Plataforma de alquiler de canchas",
-    tag: "Reservas online",
+    title: "CUADRAI",
+    tag: "Alquiler de canchas",
     description:
-      "Sistema de reservas con disponibilidad en tiempo real, pagos y control operativo.",
+      "Plataforma para alquilar canchas deportivas, consultar disponibilidad y gestionar reservas desde una experiencia móvil.",
     detail:
-      "Plataforma de gestión para canchas deportivas que permite controlar reservas, disponibilidad en tiempo real, pagos y administración de usuarios. Incluye módulos para horarios, pagos y reportes operativos.",
-    techTags: ["React", "Spring Boot", "MySQL", "Microservices"],
+      "CUADRAI es una plataforma de alquiler de canchas deportivas con disponibilidad, reservas y gestión operativa. Fue desarrollada con Python para la lógica de la plataforma y React Native para la experiencia móvil.",
+    techTags: ["Python", "React Native"],
     detailImagesKey: "pichangapp",
     highlights: [
-      "Calendario de reservas y pagos",
-      "Gestión de clientes y membresías",
-      "Reportes de ocupación",
+      "Disponibilidad de canchas en tiempo real",
+      "Reservas desde la app móvil",
+      "Gestión operativa de espacios deportivos",
     ],
-    image: pichangaAppLogo,
-    imageAlt: "Pichanga app",
+    image: cuadraiAppLogo,
+    imageAlt: "Logo de CUADRAI",
     accent: "#7fb7ff",
   },
 ];

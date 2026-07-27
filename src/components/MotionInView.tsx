@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, type Variants } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import { twMerge } from "tailwind-merge";
 import type { ReactNode } from "react";
 
@@ -9,6 +10,7 @@ type MotionInViewProps = {
   className?: string;
   delay?: number;
   y?: number;
+  x?: number;
 };
 
 export const MotionInView = ({
@@ -16,26 +18,31 @@ export const MotionInView = ({
   className,
   delay = 0,
   y = 24,
-}: MotionInViewProps) => (
-  <motion.div
-    className={twMerge(className)}
-    initial={{ opacity: 0, y }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-48px" }}
-    transition={{
-      duration: 0.55,
-      delay,
-      ease: [0.22, 1, 0.36, 1],
-    }}
-  >
-    {children}
-  </motion.div>
-);
+  x = 0,
+}: MotionInViewProps) => {
+  const prefersReducedMotion = useHydratedReducedMotion();
+
+  return (
+    <motion.div
+      className={twMerge(className)}
+      initial={prefersReducedMotion ? false : { opacity: 0, y, x }}
+      whileInView={{ opacity: 1, y: 0, x: 0 }}
+      viewport={{ once: true, margin: "-64px" }}
+      transition={{
+        duration: 0.72,
+        delay,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 export const staggerContainer: Variants = {
   hidden: {},
   show: {
-    transition: { staggerChildren: 0.08, delayChildren: 0.05 },
+    transition: { staggerChildren: 0.1, delayChildren: 0.06 },
   },
 };
 
@@ -44,6 +51,6 @@ export const staggerItem: Variants = {
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.56, ease: [0.22, 1, 0.36, 1] },
   },
 };

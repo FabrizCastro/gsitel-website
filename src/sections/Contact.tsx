@@ -92,17 +92,17 @@ const ContactBackground = ({
           <GalaxyComponent
             mouseRepulsion
             mouseInteraction
-            density={1}
-            glowIntensity={0.3}
+            density={0.55}
+            glowIntensity={0.2}
             saturation={0}
             hueShift={140}
-            twinkleIntensity={0.3}
-            rotationSpeed={0.1}
-            repulsionStrength={2}
+            twinkleIntensity={0.18}
+            rotationSpeed={0.05}
+            repulsionStrength={1.2}
             autoCenterRepulsion={0}
-            starSpeed={0.5}
-            speed={1}
-            className="opacity-70"
+            starSpeed={0.3}
+            speed={0.55}
+            className="opacity-40"
           />
         )
       )}
@@ -131,10 +131,10 @@ export const Contact = ({ mode }: { mode: SiteMode }) => {
   return (
     <section
       id="contacto"
-      className="relative bg-transparent px-4 section-shell scroll-mt-24 sm:px-6 md:scroll-mt-28"
+      className="quiet-section quiet-section-dark relative bg-transparent px-4 section-shell scroll-mt-24 sm:px-6 md:scroll-mt-28"
     >
       <div
-        className={`relative mx-auto max-w-4xl overflow-hidden rounded-[2rem] p-6 text-center shadow-[0_0_60px_rgba(47,158,219,0.28)] sm:p-8 md:p-10 ${
+        className={`quiet-card-dark relative mx-auto max-w-4xl overflow-hidden rounded-[2rem] p-6 text-center sm:p-8 md:p-10 ${
           isTelecom
             ? "bg-gradient-to-br from-[#211203] via-[#7a470d] to-[#1b5aa6]"
             : "bg-gradient-to-br from-[#0b1f3a] via-[#0d3b7a] to-[#1b5aa6]"

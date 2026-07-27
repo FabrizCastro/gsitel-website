@@ -9,19 +9,93 @@ import {
 } from "@/data/telecomCapabilities";
 import { SECTOR_DATA, SOFTWARE_SECTORS } from "@/data/sectorData";
 import { AppModal } from "@/components/AppModal";
-import { MotionInView, staggerContainer, staggerItem } from "@/components/MotionInView";
+import { MotionInView } from "@/components/MotionInView";
 import { getModeTheme } from "@/lib/modeTheme";
 import { renderRoadmapIcon } from "@/lib/roadmapIcons";
 import type { SiteMode } from "@/lib/siteMode";
-import { Antenna, Brain, Gauge, Rocket, type LucideIcon } from "lucide-react";
+import {
+  Antenna,
+  Brain,
+  Gauge,
+  Mail,
+  Rocket,
+  type LucideIcon,
+} from "lucide-react";
 import { motion } from "framer-motion";
-import { type ReactNode, useCallback, useState } from "react";
+import { type ReactNode, useCallback, useEffect, useState } from "react";
+import Image, { type StaticImageData } from "next/image";
+import strategyAiAnalysis from "@/assets/illustrations/strategy-ai-analysis.png";
+import strategyDashboards from "@/assets/illustrations/strategy-dashboards.png";
+import strategyWorkflows from "@/assets/illustrations/strategy-workflows.png";
 
 type ActiveDetail = {
   label: string;
   categoryLabel: string;
   solutions: DetailConfig["solutions"];
   roadmap: { step: string; title: string; desc: string; icon: ReactNode }[];
+};
+
+type ProposalSlide = {
+  eyebrow: string;
+  title: string;
+  body: string;
+};
+
+const buildProposalSlides = (
+  title: string,
+  solutionNames: string[],
+  roadmapTitle?: string,
+): ProposalSlide[] => [
+  {
+    eyebrow: "01 · Contexto",
+    title,
+    body: `Una propuesta diseñada para ordenar la operación de ${title.toLowerCase()}.`,
+  },
+  {
+    eyebrow: "02 · Solución",
+    title: solutionNames[0] ?? "Diagnóstico operativo",
+    body: "Priorizamos el proceso que genera mayor fricción y lo convertimos en una experiencia medible.",
+  },
+  {
+    eyebrow: "03 · Integración",
+    title: solutionNames[1] ?? "Flujos conectados",
+    body: "Conectamos las herramientas existentes para evitar tareas manuales y datos dispersos.",
+  },
+  {
+    eyebrow: "04 · Ruta",
+    title: roadmapTitle ?? "Implementación gradual",
+    body: "Definimos una implementación progresiva con hitos claros para el equipo.",
+  },
+  {
+    eyebrow: "05 · Siguiente paso",
+    title: "Hablemos de tu operación",
+    body: "Cuéntanos el reto y armamos una primera propuesta para tu caso.",
+  },
+];
+
+const businessCaseImages: Record<string, string> = {
+  Restaurantes: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80",
+  Comercio: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=80",
+  "Estudios Contables": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=900&q=80",
+  Logística: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=80",
+  Belleza: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=900&q=80",
+  Marketing: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=80",
+  Salud: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=900&q=80",
+  Educación: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80",
+  Manufactura: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=900&q=80",
+};
+
+const phase2GraphicImages = {
+  software: [
+    strategyWorkflows,
+    strategyAiAnalysis,
+    strategyDashboards,
+  ],
+  telecom: [
+    "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=80",
+    "https://images.unsplash.com/photo-1551808525-51a94da548ce?auto=format&fit=crop&w=900&q=80",
+  ],
 };
 
 const PhaseIcon = ({
@@ -34,14 +108,17 @@ const PhaseIcon = ({
 
 export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
   const [activeDetail, setActiveDetail] = useState<ActiveDetail | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activePhase, setActivePhase] = useState<1 | 2>(1);
   const theme = getModeTheme(mode);
   const phase2Features = theme.isTelecom
     ? TELECOM_PHASE2_FEATURES
     : SOFTWARE_PHASE2_FEATURES;
+  const phase2Images = theme.isTelecom
+    ? phase2GraphicImages.telecom
+    : phase2GraphicImages.software;
   const sectorCount = theme.isTelecom
     ? TELECOM_CAPABILITIES.length
-    : SOFTWARE_SECTORS.length;
+    : SOFTWARE_SECTORS.length - 1;
 
   const openSoftwareSector = useCallback((title: string) => {
     const sector = SECTOR_DATA[title];
@@ -58,7 +135,6 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
         icon: renderRoadmapIcon(step.iconKey),
       })),
     });
-    setIsModalOpen(true);
   }, []);
 
   const openTelecomCapability = useCallback((title: string) => {
@@ -76,48 +152,63 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
         icon: renderRoadmapIcon(step.iconKey),
       })),
     });
-    setIsModalOpen(true);
   }, []);
 
   const closeModal = () => {
-    setIsModalOpen(false);
     setActiveDetail(null);
   };
 
   const sectorItems = theme.isTelecom
-    ? TELECOM_CAPABILITIES.map((item) => ({
-        badge: item.icon,
-        title: item.title,
-        onClick: () => openTelecomCapability(item.title),
-      }))
-    : SOFTWARE_SECTORS.map((item) => ({
-        badge: item.icon,
-        title: item.title,
-        onClick: () => openSoftwareSector(item.title),
-      }));
+    ? TELECOM_CAPABILITIES.map((item) => {
+        const detail = TELECOM_CAPABILITY_DATA[item.title];
+        return {
+          badge: item.icon,
+          title: item.title,
+          image: undefined,
+          slides: buildProposalSlides(
+            item.title,
+            detail?.solutions.map((solution) => solution.name) ?? [],
+            detail?.roadmap[0]?.title,
+          ),
+        };
+      })
+    : SOFTWARE_SECTORS.filter((item) => item.title !== "Salud").map((item) => {
+        const detail = SECTOR_DATA[item.title];
+        return {
+          badge: item.icon,
+          title: item.title,
+          image: businessCaseImages[item.title],
+          slides: buildProposalSlides(
+            item.title,
+            detail?.solutions.map((solution) => solution.name) ?? [],
+            detail?.roadmap[0]?.title,
+          ),
+        };
+      });
 
   return (
     <section
       id="digitalizacion"
-      className="relative bg-transparent px-4 pb-12 pt-4 scroll-mt-24 sm:px-6 sm:pb-16 sm:pt-5 md:scroll-mt-28"
+      className="quiet-section quiet-surface relative bg-transparent px-4 pb-20 pt-14 scroll-mt-24 sm:px-6 sm:pb-28 sm:pt-20 md:scroll-mt-28"
     >
+      <div className="quiet-texture pointer-events-none absolute inset-0 opacity-25" />
       <div className="mx-auto max-w-7xl">
-        <MotionInView className="mb-12 flex flex-col gap-5 lg:mb-16 lg:flex-row lg:items-end lg:justify-between">
-          <div className="max-w-2xl">
+        <MotionInView className="mb-12 max-w-3xl lg:mb-16">
+          <div>
             <div className="flex flex-wrap items-center gap-2">
-              <p className="section-eyebrow-dark">
+              <p className="section-eyebrow-light">
                 {theme.isTelecom ? "Estrategia de Red" : "Estrategia de Crecimiento"}
               </p>
-              <span className="border-l border-white/15 pl-3 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-500">
+              <span className="border-l border-[#0b1d3a]/15 pl-3 text-[10px] font-bold uppercase tracking-[0.16em] text-[#0b1d3a]/50">
                 2 fases · {sectorCount} {theme.isTelecom ? "capacidades" : "sectores"}
               </span>
             </div>
-            <h2 className="section-title-dark">
+            <h2 className="section-title-light max-w-3xl sm:text-4xl lg:text-5xl">
               {theme.isTelecom
                 ? "Estrategia para redes de misión crítica"
                 : "Estrategia digital orientada a resultados"}
             </h2>
-            <p className="section-desc-dark">
+            <p className="section-desc-light max-w-2xl text-base sm:text-lg">
               {theme.isTelecom
                 ? "Planificación, despliegue y optimización con control técnico de principio a fin."
                 : "Diagnóstico, implementación y evolución tecnológica con objetivos verificables."}
@@ -126,18 +217,13 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
         </MotionInView>
 
         <motion.div
-          className="relative grid gap-12 border-y border-white/10 py-10 lg:grid-cols-2 lg:gap-0 lg:py-12"
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
+          className="relative left-1/2 flex w-screen max-w-[100vw] -translate-x-1/2 flex-col gap-4 overflow-hidden border-y border-[#0b1d3a]/[0.06] px-4 py-8 sm:px-6 lg:flex-row lg:px-10 lg:py-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div
-            className="pointer-events-none absolute left-1/2 top-0 hidden h-full w-px bg-white/10 lg:block"
-            aria-hidden="true"
-          />
-
-          <PhaseCard
+          <StrategyPhase
             phase="01"
             title={theme.isTelecom ? "Desplegar" : "Iniciar"}
             subtitle={theme.isTelecom ? "Integración RAN" : "Digitalización integral"}
@@ -148,30 +234,106 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
             }
             icon={
               theme.isTelecom ? (
-                <PhaseIcon icon={Antenna} className="h-7 w-7 sm:h-8 sm:w-8" />
+                <PhaseIcon icon={Antenna} className="h-8 w-8 sm:h-9 sm:w-9" />
               ) : (
-                <PhaseIcon icon={Rocket} className="h-7 w-7 sm:h-8 sm:w-8" />
+                <PhaseIcon icon={Rocket} className="h-8 w-8 sm:h-9 sm:w-9" />
               )
             }
             iconClass={theme.phase1Icon}
             borderClass={theme.phase1Border}
             glowClass={theme.phase1Glow}
             accentRgb={theme.accentRgb}
-          >
-            <div className="flex flex-wrap gap-2">
+            expanded={activePhase === 1}
+            onExpand={() => setActivePhase(1)}
+            >
+            <div className="mb-6 text-center">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-white sm:text-sm">
+                Explora todos los casos
+              </p>
+              <p className="mt-2 text-xs leading-5 text-slate-400">
+                Desliza para explorar y cuéntanos el reto de tu operación.
+              </p>
+            </div>
+            <div className="-mt-3 flex max-w-full snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-5 pt-3 pr-3 [scrollbar-width:thin]">
               {sectorItems.map((item) => (
-                <SectorChip
+                <BusinessCaseCard
                   key={item.title}
-                  badge={item.badge}
                   title={item.title}
+                  image={item.image}
                   accentRgb={theme.accentRgb}
-                  onClick={item.onClick}
+                  slides={item.slides}
                 />
               ))}
             </div>
-          </PhaseCard>
+            {activeDetail && (
+              <motion.div
+                layout
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="relative mt-6 hidden overflow-hidden rounded-2xl border border-white/15 bg-white/[0.055] p-5 shadow-[0_18px_38px_rgba(0,0,0,0.16)] sm:p-6"
+              >
+                <div
+                  className="pointer-events-none absolute -right-10 -top-10 h-36 w-36 rounded-full blur-3xl"
+                  style={{ background: `rgba(${theme.accentRgb}, 0.22)` }}
+                />
+                <div className="relative flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-[0.22em]" style={{ color: theme.accent }}>
+                      Caso seleccionado
+                    </p>
+                    <h4 className="mt-2 text-xl font-black tracking-tight text-white sm:text-2xl">
+                      {activeDetail.label}
+                    </h4>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white transition hover:rotate-90 hover:bg-white/12"
+                    aria-label="Cerrar detalle"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div className="relative mt-5 grid gap-5 md:grid-cols-2">
+                  <div>
+                    <p className="mb-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Soluciones</p>
+                    <div className="space-y-2">
+                      {activeDetail.solutions.map((solution) => (
+                        <a
+                          key={solution.name}
+                          href={solution.link}
+                          target={solution.link.startsWith("#") ? undefined : "_blank"}
+                          rel={solution.link.startsWith("#") ? undefined : "noreferrer"}
+                          className="block rounded-xl border border-white/[0.08] bg-black/10 px-4 py-3 transition hover:border-white/20 hover:bg-white/[0.05]"
+                        >
+                          <span className="block text-sm font-bold text-white">{solution.name}</span>
+                          <span className="mt-1 block text-xs leading-5 text-slate-400">{solution.summary}</span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="mb-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Ruta sugerida</p>
+                    <div className="space-y-2">
+                      {activeDetail.roadmap.map((step) => (
+                        <div key={step.step} className="flex gap-3 rounded-xl border border-white/[0.08] bg-black/10 p-3">
+                          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border text-sm text-white" style={{ borderColor: `rgba(${theme.accentRgb}, 0.35)`, background: `rgba(${theme.accentRgb}, 0.12)` }}>
+                            {step.icon}
+                          </span>
+                          <div>
+                            <p className="text-xs font-bold text-white">{step.title}</p>
+                            <p className="mt-1 text-xs leading-5 text-slate-400">{step.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </StrategyPhase>
 
-          <PhaseCard
+          <StrategyPhase
             phase="02"
             title={theme.isTelecom ? "Optimizar" : "Evolucionar"}
             subtitle={theme.isTelecom ? "OyM & Automatización" : "IA & Automatización"}
@@ -182,17 +344,19 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
             }
             icon={
               theme.isTelecom ? (
-                <PhaseIcon icon={Gauge} className="h-7 w-7 sm:h-8 sm:w-8" />
+                <PhaseIcon icon={Gauge} className="h-8 w-8 sm:h-9 sm:w-9" />
               ) : (
-                <PhaseIcon icon={Brain} className="h-7 w-7 sm:h-8 sm:w-8" />
+                <PhaseIcon icon={Brain} className="h-8 w-8 sm:h-9 sm:w-9" />
               )
             }
             iconClass={theme.phase2Icon}
             borderClass={theme.phase2Border}
             glowClass={theme.phase1Glow}
             accentRgb={theme.accentRgb}
+            expanded={activePhase === 2}
+            onExpand={() => setActivePhase(2)}
           >
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-3">
               {phase2Features.map((feature, index) => (
                 <FeatureItem
                   key={feature.title}
@@ -200,29 +364,33 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
                   title={feature.title}
                   desc={feature.desc}
                   accentRgb={theme.accentRgb}
+                  graphic={phase2Images[index % phase2Images.length]}
                 />
               ))}
             </div>
-          </PhaseCard>
+          </StrategyPhase>
         </motion.div>
       </div>
 
       <AppModal
-        isOpen={isModalOpen && !!activeDetail}
+        isOpen={false}
         onClose={closeModal}
         ariaLabel={activeDetail ? `Detalles de ${activeDetail.label}` : "Detalles"}
-        panelClassName="glass-panel border-white/15 p-6 sm:p-10"
+        maxWidth="4xl"
+        panelClassName="overflow-hidden border-white/15 bg-[#071426]/95 p-0"
       >
         {activeDetail && (
-          <>
+          <div className="relative">
             <div
-              className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full blur-3xl"
+              className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full blur-3xl"
               style={{
                 background: `radial-gradient(circle, rgba(${theme.accentRgb}, 0.2), transparent 70%)`,
               }}
             />
 
-            <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div className="relative overflow-hidden border-b border-white/10 px-6 pb-7 pt-8 sm:px-10 sm:pb-8 sm:pt-10">
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <span
                   className="text-[10px] font-black uppercase tracking-[0.3em]"
@@ -237,15 +405,16 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
               <button
                 type="button"
                 onClick={closeModal}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white transition hover:bg-white/12"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/[0.06] text-white transition hover:rotate-90 hover:bg-white/12"
                 aria-label="Cerrar"
               >
                 ✕
               </button>
+              </div>
             </div>
 
-            <div className="relative mt-8 grid gap-8 md:grid-cols-2">
-              <div>
+            <div className="relative grid gap-5 px-6 py-7 sm:px-10 sm:py-9 md:grid-cols-2 md:gap-6">
+              <div className="rounded-2xl border border-white/[0.08] bg-white/[0.035] p-5 sm:p-6">
                 <h4 className="mb-4 text-xs font-black uppercase tracking-[0.24em] text-slate-400">
                   Soluciones sugeridas
                 </h4>
@@ -271,7 +440,7 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
                   ))}
                 </ul>
               </div>
-              <div>
+              <div className="rounded-2xl border border-white/[0.08] bg-white/[0.035] p-5 sm:p-6">
                 <h4 className="mb-4 text-xs font-black uppercase tracking-[0.24em] text-slate-400">
                   Roadmap recomendado
                 </h4>
@@ -303,7 +472,7 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
               </div>
             </div>
 
-            <div className="relative mt-10 flex flex-col gap-3 sm:flex-row">
+            <div className="relative flex flex-col gap-3 border-t border-white/10 bg-black/10 px-6 py-5 sm:flex-row sm:px-10">
               <button type="button" onClick={closeModal} className="btn-ghost-light flex-1 sm:flex-none">
                 Cerrar
               </button>
@@ -316,14 +485,14 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
                 Agendar reunión
               </a>
             </div>
-          </>
+          </div>
         )}
       </AppModal>
     </section>
   );
 };
 
-function PhaseCard({
+function StrategyPhase({
   phase,
   title,
   subtitle,
@@ -333,6 +502,8 @@ function PhaseCard({
   borderClass,
   glowClass,
   accentRgb,
+  expanded,
+  onExpand,
   children,
 }: {
   phase: string;
@@ -344,75 +515,151 @@ function PhaseCard({
   borderClass: string;
   glowClass: string;
   accentRgb: string;
+  expanded: boolean;
+  onExpand: () => void;
   children: ReactNode;
 }) {
   return (
     <motion.article
-      variants={staggerItem}
-      className={`relative px-0 lg:px-10 lg:first:pl-0 lg:last:pr-0 ${borderClass}`}
+      layout
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      className={`quiet-card-dark relative min-w-0 overflow-hidden rounded-[2rem] border p-5 transition-all duration-500 sm:p-7 lg:min-h-[34rem] lg:p-9 ${
+        expanded ? "w-full lg:basis-[calc(86%-0.5rem)]" : "lg:basis-[calc(14%-0.5rem)]"
+      } ${borderClass} ${glowClass} ${
+        expanded
+          ? "border-white/70 ring-1 ring-white/20 shadow-[0_18px_45px_rgba(0,0,0,0.2)]"
+          : "border-white/10 hover:border-white/30"
+      }`}
     >
-      <div className="relative flex items-center gap-4">
-        <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.03] ${iconClass.replace(/bg-gradient[^ ]*|from-[^ ]*|to-[^ ]*|shadow-\[[^\]]*\]/g, "")}`}>
-          {icon}
+      <div className={expanded ? "relative" : "relative lg:hidden"}>
+        <div className="flex items-center gap-4">
+          <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] ${iconClass.replace(/bg-gradient[^ ]*|from-[^ ]*|to-[^ ]*|shadow-\[[^\]]*\]/g, "")}`}>
+            {icon}
+          </div>
+          <div className="min-w-0 flex-1">
+            <span
+              className="rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.22em]"
+              style={{
+                color: `rgb(${accentRgb})`,
+                background: `rgba(${accentRgb}, 0.12)`,
+                border: `1px solid rgba(${accentRgb}, 0.25)`,
+              }}
+            >
+              Fase {phase}
+            </span>
+            <h3 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">
+              {title}
+            </h3>
+            <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 sm:text-[11px]">
+              {subtitle}
+            </p>
+          </div>
         </div>
-        <div className="min-w-0 flex-1">
-          <span
-            className="rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.24em]"
-            style={{
-              color: `rgb(${accentRgb})`,
-              background: `rgba(${accentRgb}, 0.12)`,
-              border: `1px solid rgba(${accentRgb}, 0.25)`,
-            }}
-          >
-            Fase {phase}
-          </span>
-          <h3 className="mt-2 text-xl font-black tracking-tight text-white sm:text-2xl">
-            {title}
-          </h3>
-          <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-slate-500">
-            {subtitle}
-          </p>
-        </div>
+
+        <p className="mt-6 max-w-xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
+          {description}
+        </p>
       </div>
 
-      <p className="relative mt-5 max-w-lg text-sm leading-7 text-slate-400">
-        {description}
-      </p>
+      <button
+        type="button"
+        onClick={onExpand}
+        className={`hidden h-full min-h-[28rem] w-full flex-col items-start justify-between text-left lg:flex ${
+          expanded ? "lg:hidden" : ""
+        }`}
+        aria-label={`Expandir fase ${phase}: ${title}`}
+      >
+        <div className={`flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.03] ${iconClass.replace(/bg-gradient[^ ]*|from-[^ ]*|to-[^ ]*|shadow-\[[^\]]*\]/g, "")}`}>
+          {icon}
+        </div>
+        <div>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: `rgb(${accentRgb})` }}>
+            Fase {phase}
+          </p>
+          <p className="mt-3 text-2xl font-black leading-tight text-white">{title}</p>
+          <p className="mt-4 text-[10px] font-bold uppercase tracking-[0.16em] text-white/50">Expandir</p>
+        </div>
+      </button>
 
-      <div className="relative mt-7">{children}</div>
+      <div className={expanded ? "relative mt-9" : "relative mt-9 lg:hidden"}>{children}</div>
     </motion.article>
   );
 }
 
-function SectorChip({
-  badge,
+function BusinessCaseCard({
   title,
+  image,
   accentRgb,
-  onClick,
+  slides,
 }: {
-  badge: string;
   title: string;
+  image?: string;
   accentRgb: string;
-  onClick?: () => void;
+  slides: ProposalSlide[];
 }) {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % slides.length);
+    }, 4200);
+
+    return () => window.clearInterval(timer);
+  }, [slides.length]);
+
+  const slide = slides[activeSlide];
+
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="inline-flex w-full items-center gap-2 border-b border-white/10 px-0 py-2.5 text-left transition hover:border-white/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/30 sm:w-auto sm:min-w-40"
+    <article
+      className="group relative flex min-h-[330px] min-w-[235px] snap-start flex-col overflow-hidden rounded-[1.6rem] border border-white/10 bg-[linear-gradient(160deg,#101f35,#0b1729)] p-4 text-left shadow-[0_18px_48px_rgba(0,0,0,0.2)] transition duration-500 hover:-translate-y-1 hover:border-white/25 hover:shadow-[0_28px_62px_rgba(0,0,0,0.28)] sm:min-h-[360px] sm:min-w-[260px]"
     >
+      <div className="relative h-28 overflow-hidden rounded-[1.15rem] bg-[#17243b] sm:h-32">
+        {image ? (
+          <Image
+            src={image}
+            alt={`Caso de negocio para ${title}`}
+            fill
+            sizes="260px"
+            className={`object-cover transition duration-700 group-hover:scale-105 ${["-rotate-2 scale-110", "rotate-2 scale-110", "-rotate-1 scale-115", "rotate-3 scale-110", "rotate-0 scale-105"][activeSlide]}`}
+          />
+        ) : (
+          <div className={`absolute inset-[-8%] transition-transform duration-700 ${["-rotate-3", "rotate-3", "-rotate-1 scale-110", "rotate-2", "rotate-0"][activeSlide]} bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.18),transparent_42%),linear-gradient(135deg,#081d3f,#020408)]`} />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#081326]/70 via-transparent to-transparent" />
+      </div>
+      <div className="mt-4 flex flex-1 flex-col">
+        <span className="text-[9px] font-black uppercase tracking-[0.18em]" style={{ color: `rgb(${accentRgb})` }}>
+          {slide.eyebrow}
+        </span>
+        <h4 className="mt-2 text-lg font-black leading-tight tracking-tight text-white">{slide.title}</h4>
+        <p className="mt-2 text-xs leading-5 text-slate-400">{slide.body}</p>
+        <div className="mt-auto flex items-center justify-between gap-3 pt-4">
+          <div className="flex gap-1.5" aria-label={`Pantalla ${activeSlide + 1} de ${slides.length}`}>
+            {slides.map((item, index) => (
+              <button
+                key={item.eyebrow}
+                type="button"
+                onClick={() => setActiveSlide(index)}
+                className={`h-1.5 rounded-full transition-all ${index === activeSlide ? "w-5 bg-white" : "w-1.5 bg-white/30 hover:bg-white/60"}`}
+                aria-label={`Ver pantalla ${index + 1}`}
+              />
+            ))}
+          </div>
+          <a
+            href={`mailto:soporte@gsitel-solutions.com?subject=${encodeURIComponent(`Propuesta para ${title}`)}`}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#0b1d3a] transition hover:scale-105 hover:bg-[#dff7ff]"
+            aria-label={`Escribir sobre el caso ${title}`}
+          >
+            <Mail className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
+          </a>
+        </div>
+      </div>
       <span
-        className="flex h-6 w-6 shrink-0 items-center justify-center text-[9px] font-black uppercase"
-        style={{
-          color: `rgb(${accentRgb})`,
-        }}
-      >
-        {badge}
-      </span>
-      <span className="text-[11px] font-bold uppercase tracking-tight text-white">
-        {title}
-      </span>
-    </button>
+        className="absolute right-7 top-7 h-2 w-2 rounded-full opacity-0 transition group-hover:opacity-100"
+        style={{ backgroundColor: `rgb(${accentRgb})` }}
+        aria-hidden="true"
+      />
+    </article>
   );
 }
 
@@ -421,30 +668,44 @@ function FeatureItem({
   title,
   desc,
   accentRgb,
+  graphic,
 }: {
   index: number;
   title: string;
   desc: string;
   accentRgb: string;
+  graphic: string | StaticImageData;
 }) {
   return (
-    <div className="flex gap-3 border-t border-white/[0.08] py-3">
-      <div
-        className="flex h-8 w-8 shrink-0 items-center justify-center text-[10px] font-black"
-        style={{
-          color: `rgb(${accentRgb})`,
-        }}
-      >
-        {String(index).padStart(2, "0")}
+    <article className="group overflow-hidden border border-white/10 bg-white/[0.025] transition hover:border-white/25 hover:bg-white/[0.04]">
+      <div className="relative aspect-[1.55/1] overflow-hidden">
+        <Image
+          src={graphic}
+          alt=""
+          fill
+          sizes="(min-width: 640px) 24vw, 100vw"
+          className="object-cover transition duration-500 group-hover:scale-105"
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(135deg, rgba(${accentRgb}, 0.14), rgba(3, 12, 28, 0.45))`,
+          }}
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_30%,rgba(2,4,8,0.7)_100%)]" />
+        <span
+          className="absolute left-4 top-4 text-xs font-black"
+          style={{ color: `rgb(${accentRgb})` }}
+        >
+          {String(index).padStart(2, "0")}
+        </span>
       </div>
-      <div className="min-w-0">
-        <h4 className="text-xs font-black uppercase tracking-tight text-white sm:text-sm">
+      <div className="p-4 sm:p-5">
+        <h4 className="text-sm font-black uppercase tracking-tight text-white sm:text-base">
           {title}
         </h4>
-        <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-slate-500">
-          {desc}
-        </p>
+        <p className="mt-2 text-sm leading-6 text-slate-400">{desc}</p>
       </div>
-    </div>
+    </article>
   );
 }

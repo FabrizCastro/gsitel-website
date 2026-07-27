@@ -2,8 +2,8 @@
 
 import Logo from "@/assets/logos/gsitel_services.png";
 import Image from "next/image";
-import MenuIcon from "@/assets/icons/menu.svg";
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { SiteMode } from "@/lib/siteMode";
 
@@ -82,28 +82,26 @@ export const Header = ({ mode, onModeChange }: HeaderProps) => {
   useEffect(() => {
     if (!isMenuOpen) return;
     const handleResize = () => {
-      if (window.innerWidth >= 768) setIsMenuOpen(false);
+      if (window.innerWidth >= 1201) setIsMenuOpen(false);
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, [isMenuOpen]);
 
   return (
-    <header className="fixed top-0 left-0 z-20 w-full">
+    <header className="fixed left-0 top-0 z-20 w-full">
       <div
-        className={`border-b transition-all duration-300 ${
+        className={`border-b bg-[rgba(8,22,48,0.92)] backdrop-blur-xl transition-all duration-500 ${
           isAtTop
-            ? "border-transparent bg-transparent"
-            : isTelecom
-              ? "border-amber-200/15 bg-[linear-gradient(90deg,rgba(5,5,6,0.94),rgba(35,19,7,0.9),rgba(83,45,14,0.86))] shadow-[0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-xl"
-              : "border-cyan-200/10 bg-[rgba(8,22,48,0.88)] shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-xl"
+            ? "border-white/[0.06]"
+            : "border-cyan-200/10 shadow-[0_14px_44px_rgba(4,14,32,0.24)]"
         }`}
       >
-        <div className="container py-3 md:py-3.5">
+        <div className="mx-auto w-full max-w-[1440px] px-4 py-3 sm:px-6 md:py-3.5 xl:px-10">
           <div className="flex items-center justify-between gap-4">
             <Link
               href="/#acerca"
-              className="group flex shrink-0 items-center rounded-xl border border-white/30 bg-white p-2 shadow-[0_4px_20px_rgba(0,0,0,0.25)] transition hover:shadow-[0_6px_28px_rgba(0,0,0,0.35)]"
+              className="group flex shrink-0 items-center rounded-xl border border-white/40 bg-white p-2 shadow-[0_8px_28px_rgba(0,0,0,0.18)] transition duration-500 hover:-translate-y-0.5 hover:shadow-[0_12px_34px_rgba(0,0,0,0.24)]"
               aria-label="Ir al inicio"
             >
               <Image
@@ -117,16 +115,20 @@ export const Header = ({ mode, onModeChange }: HeaderProps) => {
 
             <button
               type="button"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/20 bg-white/10 text-white md:hidden"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/[0.07] text-white transition hover:border-white/30 hover:bg-white/10 min-[1201px]:hidden"
               onClick={() => setIsMenuOpen((prev) => !prev)}
               aria-label="Abrir menú"
               aria-expanded={isMenuOpen}
             >
-              <MenuIcon className="h-5 w-5" />
+              {isMenuOpen ? (
+                <X className="h-5 w-5" aria-hidden="true" />
+              ) : (
+                <Menu className="h-5 w-5" aria-hidden="true" />
+              )}
             </button>
 
             <nav
-              className={`hidden items-center gap-1 rounded-2xl border border-white/10 bg-black/25 px-2 py-1.5 backdrop-blur-md md:flex ${
+              className={`hidden items-center gap-1 rounded-2xl border border-white/10 bg-black/20 px-2 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-md min-[1201px]:flex ${
                 isAtTop ? "text-shadow-hero" : ""
               }`}
             >
@@ -134,7 +136,7 @@ export const Header = ({ mode, onModeChange }: HeaderProps) => {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="rounded-xl px-3.5 py-2 text-sm font-medium text-white/80 transition hover:bg-white/10 hover:text-white"
+                  className="rounded-xl px-3.5 py-2 text-sm font-medium text-white/76 transition duration-300 hover:bg-white/[0.07] hover:text-white"
                 >
                   {link.label}
                 </Link>
@@ -146,11 +148,11 @@ export const Header = ({ mode, onModeChange }: HeaderProps) => {
           </div>
 
           <div
-            className={`md:hidden transition-all duration-300 ${
+            className={`min-[1201px]:hidden transition-all duration-300 ${
               isMenuOpen ? "max-h-[28rem] opacity-100" : "max-h-0 opacity-0"
             } overflow-hidden`}
           >
-            <nav className="mt-3 flex flex-col gap-1 rounded-2xl border border-white/15 bg-[rgba(8,20,42,0.92)] p-3 text-white/90 backdrop-blur-xl">
+            <nav className="mt-3 flex flex-col gap-1 rounded-2xl border border-white/12 bg-[rgba(8,20,42,0.97)] p-3 text-white/90 shadow-[0_24px_60px_rgba(0,0,0,0.26)] backdrop-blur-2xl">
               <div className="mb-2 flex justify-center">
                 <ModeToggle mode={activeMode} onModeChange={handleModeChange} />
               </div>
@@ -171,11 +173,7 @@ export const Header = ({ mode, onModeChange }: HeaderProps) => {
 
       {isAtTop && (
         <div
-          className={`hidden border-b text-center md:block ${
-            isTelecom
-              ? "border-amber-200/10 bg-[rgba(30,18,6,0.55)] text-amber-100/80"
-              : "border-cyan-200/10 bg-[rgba(6,18,40,0.55)] text-cyan-100/75"
-          } backdrop-blur-sm`}
+          className="hidden border-b border-cyan-200/10 bg-[rgba(6,18,40,0.55)] text-center text-cyan-100/75 backdrop-blur-sm md:block"
         >
           <p className="container py-2 text-xs font-semibold tracking-wide">
             {isTelecom

@@ -10,6 +10,7 @@ import avatar8 from "@/assets/avatars/avatar-8.png";
 import avatar9 from "@/assets/avatars/avatar-9.png";
 import type { SiteMode } from "@/lib/siteMode";
 import { motion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
 import Image from "next/image";
 import React from "react";
 
@@ -102,14 +103,16 @@ const TestimonialsColumn = ({
   className,
   testimonials,
   duration = 16,
+  reduceMotion = false,
 }: {
   className?: string;
   testimonials: Testimonial[];
   duration?: number;
+  reduceMotion?: boolean;
 }) => (
   <div className={className}>
     <motion.div
-      animate={{ translateY: "-50%" }}
+      animate={reduceMotion ? undefined : { translateY: "-50%" }}
       transition={{
         duration,
         repeat: Infinity,
@@ -118,12 +121,12 @@ const TestimonialsColumn = ({
       }}
       className="flex flex-col gap-4 pb-4"
     >
-      {[0, 1].map((index) => (
+      {(reduceMotion ? [0] : [0, 1]).map((index) => (
         <React.Fragment key={index}>
           {testimonials.map(({ text, imageSrc, name, role, tag }) => (
             <article
               key={`${name}-${role}-${index}`}
-              className="relative overflow-hidden rounded-2xl border border-white/70 bg-white/92 p-4 shadow-[0_12px_32px_rgba(15,23,42,0.08)] backdrop-blur sm:p-5"
+              className="quiet-card relative overflow-hidden rounded-2xl p-4 transition duration-500 hover:-translate-y-1 hover:shadow-[0_24px_58px_rgba(27,61,107,0.14)] sm:p-5"
             >
               <div className="relative z-10">
                 <div className="flex items-center justify-between gap-2">
@@ -164,6 +167,7 @@ const TestimonialsColumn = ({
 
 export const Testimonials = ({ mode }: { mode: SiteMode }) => {
   const isTelecom = mode === "telecom";
+  const reduceMotion = useHydratedReducedMotion();
   const testimonials = isTelecom ? telecomTestimonials : softwareTestimonials;
   const [firstColumn, secondColumn, thirdColumn] =
     chunkTestimonials(testimonials);
@@ -171,7 +175,7 @@ export const Testimonials = ({ mode }: { mode: SiteMode }) => {
   return (
     <section
       id="clientes"
-      className="relative overflow-hidden bg-[#EAEEFE] px-4 section-shell scroll-mt-24 sm:px-6 md:scroll-mt-28"
+      className="quiet-section quiet-surface relative overflow-hidden px-4 section-shell scroll-mt-24 sm:px-6 md:scroll-mt-28"
     >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(56,189,248,0.12),transparent_45%),radial-gradient(circle_at_80%_80%,rgba(29,78,216,0.1),transparent_45%)]" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-b from-transparent to-[#081d3f]/14" />
@@ -195,12 +199,13 @@ export const Testimonials = ({ mode }: { mode: SiteMode }) => {
         </div>
 
         <div className="mt-8 flex justify-center gap-3 [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)] max-h-[380px] overflow-hidden sm:mt-8 sm:max-h-[480px] sm:gap-5">
-          <TestimonialsColumn testimonials={firstColumn} duration={18} />
+          <TestimonialsColumn testimonials={firstColumn} duration={18} reduceMotion={!!reduceMotion} />
           {secondColumn.length > 0 && (
             <TestimonialsColumn
               testimonials={secondColumn}
               className="hidden md:block"
               duration={22}
+              reduceMotion={!!reduceMotion}
             />
           )}
           {thirdColumn.length > 0 && (
@@ -208,6 +213,7 @@ export const Testimonials = ({ mode }: { mode: SiteMode }) => {
               testimonials={thirdColumn}
               className="hidden lg:block"
               duration={20}
+              reduceMotion={!!reduceMotion}
             />
           )}
         </div>

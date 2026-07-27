@@ -1,348 +1,364 @@
 "use client";
 
-import CheckIcon from "@/assets/icons/check.svg";
+import telecomIntegrations from "@/assets/illustrations/hero-telecom-integrations.png";
+import telecomKpis from "@/assets/illustrations/hero-telecom-kpis.png";
+import telecomMonitoring from "@/assets/illustrations/hero-telecom-monitoring.png";
 import { AppModal } from "@/components/AppModal";
 import { DotGrid } from "@/components/DotGrid";
-import { MotionInView, staggerContainer, staggerItem } from "@/components/MotionInView";
-import type {
-  ProjectCardData,
-  ProjectDetailImage,
-} from "@/data/projects/types";
+import { MotionInView } from "@/components/MotionInView";
+import { getProjectDetailImages } from "@/data/projects/detailImages";
 import { softwareProjects } from "@/data/projects/software";
 import { telecomProjects } from "@/data/projects/telecom";
+import type { ProjectCardData, ProjectDetailImage } from "@/data/projects/types";
 import type { SiteMode } from "@/lib/siteMode";
-import { motion } from "framer-motion";
-import Image, { type StaticImageData } from "next/image";
-import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/useHydratedReducedMotion";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Atom,
+  Boxes,
+  Braces,
+  Check,
+  CircleDot,
+  Code2,
+  Database,
+  Expand,
+  LayoutDashboard,
+  Link2,
+  Monitor,
+  Search,
+  Smartphone,
+  Sprout,
+  Workflow,
+  type LucideIcon,
+} from "lucide-react";
+import Image from "next/image";
+import { useEffect, useState, type CSSProperties } from "react";
 
-const renderTechIcon = (tech: string, sizeClass = "h-3.5 w-3.5") => {
-  const key = tech.toLowerCase();
-  switch (key) {
-    case "python":
-      return (
-        <svg viewBox="0 0 24 24" className={sizeClass} aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M12 3c3.314 0 3 2.238 3 2.238v2.32h-6V5.238S9 3 12 3zm3 6.762H9a3 3 0 0 0-3 3v2.5A3 3 0 0 0 9 18h1.2v-2.4H9a.9.9 0 0 1-.9-.9v-2.5a.9.9 0 0 1 .9-.9h6a.9.9 0 0 1 .9.9v.6H18v-.6a3 3 0 0 0-3-3zM12 21c-3.314 0-3-2.238-3-2.238v-2.32h6v2.32S15 21 12 21z"
-          />
-        </svg>
-      );
-    case "sql":
-    case "mysql":
-      return (
-        <svg viewBox="0 0 24 24" className={sizeClass} aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M12 3C7.582 3 4 4.79 4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7c0-2.21-3.582-4-8-4zm0 2c3.866 0 6 .96 6 2s-2.134 2-6 2-6-.96-6-2 2.134-2 6-2zm0 6c3.866 0 6 .96 6 2s-2.134 2-6 2-6-.96-6-2 2.134-2 6-2zm0 6c3.866 0 6 .96 6 2s-2.134 2-6 2-6-.96-6-2 2.134-2 6-2z"
-          />
-        </svg>
-      );
-    case "react":
-      return (
-        <svg viewBox="0 0 24 24" className={sizeClass} aria-hidden="true">
-          <circle cx="12" cy="12" r="2" fill="currentColor" />
-          <path
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            d="M5 12c2.5-4.33 11.5-4.33 14 0-2.5 4.33-11.5 4.33-14 0z"
-          />
-          <path
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            d="M12 5c4.33 2.5 4.33 11.5 0 14-4.33-2.5-4.33-11.5 0-14z"
-          />
-          <path
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            d="M6.2 7.2c4.2-1.2 8.4 3 7.2 7.2-4.2 1.2-8.4-3-7.2-7.2z"
-          />
-        </svg>
-      );
-    case ".net core":
-      return (
-        <svg viewBox="0 0 24 24" className={sizeClass} aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M12 3a9 9 0 1 0 9 9 9.01 9.01 0 0 0-9-9zm0 3a6 6 0 1 1-6 6 6.01 6.01 0 0 1 6-6zm-1.2 3.5h1.2l2 5h-1.3l-.4-1.1h-1.8l-.4 1.1h-1.3l2-5zm-.2 2.2h1l-.5-1.4z"
-          />
-        </svg>
-      );
-    case "n8n":
-      return (
-        <svg viewBox="0 0 24 24" className={sizeClass} aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M7 5a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm10 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4zM7 15a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm10 0a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"
-          />
-          <path
-            fill="currentColor"
-            d="M9 7h6v2H9zM9 15h6v2H9zM7 9h2v6H7zM15 9h2v6h-2z"
-          />
-        </svg>
-      );
-    case "apis":
-      return (
-        <svg viewBox="0 0 24 24" className={sizeClass} aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M8.5 6a3.5 3.5 0 0 0 0 7H11v-2H8.5a1.5 1.5 0 1 1 0-3H11V6H8.5zm4.5 7h2.5a3.5 3.5 0 0 0 0-7H13v2h2.5a1.5 1.5 0 1 1 0 3H13v2z"
-          />
-          <path fill="currentColor" d="M9 11h6v2H9z" />
-        </svg>
-      );
-    case "ui/ux":
-      return (
-        <svg viewBox="0 0 24 24" className={sizeClass} aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M4 5h16v10H4zM6 7v6h6V7H6zm8 0v2h4V7h-4zm0 4v2h4v-2h-4zM4 17h7v2H4z"
-          />
-        </svg>
-      );
-    case "web design":
-      return (
-        <svg viewBox="0 0 24 24" className={sizeClass} aria-hidden="true">
-          <path fill="currentColor" d="M4 5h16v10H4zM2 17h20v2H2z" />
-        </svg>
-      );
-    case "seo":
-      return (
-        <svg viewBox="0 0 24 24" className={sizeClass} aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M10 4a6 6 0 1 0 3.7 10.7l3.9 3.9 1.4-1.4-3.9-3.9A6 6 0 0 0 10 4zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8z"
-          />
-        </svg>
-      );
-    case "spring boot":
-      return (
-        <svg viewBox="0 0 24 24" className={sizeClass} aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M12 4c-3 2-5 5-5 8a5 5 0 0 0 10 0c0-3-2-6-5-8zm-1 6h2v6h-2z"
-          />
-        </svg>
-      );
-    case "microservices":
-      return (
-        <svg viewBox="0 0 24 24" className={sizeClass} aria-hidden="true">
-          <path
-            fill="currentColor"
-            d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6zM10 10h4v4h-4z"
-          />
-        </svg>
-      );
-    default:
-      return (
-        <svg viewBox="0 0 24 24" className={sizeClass} aria-hidden="true">
-          <circle cx="12" cy="12" r="6" fill="currentColor" />
-        </svg>
-      );
-  }
+const TECH_ICON_MAP: Record<string, LucideIcon> = {
+  python: Braces,
+  sql: Database,
+  mysql: Database,
+  react: Atom,
+  "react native": Smartphone,
+  ".net core": CircleDot,
+  n8n: Workflow,
+  apis: Link2,
+  "ui/ux": LayoutDashboard,
+  "web design": Monitor,
+  seo: Search,
+  "spring boot": Sprout,
+  microservices: Boxes,
 };
 
-const ProjectCard = ({
-  title,
-  desc,
-  tags,
-  techTags,
-  accent,
-  image,
-  imageAlt,
-  tag,
-  onOpen,
-  isSoftware = false,
+const TELECOM_VISUALS: ProjectDetailImage[] = [
+  { src: telecomKpis, alt: "Panel de indicadores y mediciones de telecomunicaciones" },
+  { src: telecomMonitoring, alt: "Monitoreo técnico de proyectos de telecomunicaciones" },
+  { src: telecomIntegrations, alt: "Integraciones de tecnologías móviles" },
+];
+
+const renderTechIcon = (tech: string) => {
+  const Icon = TECH_ICON_MAP[tech.toLowerCase()] ?? Code2;
+  return <Icon className="h-4 w-4" strokeWidth={2.1} aria-hidden="true" />;
+};
+
+const ProjectSelector = ({
+  projects,
+  activeIndex,
+  onSelect,
 }: {
-  title: string;
-  desc: string;
-  tags: string[];
-  techTags?: string[];
-  accent: string;
-  image: StaticImageData;
-  imageAlt: string;
-  tag: string;
-  onOpen: () => void;
-  isSoftware?: boolean;
+  projects: ProjectCardData[];
+  activeIndex: number;
+  onSelect: (index: number) => void;
+}) => (
+  <div
+    className="mt-8 overflow-x-auto pb-3 [scrollbar-color:rgba(11,29,58,0.22)_transparent] [scrollbar-width:thin] sm:mt-10"
+    role="tablist"
+    aria-label="Seleccionar proyecto"
+  >
+    <div className="relative grid min-w-[720px] grid-cols-[repeat(var(--project-count),minmax(145px,1fr))] gap-0 px-2 pb-2"
+      style={{ "--project-count": projects.length } as CSSProperties}
+    >
+      <div className="absolute left-[7%] right-[7%] top-[1.1rem] h-px bg-[#0b1d3a]/12" />
+      {projects.map((project, index) => {
+        const isActive = index === activeIndex;
+
+        return (
+          <button
+            key={project.id}
+            type="button"
+            role="tab"
+            aria-selected={isActive}
+            aria-controls="active-project-case"
+            onClick={() => onSelect(index)}
+            className="group relative z-10 flex min-w-0 flex-col items-center px-3 text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2f9edb]"
+          >
+            <motion.span
+              animate={{
+                scale: isActive ? 1.12 : 1,
+                backgroundColor: isActive ? project.accent : "#ffffff",
+                color: isActive ? "#ffffff" : "#0b1d3a",
+              }}
+              transition={{ type: "spring", stiffness: 420, damping: 30 }}
+              className={`inline-flex h-9 w-9 items-center justify-center rounded-full border text-[10px] font-black shadow-sm ${
+                isActive
+                  ? "border-transparent shadow-[0_8px_22px_rgba(27,90,166,0.2)]"
+                  : "border-[#0b1d3a]/14 group-hover:border-[#2f9edb]/45"
+              }`}
+            >
+              {String(index + 1).padStart(2, "0")}
+            </motion.span>
+            <span
+              className={`mt-3 line-clamp-2 text-[10px] font-black uppercase leading-4 tracking-[0.08em] transition-colors ${
+                isActive ? "text-[#0b1d3a]" : "text-[#0b1d3a]/52 group-hover:text-[#0b1d3a]/78"
+              }`}
+            >
+              {project.title}
+            </span>
+            <span
+              className={`mt-1 text-[8px] font-bold uppercase tracking-[0.16em] transition-colors ${
+                isActive ? "text-[#1b5aa6]" : "text-[#0b1d3a]/34"
+              }`}
+            >
+              {project.tag}
+            </span>
+            {isActive && (
+              <motion.span
+                layoutId="project-selector-active"
+                className="mt-3 h-0.5 w-12 rounded-full"
+                style={{ backgroundColor: project.accent }}
+                transition={{ type: "spring", stiffness: 420, damping: 34 }}
+              />
+            )}
+          </button>
+        );
+      })}
+    </div>
+  </div>
+);
+
+const ProjectGallery = ({
+  images,
+  projectTitle,
+  onImageOpen,
+}: {
+  images: ProjectDetailImage[];
+  projectTitle: string;
+  onImageOpen: (image: ProjectDetailImage) => void;
+}) => (
+  <div className="grid min-w-0 grid-cols-2 gap-2.5 sm:gap-3">
+    {images.slice(0, 4).map((imageItem, imageIndex) => {
+      const isHeroImage = imageIndex === 0;
+      const isLastVisible = imageIndex === Math.min(images.length, 4) - 1;
+      const hiddenCount = isLastVisible ? Math.max(images.length - 4, 0) : 0;
+
+      return (
+        <motion.button
+          key={`${projectTitle}-${imageItem.alt}`}
+          type="button"
+          onClick={() => onImageOpen(imageItem)}
+          className={`group relative overflow-hidden rounded-[1.25rem] border border-[#0b1d3a]/10 bg-[#eef3ff] text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2f9edb] ${
+            isHeroImage ? "col-span-2 aspect-[16/8.3]" : "aspect-[4/3]"
+          }`}
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.55, delay: imageIndex * 0.08 }}
+          whileHover={{ y: -3 }}
+          aria-label={`Ampliar ${imageItem.alt}`}
+        >
+          <Image
+            src={imageItem.src}
+            alt={imageItem.alt}
+            fill
+            loading="lazy"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.035]"
+            sizes={isHeroImage ? "(max-width: 1024px) 100vw, 60vw" : "(max-width: 640px) 50vw, 30vw"}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#071425]/35 via-transparent to-transparent opacity-40 transition-opacity group-hover:opacity-70" />
+          <span className="absolute bottom-3 right-3 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/50 bg-white/85 text-[#0b1d3a] opacity-0 shadow-lg backdrop-blur transition duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+            <Expand className="h-4 w-4" aria-hidden="true" />
+          </span>
+          {hiddenCount > 0 && (
+            <span className="absolute bottom-3 left-3 rounded-full bg-[#071425]/80 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-white backdrop-blur">
+              +{hiddenCount} capturas
+            </span>
+          )}
+        </motion.button>
+      );
+    })}
+  </div>
+);
+
+const ProjectCaseStudy = ({
+  project,
+  index,
+  direction,
+  isTelecom,
+  onImageOpen,
+}: {
+  project: ProjectCardData;
+  index: number;
+  direction: number;
+  isTelecom: boolean;
+  onImageOpen: (image: ProjectDetailImage) => void;
 }) => {
-  const previewTech = techTags?.slice(0, 3) ?? [];
-  const techIconSize = isSoftware ? "h-5 w-5" : "h-3.5 w-3.5";
+  const reduceMotion = useHydratedReducedMotion();
+  const projectImages = getProjectDetailImages(project.detailImagesKey);
+  const galleryImages =
+    projectImages.length > 0
+      ? projectImages
+      : isTelecom
+        ? TELECOM_VISUALS
+        : [{ src: project.image, alt: project.imageAlt }];
 
   return (
     <motion.article
-      variants={staggerItem}
-      whileHover={{ y: -6 }}
-      transition={{ type: "spring", stiffness: 380, damping: 28 }}
-      className="group relative flex flex-col overflow-hidden rounded-[1.35rem] border border-white/80 bg-white shadow-[0_16px_48px_rgba(15,23,42,0.1)] transition-shadow duration-500 hover:border-[#2f9edb]/25 hover:shadow-[0_24px_60px_rgba(15,23,42,0.16)]"
+      initial={
+        reduceMotion
+          ? { opacity: 0 }
+          : { opacity: 0, x: direction >= 0 ? 70 : -70, scale: 0.985 }
+      }
+      animate={{ opacity: 1, x: 0, scale: 1 }}
+      exit={
+        reduceMotion
+          ? { opacity: 0 }
+          : { opacity: 0, x: direction >= 0 ? -70 : 70, scale: 0.985 }
+      }
+      transition={{ duration: 0.58, ease: [0.22, 1, 0.36, 1] }}
+      className="quiet-card relative overflow-hidden rounded-[1.75rem] p-4 sm:p-6 lg:rounded-[2.25rem] lg:p-8"
+      id="active-project-case"
+      role="tabpanel"
     >
       <div
-        className="absolute inset-x-0 top-0 h-1 opacity-70 transition group-hover:opacity-100"
-        style={{
-          background: `linear-gradient(90deg, transparent, ${accent}, transparent)`,
-        }}
+        className="absolute inset-x-10 top-0 h-px opacity-80"
+        style={{ background: `linear-gradient(90deg, transparent, ${project.accent}, transparent)` }}
       />
 
-      <div
-        className={`relative flex items-center gap-4 border-b border-[#0b1d3a]/6 bg-[linear-gradient(135deg,#f8faff_0%,#eef3ff_100%)] ${
-          isSoftware ? "px-5 py-5" : "px-5 py-4"
-        }`}
-      >
-        <div
-          className={`flex shrink-0 items-center justify-center rounded-2xl ring-1 ring-[#0b1d3a]/8 ${
-            isSoftware ? "h-14 w-14" : "h-12 w-12"
-          }`}
-          style={{ background: `linear-gradient(135deg, ${accent}18, ${accent}08)` }}
-        >
-          <Image
-            src={image}
-            alt={imageAlt}
-            loading="lazy"
-            className={`object-contain transition duration-500 group-hover:scale-110 ${
-              isSoftware ? "h-8 w-8" : "h-7 w-7"
-            }`}
-          />
-        </div>
-        <div className="min-w-0 flex-1">
-          <span
-            className={`font-black uppercase tracking-[0.24em] text-[#0b1d3a]/50 ${
-              isSoftware ? "text-[11px]" : "text-[9px]"
-            }`}
+      <header className="flex flex-col gap-5 border-b border-[#0b1d3a]/10 pb-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex min-w-0 items-center gap-4">
+          <div
+            className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-[#0b1d3a]/8 sm:h-[4.5rem] sm:w-[4.5rem]"
+            style={{ background: `linear-gradient(145deg, ${project.accent}18, #f7f9ff 70%)` }}
           >
-            {tag}
-          </span>
-          <h4
-            className={`mt-0.5 line-clamp-2 font-black uppercase leading-tight tracking-tight text-[#0b1d3a] ${
-              isSoftware ? "text-lg sm:text-xl md:text-2xl" : "text-base sm:text-lg"
-            }`}
-          >
-            {title}
-          </h4>
-        </div>
-        <span
-          className="hidden h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#0b1d3a]/10 bg-white text-[#1b5aa6] opacity-0 transition duration-300 group-hover:opacity-100 sm:flex"
-          aria-hidden="true"
-        >
-          →
-        </span>
-      </div>
-
-      <div className={`flex flex-1 flex-col ${isSoftware ? "p-5 sm:p-6" : "p-5"}`}>
-        <p
-          className={`line-clamp-2 text-[#0b1d3a]/70 ${
-            isSoftware ? "text-base leading-7" : "text-sm leading-6"
-          }`}
-        >
-          {desc}
-        </p>
-
-        <div className={`mt-4 flex flex-wrap ${isSoftware ? "gap-2" : "gap-1.5"}`}>
-          {tags.slice(0, 2).map((tagItem) => (
-            <span
-              key={tagItem}
-              className={`inline-flex items-center gap-1.5 rounded-lg border border-[#0b1d3a]/8 bg-[#f5f7ff] font-bold uppercase tracking-wide text-[#0b1d3a]/65 ${
-                isSoftware
-                  ? "px-3 py-1.5 text-xs"
-                  : "px-2.5 py-1 text-[9px]"
-              }`}
-            >
-              <CheckIcon
-                className={`text-[#1b5aa6] ${isSoftware ? "h-3.5 w-3.5" : "h-2.5 w-2.5"}`}
-              />
-              <span className="line-clamp-1">{tagItem}</span>
-            </span>
-          ))}
+            <Image
+              src={project.image}
+              alt={project.imageAlt}
+              className="h-10 w-10 object-contain sm:h-11 sm:w-11"
+            />
+          </div>
+          <div className="min-w-0">
+            <p className="text-[9px] font-black uppercase tracking-[0.24em] text-[#1b5aa6]/65">
+              Proyecto {String(index + 1).padStart(2, "0")} · {project.tag}
+            </p>
+            <h3 className="mt-1 text-xl font-black uppercase leading-tight tracking-tight text-[#0b1d3a] sm:text-2xl lg:text-[1.7rem]">
+              {project.title}
+            </h3>
+          </div>
         </div>
 
-        {previewTech.length > 0 && (
-          <div className={`mt-4 flex flex-wrap ${isSoftware ? "gap-2" : "gap-1.5"}`}>
-            {previewTech.map((tech) => (
-              <span
+        {project.techTags && project.techTags.length > 0 && (
+          <div className="flex flex-wrap gap-2 sm:max-w-[48%] sm:justify-end">
+            {project.techTags.map((tech, techIndex) => (
+              <motion.span
                 key={tech}
-                className={`inline-flex items-center rounded-full border border-[#0b1d3a]/8 bg-white font-bold uppercase tracking-wide text-[#0b1d3a]/60 ${
-                  isSoftware
-                    ? "gap-2 px-3 py-1.5 text-xs"
-                    : "gap-1.5 px-2.5 py-1 text-[9px]"
-                }`}
+                initial={{ opacity: 0, scale: 0.85 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 + techIndex * 0.07 }}
+                className="inline-flex items-center gap-2 rounded-full border border-[#0b1d3a]/10 bg-[#f5f7ff] px-3 py-2 text-[10px] font-black uppercase tracking-[0.1em] text-[#0b1d3a]/70"
               >
-                <span
-                  className={`inline-flex items-center justify-center rounded-full bg-[#0b1d3a]/6 text-[#1b5aa6] ${
-                    isSoftware ? "h-7 w-7" : "h-4 w-4"
-                  }`}
-                >
-                  {renderTechIcon(tech, techIconSize)}
-                </span>
+                <span className="text-[#1b5aa6]">{renderTechIcon(tech)}</span>
                 {tech}
-              </span>
+              </motion.span>
             ))}
           </div>
         )}
+      </header>
 
-        <button
-          type="button"
-          onClick={onOpen}
-          className={`mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#0b1d3a]/10 bg-[#0b1d3a]/[0.03] font-black uppercase tracking-[0.18em] text-[#0b1d3a]/70 transition hover:border-[#2f9edb]/30 hover:bg-[#2f9edb]/8 hover:text-[#1b5aa6] sm:w-auto ${
-            isSoftware ? "px-5 py-3.5 text-xs" : "px-4 py-3 text-[10px]"
-          }`}
+      <div className="mt-6 grid items-start gap-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(300px,0.75fr)] lg:gap-8">
+        <ProjectGallery
+          images={galleryImages}
+          projectTitle={project.title}
+          onImageOpen={onImageOpen}
+        />
+
+        <motion.aside
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.4 }}
+          transition={{ duration: 0.58, delay: 0.16 }}
+          className="relative overflow-hidden rounded-[1.4rem] border border-[#0b1d3a]/8 bg-[#f4f7ff] p-5 sm:p-6 lg:sticky lg:top-28"
         >
-          Ver detalle técnico
-          <span aria-hidden="true" className="transition group-hover:translate-x-0.5">
-            →
-          </span>
-        </button>
+          <div
+            className="absolute -right-14 -top-14 h-36 w-36 rounded-full blur-3xl"
+            style={{ backgroundColor: `${project.accent}22` }}
+          />
+          <div className="relative">
+            <p className="text-[9px] font-black uppercase tracking-[0.26em] text-[#1b5aa6]">
+              Detalle técnico
+            </p>
+            <p className="mt-4 whitespace-pre-line text-sm font-medium leading-7 text-[#0b1d3a]/76">
+              {project.detail ?? project.description}
+            </p>
+            <div className="mt-6 border-t border-[#0b1d3a]/10 pt-5">
+              <p className="text-[9px] font-black uppercase tracking-[0.22em] text-[#0b1d3a]/45">
+                Alcance del proyecto
+              </p>
+              <ul className="mt-3 space-y-3">
+                {project.highlights.map((highlight) => (
+                  <li
+                    key={highlight}
+                    className="flex items-start gap-3 text-xs font-bold leading-5 text-[#0b1d3a]/72"
+                  >
+                    <span
+                      className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-white"
+                      style={{ backgroundColor: project.accent }}
+                    >
+                      <Check className="h-3 w-3" strokeWidth={3} aria-hidden="true" />
+                    </span>
+                    {highlight}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </motion.aside>
       </div>
     </motion.article>
   );
 };
 
 export const Projects = ({ mode }: { mode: SiteMode }) => {
-  const [projects, setProjects] = useState<ProjectCardData[]>([]);
-  const [activeProject, setActiveProject] = useState<ProjectCardData | null>(
-    null,
-  );
-  const [detailImages, setDetailImages] = useState<ProjectDetailImage[]>([]);
-  const [isLoadingDetails, setIsLoadingDetails] = useState(false);
-  const [activeImage, setActiveImage] = useState<ProjectDetailImage | null>(
-    null,
-  );
+  const [activeImage, setActiveImage] = useState<ProjectDetailImage | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
   const isTelecom = mode === "telecom";
+  const projects = isTelecom ? telecomProjects : softwareProjects;
+  const activeProject = projects[activeIndex] ?? projects[0];
 
   useEffect(() => {
-    setProjects(isTelecom ? telecomProjects : softwareProjects);
-  }, [isTelecom]);
+    setActiveIndex(0);
+    setDirection(1);
+  }, [mode]);
 
-  const handleOpenProject = async (project: ProjectCardData) => {
-    setActiveProject(project);
-    setDetailImages([]);
-    setActiveImage(null);
-
-    if (!project.detailImagesKey) {
-      return;
-    }
-
-    setIsLoadingDetails(true);
-    try {
-      const { loadProjectDetailImages } = await import(
-        "@/data/projects/detailImages"
-      );
-      const images = await loadProjectDetailImages(project.detailImagesKey);
-      setDetailImages(images);
-    } finally {
-      setIsLoadingDetails(false);
-    }
+  const selectProject = (nextIndex: number) => {
+    if (nextIndex === activeIndex) return;
+    setDirection(nextIndex > activeIndex ? 1 : -1);
+    setActiveIndex(nextIndex);
   };
 
-  const handleCloseProject = () => {
-    setActiveProject(null);
-    setDetailImages([]);
-    setActiveImage(null);
+  const moveProject = (step: number) => {
+    const nextIndex = (activeIndex + step + projects.length) % projects.length;
+    setDirection(step);
+    setActiveIndex(nextIndex);
   };
 
   return (
     <section
       id="proyectos"
-      className="relative overflow-hidden bg-[#EAEEFE] px-4 section-shell scroll-mt-24 sm:px-6 md:scroll-mt-28"
+      className="quiet-section quiet-surface relative overflow-hidden px-4 section-shell scroll-mt-24 sm:px-6 md:scroll-mt-28"
     >
       <DotGrid
         dotSize={4}
@@ -354,9 +370,9 @@ export const Projects = ({ mode }: { mode: SiteMode }) => {
         shockStrength={3}
         resistance={800}
         returnDuration={1.4}
-        className="opacity-20"
+        className="opacity-15"
       />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(234,238,254,0.96),rgba(234,238,254,0.88))]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(247,249,255,0.74),rgba(234,238,254,0.88))]" />
 
       <div className="relative z-10 mx-auto max-w-7xl">
         <MotionInView className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -367,161 +383,59 @@ export const Projects = ({ mode }: { mode: SiteMode }) => {
             </h2>
             <p className="section-desc-light">
               {isTelecom
-                ? "RAN, rollout y soporte con operadores regionales."
-                : "Plataformas y automatizaciones con impacto medible."}
+                ? "RAN, rollout y soporte explicados desde su alcance técnico."
+                : "Productos digitales explicados desde su arquitectura e impacto."}
             </p>
           </div>
           <span className="w-fit rounded-full border border-[#0b1d3a]/10 bg-white/80 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-[#0b1d3a]/65 backdrop-blur">
-            {isTelecom ? "Modo telecom" : "Modo software"}
+            {projects.length} casos
           </span>
         </MotionInView>
 
-        <motion.div
-          className="mt-8 grid gap-4 md:grid-cols-2 md:gap-5"
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, margin: "-40px" }}
-        >
-          {projects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              title={project.title}
-              desc={project.description}
-              tags={project.highlights}
-              techTags={project.techTags}
-              accent={project.accent}
-              image={project.image}
-              imageAlt={project.imageAlt}
-              tag={project.tag}
-              isSoftware={!isTelecom}
-              onOpen={() => void handleOpenProject(project)}
+        <ProjectSelector
+          projects={projects}
+          activeIndex={activeIndex}
+          onSelect={selectProject}
+        />
+
+        <div className="mt-4 flex items-center justify-between gap-4 sm:mt-5">
+          <p className="text-[9px] font-black uppercase tracking-[0.2em] text-[#0b1d3a]/45">
+            Caso {String(activeIndex + 1).padStart(2, "0")} de{" "}
+            {String(projects.length).padStart(2, "0")}
+          </p>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => moveProject(-1)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#0b1d3a]/12 bg-white text-[#0b1d3a] shadow-sm transition hover:-translate-y-0.5 hover:border-[#2f9edb]/40 hover:text-[#1b5aa6]"
+              aria-label="Ver proyecto anterior"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={() => moveProject(1)}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#0b1d3a]/12 bg-white text-[#0b1d3a] shadow-sm transition hover:-translate-y-0.5 hover:border-[#2f9edb]/40 hover:text-[#1b5aa6]"
+              aria-label="Ver proyecto siguiente"
+            >
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-4 min-h-[520px] overflow-hidden sm:mt-5">
+          <AnimatePresence initial={false} mode="wait" custom={direction}>
+            <ProjectCaseStudy
+              key={activeProject.id}
+              project={activeProject}
+              index={activeIndex}
+              direction={direction}
+              isTelecom={isTelecom}
+              onImageOpen={setActiveImage}
             />
-          ))}
-        </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
-
-      <AppModal
-        isOpen={!!activeProject}
-        onClose={handleCloseProject}
-        ariaLabel={
-          activeProject
-            ? `Detalle técnico de ${activeProject.title}`
-            : "Detalle técnico"
-        }
-        maxWidth="3xl"
-        panelClassName="border-white/20 bg-white p-6 sm:p-10"
-      >
-        {activeProject && (
-          <>
-            <div
-              className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full blur-3xl"
-              style={{
-                background: `radial-gradient(circle, ${activeProject.accent}30, transparent 70%)`,
-              }}
-            />
-
-            <div className="relative flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-              <div className="min-w-0">
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#1b5aa6]/70">
-                  Detalle técnico
-                </span>
-                <h3 className="mt-3 break-words text-2xl font-black uppercase tracking-tight text-[#0b1d3a] sm:text-3xl">
-                  {activeProject.title}
-                </h3>
-                <p className="mt-4 whitespace-pre-line text-sm font-medium leading-7 text-[#0b1d3a]/80 sm:text-base">
-                  {activeProject.detail ?? activeProject.description}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={handleCloseProject}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#0b1d3a]/15 bg-[#0b1d3a]/5 text-[#0b1d3a] transition hover:bg-[#0b1d3a]/10"
-                aria-label="Cerrar"
-              >
-                ×
-              </button>
-            </div>
-
-            {activeProject.techTags && activeProject.techTags.length > 0 && (
-              <motion.div
-                className="relative mt-8 flex flex-wrap gap-2.5"
-                initial="hidden"
-                animate="show"
-                variants={staggerContainer}
-              >
-                {activeProject.techTags.map((tech) => (
-                  <motion.span
-                    key={tech}
-                    variants={staggerItem}
-                    className="inline-flex items-center gap-2 rounded-2xl border border-[#0b1d3a]/12 bg-[#f5f7ff] px-4 py-2 text-[11px] font-black uppercase tracking-widest text-[#0b1d3a]/70"
-                  >
-                    <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#0b1d3a]/10 text-[#1b5aa6]">
-                      {renderTechIcon(tech)}
-                    </span>
-                    {tech}
-                  </motion.span>
-                ))}
-              </motion.div>
-            )}
-
-            {isLoadingDetails && (
-              <div className="relative mt-8 flex items-center gap-3">
-                <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-[#2f9edb]/30 border-t-[#2f9edb]" />
-                <p className="text-sm font-semibold text-[#0b1d3a]/60">
-                  Cargando capturas...
-                </p>
-              </div>
-            )}
-
-            {detailImages.length > 0 && (
-              <motion.div
-                className="relative mt-8 grid gap-4 sm:grid-cols-2"
-                initial="hidden"
-                animate="show"
-                variants={staggerContainer}
-              >
-                {detailImages.map((imageItem) => (
-                  <motion.button
-                    key={imageItem.alt}
-                    type="button"
-                    variants={staggerItem}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setActiveImage(imageItem)}
-                    className="group relative aspect-[4/3] overflow-hidden rounded-2xl border border-[#0b1d3a]/10 bg-[#f5f7ff] focus:outline-none focus:ring-2 focus:ring-[#2f9edb]/60"
-                    aria-label={`Ampliar ${imageItem.alt}`}
-                  >
-                    <Image
-                      src={imageItem.src}
-                      alt={imageItem.alt}
-                      fill
-                      loading="lazy"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      sizes="(max-width: 640px) 100vw, 50vw"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center bg-[#0b1d3a]/0 transition group-hover:bg-[#0b1d3a]/20">
-                      <span className="rounded-full bg-white/90 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-[#0b1d3a] opacity-0 transition group-hover:opacity-100">
-                        Ampliar
-                      </span>
-                    </div>
-                  </motion.button>
-                ))}
-              </motion.div>
-            )}
-
-            <div className="relative mt-10 flex flex-col gap-3 sm:flex-row">
-              <button
-                type="button"
-                onClick={handleCloseProject}
-                className="w-full rounded-xl border border-[#0b1d3a]/15 px-6 py-3 text-xs font-semibold uppercase tracking-[0.25em] text-[#0b1d3a]/80 transition hover:bg-[#0b1d3a]/5 sm:w-auto"
-              >
-                Cerrar
-              </button>
-            </div>
-          </>
-        )}
-      </AppModal>
 
       <AppModal
         isOpen={!!activeImage}

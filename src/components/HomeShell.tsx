@@ -6,7 +6,6 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { SiteMode } from "@/lib/siteMode";
 import { Header } from "@/sections/Header";
 import { AboutHero } from "@/sections/AboutHero";
-import { ClientsTicker } from "@/sections/ClientsTicker";
 import { Services } from "@/sections/Services";
 import { WorkProcess } from "@/sections/WorkProcess";
 import { DarkSectionsShell } from "@/components/DarkSectionsShell";
@@ -120,7 +119,6 @@ export const HomeShell = () => {
         </div>
         <ModeAwareSection mode={mode}>
           <DarkSectionsShell mode={mode}>
-            <ClientsTicker mode={mode} />
             <DigitalTransformation mode={mode} />
             <Services mode={mode} />
             <WorkProcess mode={mode} />

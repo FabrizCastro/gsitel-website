@@ -1,6 +1,5 @@
 "use client";
 
-import CheckIcon from "@/assets/icons/check.svg";
 import automateBackground from "@/assets/backgrounds/services_background_automate.png";
 import telecomBackground from "@/assets/backgrounds/services_background_telecom.png";
 import { AppModal } from "@/components/AppModal";
@@ -8,6 +7,7 @@ import { MotionInView, staggerContainer, staggerItem } from "@/components/Motion
 import { getModeTheme } from "@/lib/modeTheme";
 import type { SiteMode } from "@/lib/siteMode";
 import { motion } from "framer-motion";
+import { RadioTower, ScanSearch, Workflow } from "lucide-react";
 import { useState } from "react";
 
 type ServiceItem = {
@@ -23,35 +23,16 @@ type ServiceItem = {
   background: typeof automateBackground;
 };
 
-const AutomationIcon = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M12 8a4 4 0 1 1 0 8 4 4 0 0 1 0-8z" />
-    <path d="M3 12h2m14 0h2M12 3v2m0 14v2M5.6 5.6l1.4 1.4m10 10 1.4 1.4M18.4 5.6 17 7m-10 10-1.4 1.4" />
-  </svg>
-);
-
-const RanIcon = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M12 3v6" /><path d="M9 9h6" /><path d="M5 20h14" /><path d="M8 20l4-7 4 7" /><path d="M4.5 9a7.5 7.5 0 0 1 15 0" />
-  </svg>
-);
-
-const ConsultingIcon = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 7h6M9 11h6M9 15h4" />
-  </svg>
-);
-
 const services: ServiceItem[] = [
   {
     id: "automation",
     label: "Automatización & Software",
     imageAlt: "Ilustración de automatización y software para operaciones críticas",
-    icon: <AutomationIcon className="h-6 w-6 text-[#ff8a8a]" />,
+    icon: <Workflow className="h-6 w-6 text-[#2f9edb]" strokeWidth={1.8} />,
     title: (
       <>
         Automatización y software para operaciones{" "}
-        <span className="text-[#ff8a8a]">críticas</span>.
+        <span className="text-[#2f9edb]">críticas</span>.
       </>
     ),
     description:
@@ -64,15 +45,15 @@ const services: ServiceItem[] = [
       "Control de clientes, inventario y operaciones diarias",
       "Alertas y flujos de trabajo para reducir errores",
     ],
-    accent: "#e25555",
-    accentRgb: "226, 85, 85",
+    accent: "#2f9edb",
+    accentRgb: "47, 158, 219",
     background: automateBackground,
   },
   {
     id: "ran",
     label: "Ingeniería RAN",
     imageAlt: "Ilustración de ingeniería RAN para redes móviles",
-    icon: <RanIcon className="h-6 w-6 text-[#ffc266]" />,
+    icon: <RadioTower className="h-6 w-6 text-[#e99532]" strokeWidth={1.8} />,
     title: (
       <>
         Integración y configuración{" "}
@@ -97,7 +78,7 @@ const services: ServiceItem[] = [
     id: "consultoria",
     label: "Consultoría de Software",
     imageAlt: "Ilustración de consultoría de proyectos de software",
-    icon: <ConsultingIcon className="h-6 w-6 text-[#7fb7ff]" />,
+    icon: <ScanSearch className="h-6 w-6 text-[#1b5aa6]" strokeWidth={1.8} />,
     title: (
       <>
         Consultoría para{" "}
@@ -131,17 +112,18 @@ export const Services = ({ mode }: { mode: SiteMode }) => {
   return (
     <section
       id="servicios"
-      className="relative bg-transparent px-4 section-shell scroll-mt-24 sm:px-6 md:scroll-mt-28"
+      className="quiet-section quiet-surface relative bg-transparent px-4 section-shell scroll-mt-24 sm:px-6 md:scroll-mt-28"
     >
+      <div className="quiet-texture pointer-events-none absolute inset-0 opacity-30" />
       <div className="mx-auto max-w-7xl">
         <MotionInView className="max-w-2xl">
-          <p className="section-eyebrow-dark">Servicios</p>
-          <h2 className="section-title-dark">
+          <p className="section-eyebrow-light">Servicios</p>
+          <h2 className="section-title-light">
             {theme.isTelecom
               ? "Capacidad técnica para infraestructura telecom"
               : "Soluciones digitales para operaciones exigentes"}
           </h2>
-          <p className="section-desc-dark">
+          <p className="section-desc-light">
             {theme.isTelecom
               ? "Ingeniería, integración y soporte para redes móviles con altos estándares de operación."
               : "Diseño, desarrollo y automatización de sistemas alineados con la operación del negocio."}
@@ -150,7 +132,7 @@ export const Services = ({ mode }: { mode: SiteMode }) => {
             {focusTags.map((item) => (
               <span
                 key={item}
-                className="border-l border-white/15 pl-3 text-[10px] font-black uppercase tracking-[0.2em] text-white/55"
+                className="border-l border-[#0b1d3a]/15 pl-3 text-[10px] font-black uppercase tracking-[0.2em] text-[#0b1d3a]/55"
               >
                 {item}
               </span>
@@ -159,7 +141,7 @@ export const Services = ({ mode }: { mode: SiteMode }) => {
         </MotionInView>
 
         <motion.div
-          className="mt-14 grid grid-cols-1 gap-10 border-y border-white/10 py-10 md:grid-cols-2 md:gap-0 md:py-14"
+          className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5"
           variants={staggerContainer}
           initial="hidden"
           whileInView="show"
@@ -169,29 +151,35 @@ export const Services = ({ mode }: { mode: SiteMode }) => {
             <motion.article
               key={service.id}
               variants={staggerItem}
-              className="group relative flex flex-col md:border-r md:border-white/10 md:px-8 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
+              whileHover={{ y: -6 }}
+              transition={{ type: "spring", stiffness: 360, damping: 28 }}
+              className="quiet-card group relative flex flex-col overflow-hidden rounded-[1.75rem] p-6 transition-shadow duration-500 hover:shadow-[0_34px_90px_rgba(27,61,107,0.15)] sm:p-8"
             >
+              <div
+                className="pointer-events-none absolute inset-x-8 top-0 h-px opacity-70"
+                style={{ background: `linear-gradient(90deg, transparent, ${service.accent}, transparent)` }}
+              />
               <div className="flex items-center justify-between gap-6">
                 <span className="text-[10px] font-black tracking-[0.28em]" style={{ color: service.accent }}>
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <span className="text-[9px] font-black uppercase tracking-[0.18em] text-white/40">
+                <span className="text-[9px] font-black uppercase tracking-[0.18em] text-[#0b1d3a]/45">
                   {service.label}
                 </span>
               </div>
 
-              <div className="mt-10 inline-flex h-10 w-10 items-center justify-center text-white/80">
+              <div className="mt-10 inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-[#0b1d3a]/[0.06] bg-[#0b1d3a]/[0.035] text-[#0b1d3a] transition duration-500 group-hover:-translate-y-1 group-hover:bg-white">
                 {service.icon}
               </div>
-              <h3 className="mt-6 text-2xl font-black leading-tight text-white sm:text-3xl">
+              <h3 className="mt-6 text-2xl font-black leading-tight text-[#0b1d3a] sm:text-3xl">
                 {service.title}
               </h3>
-              <p className="mt-4 max-w-lg text-sm leading-7 text-white/60 sm:text-base">
+              <p className="mt-4 max-w-lg text-sm leading-7 text-[#0b1d3a]/65 sm:text-base">
                 {service.description}
               </p>
-              <ul className="mt-8 border-t border-white/10">
+              <ul className="mt-8 border-t border-[#0b1d3a]/10">
                 {service.activities.slice(0, 3).map((activity) => (
-                  <li key={activity} className="border-b border-white/[0.07] py-3 text-sm text-white/60">
+                  <li key={activity} className="border-b border-[#0b1d3a]/[0.07] py-3 text-sm text-[#0b1d3a]/65">
                     {activity}
                   </li>
                 ))}
@@ -199,7 +187,7 @@ export const Services = ({ mode }: { mode: SiteMode }) => {
               <button
                 type="button"
                 onClick={() => setActiveService(service)}
-                className="mt-8 self-start text-[10px] font-black uppercase tracking-[0.22em] text-white transition hover:opacity-60"
+                className="mt-8 self-start text-[10px] font-black uppercase tracking-[0.22em] text-[#1b5aa6] transition hover:translate-x-1 hover:opacity-70"
               >
                 Ver alcance
               </button>

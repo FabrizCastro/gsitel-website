@@ -7,6 +7,16 @@
     --bg-deep: #060a11;
     --accent-blue: #1d6fff;
     --accent-cyan: #22d3ee;
+    --surface-base: #eaeefe;
+    --surface-raised: #f7f9ff;
+    --ink: #0b1d3a;
+    --quiet-border: rgba(11, 29, 58, 0.1);
+    --quiet-shadow: 0 28px 80px rgba(27, 61, 107, 0.11);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--surface-base);
   }
 
   html,
@@ -14,10 +24,28 @@
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
+    overflow-x: clip;
   }
-  
+
+  body {
+    color: var(--ink);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+  }
+
+  ::selection {
+    color: #06111f;
+    background: rgba(98, 223, 243, 0.42);
+  }
+
   h1, h2, h3, h4, h5, h6 {
-    letter-spacing: -0.02em;
+    letter-spacing: -0.035em;
   }
 }
 
@@ -155,9 +183,9 @@
   .knowledge-stack-bg {
     background: linear-gradient(
       180deg,
-      #1e4fad 0%,
-      #2f9edb 42%,
-      #60a5fa 100%
+      #173d78 0%,
+      #236fae 48%,
+      #4b9fca 100%
     );
   }
 
@@ -166,7 +194,7 @@
   }
 
   .section-shell {
-    @apply py-12 sm:py-16;
+    @apply py-16 sm:py-20 lg:py-24;
   }
 
   .section-eyebrow-dark {
@@ -178,11 +206,11 @@
   }
 
   .section-title-dark {
-    @apply mt-3 text-2xl font-black leading-tight text-white sm:text-3xl md:text-4xl lg:text-5xl;
+    @apply mt-4 text-2xl font-black leading-[1.04] text-white sm:text-3xl md:text-4xl lg:text-5xl;
   }
 
   .section-title-light {
-    @apply mt-3 text-2xl font-black leading-tight text-[#06111f] sm:text-3xl md:text-4xl lg:text-5xl;
+    @apply mt-4 text-2xl font-black leading-[1.04] text-[#06111f] sm:text-3xl md:text-4xl lg:text-5xl;
   }
 
   .section-desc-dark {
@@ -191,6 +219,83 @@
 
   .section-desc-light {
     @apply mt-4 max-w-lg text-sm leading-7 text-[#0b1d3a]/70 sm:text-base;
+  }
+
+  .quiet-section {
+    @apply relative isolate overflow-hidden;
+  }
+
+  .quiet-section::before {
+    content: "";
+    @apply pointer-events-none absolute inset-x-0 top-0 z-10 h-px;
+    background: linear-gradient(
+      90deg,
+      transparent 5%,
+      rgba(27, 90, 166, 0.16) 30%,
+      rgba(255, 255, 255, 0.86) 50%,
+      rgba(27, 90, 166, 0.16) 70%,
+      transparent 95%
+    );
+  }
+
+  .quiet-section::after {
+    content: "";
+    @apply pointer-events-none absolute inset-x-0 bottom-0 z-10 h-20;
+    background: linear-gradient(180deg, transparent, rgba(234, 238, 254, 0.52));
+  }
+
+  .quiet-surface {
+    background:
+      radial-gradient(circle at 12% 14%, rgba(47, 158, 219, 0.07), transparent 34%),
+      radial-gradient(circle at 88% 84%, rgba(27, 90, 166, 0.055), transparent 36%),
+      linear-gradient(180deg, #eaeefe 0%, #f7f9ff 50%, #eaeefe 100%);
+  }
+
+  .quiet-section-dark::before {
+    background: linear-gradient(
+      90deg,
+      transparent 5%,
+      rgba(98, 223, 243, 0.08) 30%,
+      rgba(255, 255, 255, 0.24) 50%,
+      rgba(98, 223, 243, 0.08) 70%,
+      transparent 95%
+    );
+  }
+
+  .quiet-section-dark::after {
+    background: linear-gradient(180deg, transparent, rgba(8, 29, 63, 0.26));
+  }
+
+  .quiet-texture {
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(11, 29, 58, 0.055) 0.7px,
+      transparent 0
+    );
+    background-size: 18px 18px;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 16%, black 84%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 16%, black 84%, transparent);
+  }
+
+  .quiet-card {
+    border: 1px solid rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow:
+      0 28px 80px rgba(27, 61, 107, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(18px);
+  }
+
+  .quiet-card-dark {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: linear-gradient(
+      145deg,
+      rgba(7, 20, 38, 0.96),
+      rgba(11, 35, 70, 0.9)
+    );
+    box-shadow:
+      0 30px 90px rgba(1, 8, 20, 0.26),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 
   .services-bridge-software {
