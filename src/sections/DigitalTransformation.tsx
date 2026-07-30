@@ -217,7 +217,7 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
         </MotionInView>
 
         <motion.div
-          className="relative left-1/2 flex w-screen max-w-[100vw] -translate-x-1/2 flex-col gap-4 overflow-hidden border-y border-[#0b1d3a]/[0.06] px-4 py-8 sm:px-6 lg:flex-row lg:px-10 lg:py-10"
+          className="relative flex w-full flex-col gap-4 overflow-hidden border-y border-[#0b1d3a]/[0.06] py-8 lg:flex-row lg:py-10"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}

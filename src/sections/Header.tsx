@@ -91,7 +91,7 @@ export const Header = ({ mode, onModeChange }: HeaderProps) => {
   return (
     <header className="fixed left-0 top-0 z-20 w-full">
       <div
-        className={`border-b bg-[rgba(8,22,48,0.92)] backdrop-blur-xl transition-all duration-500 ${
+        className={`border-b bg-transparent backdrop-blur-xl transition-all duration-500 ${
           isAtTop
             ? "border-white/[0.06]"
             : "border-cyan-200/10 shadow-[0_14px_44px_rgba(4,14,32,0.24)]"
@@ -128,7 +128,7 @@ export const Header = ({ mode, onModeChange }: HeaderProps) => {
             </button>
 
             <nav
-              className={`hidden items-center gap-1 rounded-2xl border border-white/10 bg-black/20 px-2 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-md min-[1201px]:flex ${
+              className={`hidden items-center gap-1 rounded-2xl border border-white/12 bg-[#0a2f5f] px-2 py-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_12px_34px_rgba(10,47,95,0.22)] backdrop-blur-md min-[1201px]:flex ${
                 isAtTop ? "text-shadow-hero" : ""
               }`}
             >
@@ -136,7 +136,7 @@ export const Header = ({ mode, onModeChange }: HeaderProps) => {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="rounded-xl px-3.5 py-2 text-sm font-medium text-white/76 transition duration-300 hover:bg-white/[0.07] hover:text-white"
+                  className="rounded-xl px-3.5 py-2 text-sm font-medium text-white transition duration-300 hover:bg-white/[0.12]"
                 >
                   {link.label}
                 </Link>
@@ -173,7 +173,7 @@ export const Header = ({ mode, onModeChange }: HeaderProps) => {
 
       {isAtTop && (
         <div
-          className="hidden border-b border-cyan-200/10 bg-[rgba(6,18,40,0.55)] text-center text-cyan-100/75 backdrop-blur-sm md:block"
+          className="hidden border-b border-slate-500/20 bg-[#8f99aa] text-center text-white backdrop-blur-sm md:block"
         >
           <p className="container py-2 text-xs font-semibold tracking-wide">
             {isTelecom
