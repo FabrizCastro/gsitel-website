@@ -73,11 +73,11 @@ const ProjectSelector = ({
   onSelect: (index: number) => void;
 }) => (
   <div
-    className="mt-8 overflow-x-auto pb-3 [scrollbar-color:rgba(11,29,58,0.22)_transparent] [scrollbar-width:thin] sm:mt-10"
+    className="mt-8 overflow-x-auto pb-5 pt-2 [scrollbar-color:rgba(11,29,58,0.22)_transparent] [scrollbar-width:thin] sm:mt-10"
     role="tablist"
     aria-label="Seleccionar proyecto"
   >
-    <div className="relative grid min-w-[720px] grid-cols-[repeat(var(--project-count),minmax(145px,1fr))] gap-0 px-2 pb-2"
+    <div className="relative grid min-w-[720px] grid-cols-[repeat(var(--project-count),minmax(145px,1fr))] gap-0 px-2 pb-3"
       style={{ "--project-count": projects.length } as CSSProperties}
     >
       <div className="absolute left-[7%] right-[7%] top-[1.1rem] h-px bg-[#0b1d3a]/12" />

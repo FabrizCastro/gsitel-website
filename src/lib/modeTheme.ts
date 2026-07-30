@@ -26,7 +26,7 @@ export const getModeTheme = (mode: SiteMode) => {
       : "border-blue-500/25 hover:border-blue-500/45",
     phase1Icon: isTelecom
       ? "bg-gradient-to-br from-amber-400 to-orange-600 text-white shadow-[0_0_40px_rgba(243,156,54,0.35)]"
-      : "bg-gradient-to-br from-cyan-400 to-cyan-600 text-black shadow-[0_0_40px_rgba(34,211,238,0.35)]",
+      : "bg-gradient-to-br from-cyan-400 to-cyan-600 text-white shadow-[0_0_40px_rgba(34,211,238,0.35)]",
     phase2Icon: isTelecom
       ? "bg-gradient-to-br from-orange-500 to-amber-700 text-white shadow-[0_0_40px_rgba(234,88,12,0.35)]"
       : "bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-[0_0_40px_rgba(37,99,235,0.35)]",

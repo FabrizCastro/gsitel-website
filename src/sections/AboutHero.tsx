@@ -63,7 +63,7 @@ export const AboutHero = ({ mode }: AboutHeroProps) => {
   return (
     <section
       id="acerca"
-      className="quiet-section quiet-surface relative flex flex-1 flex-col justify-center overflow-hidden scroll-mt-20 pt-24 sm:pt-28 md:scroll-mt-24"
+      className="quiet-section quiet-surface relative flex flex-1 flex-col justify-start overflow-hidden scroll-mt-20 pt-20 sm:pt-24 md:justify-center md:scroll-mt-24 md:pt-28"
     >
       <div className={`pointer-events-none absolute inset-0 ${copy.overlay}`} />
       <div className="quiet-texture pointer-events-none absolute inset-0 opacity-45" />
@@ -75,13 +75,13 @@ export const AboutHero = ({ mode }: AboutHeroProps) => {
         }`}
       />
 
-      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 py-8 sm:px-8 sm:py-10 lg:px-12 xl:px-16">
+      <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10 lg:px-12">
         <div
-          className="mx-auto grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-10 xl:gap-14"
+          className="mx-auto grid w-full grid-cols-1 items-center gap-6 sm:gap-8 md:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] md:gap-8 lg:gap-10"
         >
           {true && (
             <motion.div
-              className={`relative order-2 flex h-[min(280px,70vw)] min-w-0 items-center justify-center sm:h-[330px] lg:h-[min(360px,32vw)] lg:max-h-[360px] ${isTelecom ? "lg:order-2" : "lg:order-1"}`}
+              className={`relative order-2 flex min-w-0 items-center justify-center px-1 py-2 sm:px-4 sm:py-4 md:px-0 md:py-0 ${isTelecom ? "md:order-2" : "md:order-1"}`}
               initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: isTelecom ? 42 : -42, scale: 0.97 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ duration: 0.9, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
@@ -97,7 +97,7 @@ export const AboutHero = ({ mode }: AboutHeroProps) => {
           )}
 
           <motion.div
-            className={`relative order-1 px-2 py-4 sm:px-4 sm:py-6 ${isTelecom ? "lg:order-1 lg:ml-0" : "lg:order-2 lg:ml-auto"}`}
+            className={`relative order-1 min-w-0 px-2 py-2 sm:px-4 sm:py-4 md:px-0 md:py-0 ${isTelecom ? "md:order-1" : "md:order-2 md:ml-auto"}`}
             initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: isTelecom ? -34 : 34, y: 16 }}
             animate={{ opacity: 1, x: 0, y: 0 }}
             transition={{ duration: 0.82, ease: [0.22, 1, 0.36, 1] }}
@@ -120,15 +120,15 @@ export const AboutHero = ({ mode }: AboutHeroProps) => {
               </div>
             </div>
 
-            <h1 className="mt-6 max-w-xl text-3xl font-black leading-[0.98] tracking-tight !text-[#0a2f5f] sm:text-4xl md:text-5xl lg:text-[3.35rem]">
+            <h1 className="mt-5 max-w-xl text-3xl font-black leading-[1.02] tracking-tight !text-[#0a2f5f] sm:text-4xl md:text-[2.55rem] lg:mt-6 lg:text-[3.35rem]">
               {copy.headline}
             </h1>
 
-            <p className="mt-5 max-w-lg text-sm leading-7 !text-[#486481] sm:text-base md:text-lg">
+            <p className="mt-4 max-w-lg text-sm leading-6 !text-[#486481] sm:text-base sm:leading-7 lg:mt-5 lg:text-lg">
               {copy.description}
             </p>
 
-            <div className={`mt-7 flex flex-wrap gap-x-6 gap-y-3 border-y py-4 ${isTelecom ? "border-[#f39c36]/20" : "border-[#1d6fff]/15"}`}>
+            <div className={`mt-5 flex flex-wrap gap-x-6 gap-y-3 border-y py-4 lg:mt-7 ${isTelecom ? "border-[#f39c36]/20" : "border-[#1d6fff]/15"}`}>
               {copy.chips.map((chip) => (
                 <span
                   key={chip}
@@ -139,7 +139,7 @@ export const AboutHero = ({ mode }: AboutHeroProps) => {
               ))}
             </div>
 
-            <div className="mt-7 flex flex-wrap items-center gap-3">
+            <div className="mt-5 flex flex-wrap items-center gap-3 lg:mt-7">
               <a
                 href="https://docs.google.com/forms/d/e/1FAIpQLSdfgHkDApUgxqeuqpwoaJPVWo6nQjS7NI9wtpB_W7f0RCddpQ/viewform?usp=publish-editor"
                 target="_blank"
@@ -156,8 +156,8 @@ export const AboutHero = ({ mode }: AboutHeroProps) => {
               </a>
             </div>
 
-            <div className="mt-7 flex items-center gap-3 text-[10px] font-semibold text-[#60758c]">
-              <span className={`h-1.5 w-1.5 rounded-full ${isTelecom ? "bg-[#f39c36]" : "bg-cyan-300"}`} />
+            <div className="mt-5 flex max-w-lg items-start gap-3 text-[10px] font-semibold leading-4 text-[#60758c] lg:mt-7">
+              <span className={`mt-1 h-1.5 w-1.5 shrink-0 rounded-full ${isTelecom ? "bg-[#f39c36]" : "bg-cyan-300"}`} />
               Equipo técnico involucrado desde el diagnóstico hasta la operación.
             </div>
           </motion.div>

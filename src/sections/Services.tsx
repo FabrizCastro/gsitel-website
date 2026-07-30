@@ -201,7 +201,7 @@ export const Services = ({ mode }: { mode: SiteMode }) => {
         onClose={() => setActiveService(null)}
         ariaLabel={activeService ? `Detalles de ${activeService.label}` : "Detalles"}
         maxWidth="2xl"
-        panelClassName="glass-panel border-white/15 p-6 sm:p-10"
+        panelClassName="relative overflow-hidden rounded-[2rem] border border-white/15 bg-[linear-gradient(145deg,#061426_0%,#0a2245_58%,#07172e_100%)] p-6 shadow-[0_34px_90px_rgba(1,8,22,0.5)] sm:p-10"
       >
         {activeService && (
           <>

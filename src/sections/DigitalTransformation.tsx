@@ -15,6 +15,7 @@ import { renderRoadmapIcon } from "@/lib/roadmapIcons";
 import type { SiteMode } from "@/lib/siteMode";
 import {
   Antenna,
+  ArrowRight,
   Brain,
   Gauge,
   Mail,
@@ -22,7 +23,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { type ReactNode, useCallback, useEffect, useState } from "react";
+import { memo, type ReactNode, useCallback, useEffect, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 import strategyAiAnalysis from "@/assets/illustrations/strategy-ai-analysis.png";
 import strategyDashboards from "@/assets/illustrations/strategy-dashboards.png";
@@ -217,12 +218,14 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
         </MotionInView>
 
         <motion.div
-          className="relative flex w-full flex-col gap-4 overflow-hidden border-y border-[#0b1d3a]/[0.06] py-8 lg:flex-row lg:py-10"
+          className="relative isolate flex w-full flex-col gap-3 overflow-hidden rounded-[2rem] border border-[#0b1d3a]/10 bg-[linear-gradient(145deg,#dce5f6_0%,#edf2fd_46%,#d9e4f7_100%)] p-3 shadow-[0_30px_80px_rgba(27,61,107,0.11)] sm:gap-4 sm:rounded-[2.5rem] sm:p-5 lg:flex-row lg:p-6"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >
+          <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_88%_18%,rgba(47,158,219,0.16),transparent_27%),radial-gradient(circle_at_10%_88%,rgba(27,90,166,0.1),transparent_34%)]" />
+          <div className="pointer-events-none absolute inset-0 -z-10 opacity-30 [background-image:radial-gradient(circle_at_1px_1px,rgba(11,29,58,0.12)_0.7px,transparent_0)] [background-size:18px_18px]" />
           <StrategyPhase
             phase="01"
             title={theme.isTelecom ? "Desplegar" : "Iniciar"}
@@ -246,15 +249,23 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
             expanded={activePhase === 1}
             onExpand={() => setActivePhase(1)}
             >
-            <div className="mb-6 text-center">
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-white sm:text-sm">
-                Explora todos los casos
-              </p>
-              <p className="mt-2 text-xs leading-5 text-slate-400">
-                Desliza para explorar y cuéntanos el reto de tu operación.
-              </p>
+            <div className="mb-5 flex flex-col gap-3 border-b border-white/10 pb-5 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/90 sm:text-[11px]">
+                  Explora todos los casos
+                </p>
+                <p className="mt-1.5 text-xs leading-5 text-slate-400">
+                  Propuestas pensadas desde el contexto de cada operación.
+                </p>
+              </div>
+              <span className="inline-flex w-fit items-center gap-2 text-[10px] font-black uppercase tracking-[0.16em] text-white/55">
+                Desliza
+                <ArrowRight className="h-3.5 w-3.5 text-white/80" aria-hidden="true" />
+              </span>
             </div>
-            <div className="-mt-3 flex max-w-full snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-5 pt-3 pr-3 [scrollbar-width:thin]">
+            <div className="relative">
+              <div className="pointer-events-none absolute inset-y-0 right-0 z-10 hidden w-20 bg-gradient-to-l from-[#0b213f] to-transparent lg:block" />
+              <div className="flex max-w-full snap-x snap-mandatory gap-4 overflow-x-auto px-1 pb-3 pt-3 pr-8 [scrollbar-color:rgba(148,163,184,0.85)_rgba(255,255,255,0.08)] [scrollbar-width:thin] [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-white/[0.08] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-slate-300/80 [&::-webkit-scrollbar-thumb]:transition-colors [&::-webkit-scrollbar-thumb:hover]:bg-white">
               {sectorItems.map((item) => (
                 <BusinessCaseCard
                   key={item.title}
@@ -264,6 +275,7 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
                   slides={item.slides}
                 />
               ))}
+              </div>
             </div>
             {activeDetail && (
               <motion.div
@@ -356,6 +368,19 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
             expanded={activePhase === 2}
             onExpand={() => setActivePhase(2)}
           >
+            <div className="mb-5 flex flex-col gap-2 border-b border-white/10 pb-5 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/90 sm:text-[11px]">
+                  Capacidades para escalar
+                </p>
+                <p className="mt-1.5 text-xs leading-5 text-slate-400">
+                  Componentes que conectan la operación actual con su siguiente nivel.
+                </p>
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-[0.16em] text-white/50">
+                03 capacidades
+              </span>
+            </div>
             <div className="grid gap-4 sm:grid-cols-3">
               {phase2Features.map((feature, index) => (
                 <FeatureItem
@@ -520,15 +545,13 @@ function StrategyPhase({
   children: ReactNode;
 }) {
   return (
-    <motion.article
-      layout
-      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      className={`quiet-card-dark relative min-w-0 overflow-hidden rounded-[2rem] border p-5 transition-all duration-500 sm:p-7 lg:min-h-[34rem] lg:p-9 ${
-        expanded ? "w-full lg:basis-[calc(86%-0.5rem)]" : "lg:basis-[calc(14%-0.5rem)]"
+    <article
+      className={`quiet-card-dark relative min-w-0 overflow-hidden rounded-[1.7rem] border p-5 transition-[flex-basis,border-color,box-shadow] duration-300 ease-out will-change-[flex-basis] sm:rounded-[2rem] sm:p-7 lg:min-h-[36rem] lg:p-9 ${
+        expanded ? "w-full lg:min-w-0 lg:flex-[1_1_0%]" : "w-full lg:flex-[0_0_18rem]"
       } ${borderClass} ${glowClass} ${
         expanded
           ? "border-white/70 ring-1 ring-white/20 shadow-[0_18px_45px_rgba(0,0,0,0.2)]"
-          : "border-white/10 hover:border-white/30"
+          : "border-white/12 hover:border-white/28 hover:shadow-[0_26px_64px_rgba(1,10,26,0.24)]"
       }`}
     >
       <div className={expanded ? "relative" : "relative lg:hidden"}>
@@ -538,11 +561,11 @@ function StrategyPhase({
           </div>
           <div className="min-w-0 flex-1">
             <span
-              className="rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.22em]"
+              className="inline-flex rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.22em] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]"
               style={{
-                color: `rgb(${accentRgb})`,
-                background: `rgba(${accentRgb}, 0.12)`,
-                border: `1px solid rgba(${accentRgb}, 0.25)`,
+                color: "#ffffff",
+                background: `rgba(${accentRgb}, 0.28)`,
+                border: `1px solid rgba(${accentRgb}, 0.58)`,
               }}
             >
               Fase {phase}
@@ -550,7 +573,7 @@ function StrategyPhase({
             <h3 className="mt-3 text-3xl font-black tracking-tight text-white sm:text-4xl">
               {title}
             </h3>
-            <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 sm:text-[11px]">
+            <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.22em] text-white/72 sm:text-[11px]">
               {subtitle}
             </p>
           </div>
@@ -564,7 +587,7 @@ function StrategyPhase({
       <button
         type="button"
         onClick={onExpand}
-        className={`hidden h-full min-h-[28rem] w-full flex-col items-start justify-between text-left lg:flex ${
+        className={`group hidden h-full min-h-[34.5rem] w-full flex-col items-start justify-between rounded-[1.3rem] p-1 text-left transition-colors duration-300 hover:bg-white/[0.035] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/55 lg:flex ${
           expanded ? "lg:hidden" : ""
         }`}
         aria-label={`Expandir fase ${phase}: ${title}`}
@@ -573,20 +596,31 @@ function StrategyPhase({
           {icon}
         </div>
         <div>
-          <p className="text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: `rgb(${accentRgb})` }}>
+          <span
+            className="inline-flex rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.2em] shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]"
+            style={{
+              color: "#ffffff",
+              background: `rgba(${accentRgb}, 0.28)`,
+              border: `1px solid rgba(${accentRgb}, 0.58)`,
+            }}
+          >
             Fase {phase}
-          </p>
-          <p className="mt-3 text-2xl font-black leading-tight text-white">{title}</p>
-          <p className="mt-4 text-[10px] font-bold uppercase tracking-[0.16em] text-white/50">Expandir</p>
+          </span>
+          <p className="mt-3 break-words text-2xl font-black leading-[1.04] text-white">{title}</p>
+          <p className="mt-3 text-xs font-semibold leading-5 !text-white/80">{subtitle}</p>
+          <span className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/[0.12] px-3 py-2 text-[10px] font-black uppercase tracking-[0.16em] !text-white transition-colors group-hover:border-white/45 group-hover:bg-white/[0.18]">
+            Ver fase
+            <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+          </span>
         </div>
       </button>
 
-      <div className={expanded ? "relative mt-9" : "relative mt-9 lg:hidden"}>{children}</div>
-    </motion.article>
+      <div className={expanded ? "relative mt-8" : "relative mt-8 lg:hidden"}>{children}</div>
+    </article>
   );
 }
 
-function BusinessCaseCard({
+const BusinessCaseCard = memo(function BusinessCaseCard({
   title,
   image,
   accentRgb,
@@ -611,7 +645,7 @@ function BusinessCaseCard({
 
   return (
     <article
-      className="group relative flex min-h-[330px] min-w-[235px] snap-start flex-col overflow-hidden rounded-[1.6rem] border border-white/10 bg-[linear-gradient(160deg,#101f35,#0b1729)] p-4 text-left shadow-[0_18px_48px_rgba(0,0,0,0.2)] transition duration-500 hover:-translate-y-1 hover:border-white/25 hover:shadow-[0_28px_62px_rgba(0,0,0,0.28)] sm:min-h-[360px] sm:min-w-[260px]"
+      className="group relative flex min-h-[330px] min-w-[235px] shrink-0 snap-start flex-col overflow-hidden rounded-[1.6rem] border border-white/10 bg-[linear-gradient(160deg,#101f35,#0b1729)] p-4 text-left shadow-[0_18px_48px_rgba(0,0,0,0.2)] transition duration-500 hover:-translate-y-1 hover:border-white/25 hover:shadow-[0_28px_62px_rgba(0,0,0,0.28)] sm:min-h-[360px] sm:min-w-[260px]"
     >
       <div className="relative h-28 overflow-hidden rounded-[1.15rem] bg-[#17243b] sm:h-32">
         {image ? (
@@ -661,7 +695,7 @@ function BusinessCaseCard({
       />
     </article>
   );
-}
+});
 
 function FeatureItem({
   index,
@@ -677,7 +711,7 @@ function FeatureItem({
   graphic: string | StaticImageData;
 }) {
   return (
-    <article className="group overflow-hidden border border-white/10 bg-white/[0.025] transition hover:border-white/25 hover:bg-white/[0.04]">
+    <article className="group overflow-hidden rounded-[1.35rem] border border-white/10 bg-[linear-gradient(150deg,rgba(255,255,255,0.07),rgba(255,255,255,0.025))] shadow-[0_18px_38px_rgba(0,0,0,0.16)] transition duration-500 hover:-translate-y-1 hover:border-white/24 hover:bg-white/[0.07] hover:shadow-[0_28px_56px_rgba(0,0,0,0.24)]">
       <div className="relative aspect-[1.55/1] overflow-hidden">
         <Image
           src={graphic}
