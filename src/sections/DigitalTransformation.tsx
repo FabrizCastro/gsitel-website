@@ -13,13 +13,16 @@ import { MotionInView } from "@/components/MotionInView";
 import { getModeTheme } from "@/lib/modeTheme";
 import { renderRoadmapIcon } from "@/lib/roadmapIcons";
 import type { SiteMode } from "@/lib/siteMode";
+import { scrollToSection } from "@/lib/smoothSectionScroll";
 import {
   Antenna,
   ArrowRight,
   Brain,
+  Check,
   Gauge,
-  Mail,
   Rocket,
+  Sparkles,
+  Workflow,
   type LucideIcon,
 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -99,6 +102,8 @@ const phase2GraphicImages = {
   ],
 };
 
+const SOFTWARE_SECTOR_OPTIONS = SOFTWARE_SECTORS.filter((item) => item.title !== "Salud");
+
 const PhaseIcon = ({
   icon: Icon,
   className,
@@ -159,6 +164,10 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
     setActiveDetail(null);
   };
 
+  if (!theme.isTelecom) {
+    return <SoftwareGrowthStrategy />;
+  }
+
   const sectorItems = theme.isTelecom
     ? TELECOM_CAPABILITIES.map((item) => {
         const detail = TELECOM_CAPABILITY_DATA[item.title];
@@ -166,6 +175,7 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
           badge: item.icon,
           title: item.title,
           image: undefined,
+          onOpen: () => openTelecomCapability(item.title),
           slides: buildProposalSlides(
             item.title,
             detail?.solutions.map((solution) => solution.name) ?? [],
@@ -179,6 +189,7 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
           badge: item.icon,
           title: item.title,
           image: businessCaseImages[item.title],
+          onOpen: () => openSoftwareSector(item.title),
           slides: buildProposalSlides(
             item.title,
             detail?.solutions.map((solution) => solution.name) ?? [],
@@ -206,13 +217,13 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
             </div>
             <h2 className="section-title-light max-w-3xl sm:text-4xl lg:text-5xl">
               {theme.isTelecom
-                ? "Estrategia para redes de misión crítica"
-                : "Estrategia digital orientada a resultados"}
+                ? "Soluciones para redes de misión crítica"
+                : "Soluciones digitales para empresas y sectores"}
             </h2>
             <p className="section-desc-light max-w-2xl text-base sm:text-lg">
               {theme.isTelecom
-                ? "Planificación, despliegue y optimización con control técnico de principio a fin."
-                : "Diagnóstico, implementación y evolución tecnológica con objetivos verificables."}
+                ? "Planificación, despliegue y optimización para operaciones telecom con control técnico de principio a fin."
+                : "Software a medida, automatización de procesos, páginas web, aplicaciones web e inteligencia artificial para transformar operaciones reales."}
             </p>
           </div>
         </MotionInView>
@@ -228,12 +239,12 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
           <div className="pointer-events-none absolute inset-0 -z-10 opacity-30 [background-image:radial-gradient(circle_at_1px_1px,rgba(11,29,58,0.12)_0.7px,transparent_0)] [background-size:18px_18px]" />
           <StrategyPhase
             phase="01"
-            title={theme.isTelecom ? "Desplegar" : "Iniciar"}
-            subtitle={theme.isTelecom ? "Integración RAN" : "Digitalización integral"}
+            title={theme.isTelecom ? "Desplegar" : "Elige tu sector"}
+            subtitle={theme.isTelecom ? "Integración RAN" : "Soluciones según tu negocio"}
             description={
               theme.isTelecom
                 ? "Rollout, comisionamiento y validación para acelerar la puesta en servicio."
-                : "Modernizamos atención y gestión interna con un plan por sectores."
+                : "Selecciona tu industria para descubrir soluciones concretas, una ruta de implementación y el siguiente paso para tu negocio."
             }
             icon={
               theme.isTelecom ? (
@@ -273,6 +284,7 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
                   image={item.image}
                   accentRgb={theme.accentRgb}
                   slides={item.slides}
+                  onOpen={item.onOpen}
                 />
               ))}
               </div>
@@ -398,7 +410,7 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
       </div>
 
       <AppModal
-        isOpen={false}
+        isOpen={!!activeDetail}
         onClose={closeModal}
         ariaLabel={activeDetail ? `Detalles de ${activeDetail.label}` : "Detalles"}
         maxWidth="4xl"
@@ -517,6 +529,176 @@ export const DigitalTransformation = ({ mode }: { mode: SiteMode }) => {
   );
 };
 
+function SoftwareGrowthStrategy() {
+  const [selectedSector, setSelectedSector] = useState("Restaurantes");
+  const [isSectorHovered, setIsSectorHovered] = useState(false);
+  const selected = SECTOR_DATA[selectedSector];
+
+  useEffect(() => {
+    if (isSectorHovered) {
+      return;
+    }
+
+    const timer = window.setInterval(() => {
+      setSelectedSector((current) => {
+        const currentIndex = SOFTWARE_SECTOR_OPTIONS.findIndex((item) => item.title === current);
+        return SOFTWARE_SECTOR_OPTIONS[(currentIndex + 1) % SOFTWARE_SECTOR_OPTIONS.length]?.title ?? current;
+      });
+    }, 4500);
+
+    return () => window.clearInterval(timer);
+  }, [isSectorHovered]);
+
+  return (
+    <section
+      id="digitalizacion"
+      className="quiet-section relative overflow-hidden bg-[#f4f7ff] px-4 pb-20 pt-14 scroll-mt-24 sm:px-6 sm:pb-28 sm:pt-20 md:scroll-mt-28"
+    >
+      <div className="pointer-events-none absolute -right-40 top-20 h-96 w-96 rounded-full bg-[#7dd3fc]/20 blur-3xl" />
+      <div className="pointer-events-none absolute -left-40 bottom-0 h-96 w-96 rounded-full bg-[#c4b5fd]/20 blur-3xl" />
+      <div className="relative mx-auto max-w-7xl">
+        <MotionInView className="max-w-4xl">
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="section-eyebrow-light">Estrategia de Crecimiento</p>
+            <span className="rounded-full border border-[#0b1d3a]/10 bg-white/75 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#0b1d3a]/50">
+              Soluciones por sector
+            </span>
+          </div>
+          <h2 className="mt-4 max-w-4xl text-4xl font-black leading-[0.98] tracking-[-0.045em] text-[#0b1d3a] sm:text-5xl lg:text-7xl">
+            Convierte un problema operativo en una solución digital.
+          </h2>
+          <p className="mt-6 max-w-2xl text-base leading-7 text-[#0b1d3a]/65 sm:text-lg sm:leading-8">
+            Software a medida, automatización de procesos, páginas web, aplicaciones e IA para que tu empresa venda mejor, trabaje más rápido y crezca con control.
+          </p>
+        </MotionInView>
+
+        <div className="mt-12 grid gap-5 lg:grid-cols-[0.72fr_1.28fr] lg:gap-7">
+          <motion.aside
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            className="rounded-[2rem] bg-[#0b1d3a] p-6 text-white shadow-[0_24px_70px_rgba(11,29,58,0.2)] sm:p-8"
+          >
+            <p className="text-[10px] font-black uppercase tracking-[0.24em] text-[#7dd3fc]">Cómo crecemos contigo</p>
+            <div className="mt-8 space-y-7">
+              {[
+                ["01", "Entendemos", "Mapeamos tu operación y detectamos dónde se pierde tiempo, dinero o clientes."],
+                ["02", "Construimos", "Diseñamos la solución correcta: web, app, automatización o integración."],
+                ["03", "Escalamos", "Medimos resultados y conectamos nuevas capacidades cuando tu negocio está listo."],
+              ].map(([step, title, body]) => (
+                <div key={step} className="flex gap-4">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-[#7dd3fc]/35 bg-[#7dd3fc]/10 text-[10px] font-black text-[#7dd3fc]">{step}</span>
+                  <div>
+                    <h3 className="text-lg font-black tracking-tight">{title}</h3>
+                    <p className="mt-1 text-sm leading-6 text-slate-300">{body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-9 border-t border-white/10 pt-6">
+              <p className="text-sm font-bold text-white">¿No sabes por dónde empezar?</p>
+              <a
+                href="#contacto"
+                onClick={(event) => {
+                  event.preventDefault();
+                  scrollToSection("contacto");
+                }}
+                className="mt-3 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-[#7dd3fc] transition hover:gap-3"
+              >
+                Cuéntanos tu reto <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+            </div>
+          </motion.aside>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            className="rounded-[2rem] border border-[#0b1d3a]/10 bg-white/80 p-4 shadow-[0_24px_70px_rgba(27,61,107,0.1)] sm:p-6"
+          >
+            <div className="flex flex-col gap-2 border-b border-[#0b1d3a]/10 pb-5 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.24em] text-[#1b5aa6]">Encuentra tu solución</p>
+                <h3 className="mt-2 text-2xl font-black tracking-tight text-[#0b1d3a] sm:text-3xl">¿Qué necesitas resolver?</h3>
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-[0.16em] text-[#0b1d3a]/40">{SOFTWARE_SECTORS.length - 1} sectores</span>
+            </div>
+
+            <div
+              className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4"
+              onMouseEnter={() => setIsSectorHovered(true)}
+              onMouseLeave={() => setIsSectorHovered(false)}
+            >
+              {SOFTWARE_SECTOR_OPTIONS.map((item) => {
+                const active = item.title === selectedSector;
+                return (
+                  <button
+                    key={item.title}
+                    type="button"
+                    onClick={() => setSelectedSector(item.title)}
+                    className={`group rounded-2xl border p-3 text-left transition duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2f9edb] ${active ? "border-[#2f9edb] bg-[#e9f8ff] shadow-[0_10px_24px_rgba(47,158,219,0.14)]" : "border-[#0b1d3a]/10 bg-[#f7f9ff] hover:-translate-y-0.5 hover:border-[#2f9edb]/45"}`}
+                    aria-pressed={active}
+                  >
+                    <span className="text-xl" aria-hidden="true">{item.icon}</span>
+                    <span className={`mt-2 block text-xs font-black leading-4 ${active ? "text-[#0b6092]" : "text-[#0b1d3a]"}`}>{item.title}</span>
+                    <span className="mt-1 block text-[10px] leading-4 text-[#0b1d3a]/50">{item.desc}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {selected && (
+              <motion.div
+                key={selectedSector}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                aria-live="polite"
+                className="mt-5 overflow-hidden rounded-[1.5rem] bg-[#0b1d3a] p-5 text-white sm:p-6"
+              >
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#7dd3fc]">Soluciones para</p>
+                    <h4 className="mt-2 text-2xl font-black tracking-tight">{selectedSector}</h4>
+                  </div>
+                  <span className="inline-flex w-fit items-center gap-2 rounded-full border border-[#7dd3fc]/25 bg-[#7dd3fc]/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-[#b8edff]"><Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> Ruta recomendada</span>
+                </div>
+                <div className="mt-5 grid gap-2 sm:grid-cols-2">
+                  {selected.solutions.slice(0, 4).map((solution) => (
+                    <a key={solution.name} href={solution.link} target="_blank" rel="noreferrer" className="group rounded-xl border border-white/10 bg-white/[0.05] p-3 transition hover:border-[#7dd3fc]/50 hover:bg-white/[0.09]">
+                      <span className="flex items-start justify-between gap-2 text-sm font-bold text-white"><span>{solution.name}</span><ArrowRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#7dd3fc] transition group-hover:translate-x-1" aria-hidden="true" /></span>
+                      <span className="mt-1 block text-xs leading-5 text-slate-400">{solution.summary}</span>
+                    </a>
+                  ))}
+                </div>
+                <div className="mt-5 flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="flex items-center gap-2 text-xs font-semibold text-slate-300"><Check className="h-4 w-4 text-[#7dd3fc]" aria-hidden="true" /> Diagnóstico y propuesta a tu medida</p>
+                  <a href="#contacto" onClick={(event) => { event.preventDefault(); scrollToSection("contacto"); }} className="inline-flex items-center justify-center gap-2 rounded-full bg-[#7dd3fc] px-4 py-2.5 text-[10px] font-black uppercase tracking-[0.14em] text-[#0b1d3a] transition hover:bg-white">Hablar con GSITEL <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></a>
+                </div>
+              </motion.div>
+            )}
+          </motion.div>
+        </div>
+
+        <div className="mt-8 flex flex-wrap gap-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#0b1d3a]/45" aria-label="Soluciones de GSITEL">
+          {["Software a medida", "Automatización de procesos", "Aplicaciones web", "Páginas web", "IA para empresas", "Integraciones SUNAT"].map((keyword) => (
+            <a
+              key={keyword}
+              href="#contacto"
+              onClick={(event) => {
+                event.preventDefault();
+                scrollToSection("contacto");
+              }}
+              className="rounded-full border border-[#0b1d3a]/10 bg-white/55 px-3 py-2 transition duration-300 hover:-translate-y-0.5 hover:border-[#2f9edb]/45 hover:bg-white hover:text-[#0b6092] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2f9edb]"
+            >
+              {keyword}
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function StrategyPhase({
   phase,
   title,
@@ -625,11 +807,13 @@ const BusinessCaseCard = memo(function BusinessCaseCard({
   image,
   accentRgb,
   slides,
+  onOpen,
 }: {
   title: string;
   image?: string;
   accentRgb: string;
   slides: ProposalSlide[];
+  onOpen: () => void;
 }) {
   const [activeSlide, setActiveSlide] = useState(0);
 
@@ -662,6 +846,7 @@ const BusinessCaseCard = memo(function BusinessCaseCard({
         <div className="absolute inset-0 bg-gradient-to-t from-[#081326]/70 via-transparent to-transparent" />
       </div>
       <div className="mt-4 flex flex-1 flex-col">
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/80">{title}</p>
         <span className="text-[9px] font-black uppercase tracking-[0.18em]" style={{ color: `rgb(${accentRgb})` }}>
           {slide.eyebrow}
         </span>
@@ -679,13 +864,15 @@ const BusinessCaseCard = memo(function BusinessCaseCard({
               />
             ))}
           </div>
-          <a
-            href={`mailto:soporte@gsitel-solutions.com?subject=${encodeURIComponent(`Propuesta para ${title}`)}`}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#0b1d3a] transition hover:scale-105 hover:bg-[#dff7ff]"
-            aria-label={`Escribir sobre el caso ${title}`}
+          <button
+            type="button"
+            onClick={onOpen}
+            className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-2 text-[10px] font-black uppercase tracking-[0.12em] text-[#0b1d3a] transition hover:scale-105 hover:bg-[#dff7ff] focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            aria-label={`Ver soluciones para ${title}`}
           >
-            <Mail className="h-4 w-4" strokeWidth={2.2} aria-hidden="true" />
-          </a>
+            Ver soluciones
+            <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.4} aria-hidden="true" />
+          </button>
         </div>
       </div>
       <span

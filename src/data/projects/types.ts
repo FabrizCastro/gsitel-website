@@ -12,6 +12,9 @@ export type ProjectCardData = {
   accent: string;
   techTags?: string[];
   detailImagesKey?: string;
+  projectUrl?: string;
+  projectUrlLabel?: string;
+  brandLogo?: boolean;
 };
 
 export type ProjectDetailImage = {

@@ -1,75 +1,19 @@
-import n8nLogo from "@/assets/logos/n8n logo.png";
 import cuadraiAppLogo from "@/assets/logos/cuadrailogo.png";
-import mobileAppImage from "@/assets/illustrations/mobileapp.png";
+import xtremeLogo from "@/assets/logos/logo_xtreme.png";
+import vaProfesionalesLogo from "@/assets/logos/va-profesionales.png";
+import villasSinFronterasLogo from "@/assets/logos/vsf_logo.png";
 import webAppImage from "@/assets/illustrations/webapp.png";
 import type { ProjectCardData } from "@/data/projects/types";
 
 export const softwareProjects: ProjectCardData[] = [
   {
-    id: "sunat",
-    title: "Automatización contable con SUNAT",
-    tag: "Estudios contables",
-    description:
-      "Sistema integral para controlar operaciones, flujo de caja y reportes con trazabilidad total.",
-    detail:
-      "Automatización de procesos contables para estudios contables y sus clientes, integrando APIs de SUNAT para extraer datos de ventas, compras y cobranzas. El sistema permite generar reportes personalizados por cliente y facilita validaciones y ajustes para una gestión financiera eficiente.",
-    techTags: ["n8n", "Python", "APIs"],
-    detailImagesKey: "sunat",
-    highlights: [
-      "Flujos end-to-end y conciliación",
-      "Reportes financieros automatizados",
-      "Integraciones contables y dashboards",
-    ],
-    image: n8nLogo,
-    imageAlt: "n8n logo",
-    accent: "#7fb7ff",
-  },
-  {
-    id: "ascensores",
-    title: "Aplicaciones web a medida",
-    tag: "Plataformas web",
-    description:
-      "Soluciones web para gestión interna, clientes y procesos con foco en usabilidad y rendimiento.",
-    detail:
-      "Aplicación desarrollada para Ascensores S.A. con el objetivo de reemplazar procesos dispersos en Microsoft Office y SharePoint. El sistema unificó información comercial, seguimiento por proyecto y catálogos operativos en una sola herramienta.",
-    techTags: ["React", ".NET Core", "MySQL"],
-    detailImagesKey: "ascensores",
-    highlights: [
-      "Paneles administrativos personalizados",
-      "APIs seguras e integraciones",
-      "Arquitectura escalable",
-    ],
-    image: webAppImage,
-    imageAlt: "Web app",
-    accent: "#9ac7ff",
-  },
-  {
-    id: "ong",
-    title: "Diseño y desarrollo web",
-    tag: "Web & UX",
-    description:
-      "Sitios modernos optimizados para conversión, rendimiento y accesibilidad.",
-    detail:
-      "Página web diseñada para una ONG enfocada en apoyar a la juventud mediante becas deportivas. El sitio comunica propósito, muestra resultados e historias, y facilita el contacto con aliados y beneficiarios.",
-    techTags: ["UI/UX", "Web Design", "SEO"],
-    detailImagesKey: "ong",
-    highlights: [
-      "UI/UX orientado a objetivos",
-      "Performance y SEO técnico",
-      "Integración con formularios y CRM",
-    ],
-    image: mobileAppImage,
-    imageAlt: "Desarrollo web",
-    accent: "#8dbbff",
-  },
-  {
     id: "pichangapp",
-    title: "CUADRAI",
-    tag: "Alquiler de canchas",
+    title: "CUADRAI PE",
+    tag: "Proyecto destacado",
     description:
       "Plataforma para alquilar canchas deportivas, consultar disponibilidad y gestionar reservas desde una experiencia móvil.",
     detail:
-      "CUADRAI es una plataforma de alquiler de canchas deportivas con disponibilidad, reservas y gestión operativa. Fue desarrollada con Python para la lógica de la plataforma y React Native para la experiencia móvil.",
+      "CUADRAI PE es la plataforma principal de alquiler de canchas deportivas. Diseñamos una experiencia digital clara para consultar disponibilidad, reservar y administrar la operación de cada espacio desde una sola solución.",
     techTags: ["Python", "React Native"],
     detailImagesKey: "pichangapp",
     highlights: [
@@ -78,7 +22,94 @@ export const softwareProjects: ProjectCardData[] = [
       "Gestión operativa de espacios deportivos",
     ],
     image: cuadraiAppLogo,
-    imageAlt: "Logo de CUADRAI",
+    imageAlt: "Logo de CUADRAI PE",
+    accent: "#2f9edb",
+    projectUrl: "https://cuadraipe.com/",
+    projectUrlLabel: "Visitar CUADRAI PE",
+    brandLogo: true,
+  },
+  {
+    id: "sunat",
+    title: "V&A Profesionales",
+    tag: "Estudio contable",
+    description:
+      "Sitio web, aplicación de gestión y automatización SUNAT para un estudio contable moderno.",
+    detail:
+      "Para V&A Profesionales desarrollamos su presencia web y una solución operativa que automatiza procesos contables con SUNAT. La plataforma integra la consulta de ventas, compras y cobranzas para generar reportes por cliente y agilizar validaciones financieras.",
+    techTags: ["n8n", "Python", "APIs"],
+    detailImagesKey: "sunat",
+    highlights: [
+      "Página web institucional",
+      "Aplicación web para la gestión contable",
+      "Automatización de reportes e integraciones SUNAT",
+    ],
+    image: vaProfesionalesLogo,
+    imageAlt: "Logo de V&A Profesionales",
     accent: "#7fb7ff",
+    projectUrl: "https://vaprofesionales.com/",
+    projectUrlLabel: "Visitar V&A Profesionales",
+    brandLogo: true,
+  },
+  {
+    id: "xtreme",
+    title: "Xtreme Fitness Sport",
+    tag: "Fitness & bienestar",
+    description:
+      "Experiencia digital para una marca fitness que busca atraer, informar y convertir nuevos miembros.",
+    detail:
+      "Caso de éxito para Xtreme Fitness Sport: una presencia digital enfocada en comunicar su propuesta, mostrar sus servicios y facilitar el contacto con personas interesadas en entrenar.",
+    techTags: ["Web Design", "UI/UX", "SEO"],
+    highlights: [
+      "Presentación clara de servicios y beneficios",
+      "Experiencia responsive para captar nuevos miembros",
+      "Canales de contacto orientados a conversión",
+    ],
+    image: xtremeLogo,
+    imageAlt: "Logo de Xtreme Fitness Sport",
+    accent: "#f39c36",
+    projectUrl: "https://xtremefitnesssport.com/",
+    projectUrlLabel: "Visitar Xtreme Fitness Sport",
+    brandLogo: true,
+  },
+  {
+    id: "ong",
+    title: "Villas Sin Fronteras",
+    tag: "Organización social",
+    description:
+      "Sitio web que comunica el propósito, los resultados y las historias de una organización que impulsa oportunidades para jóvenes.",
+    detail:
+      "Página web diseñada para Villas Sin Fronteras, una organización enfocada en apoyar a la juventud mediante becas deportivas. El sitio comunica su propósito, muestra resultados e historias, y facilita el contacto con aliados y beneficiarios.",
+    techTags: ["UI/UX", "Web Design", "SEO"],
+    detailImagesKey: "ong",
+    highlights: [
+      "UI/UX orientado a objetivos",
+      "Performance y SEO técnico",
+      "Integración con formularios y CRM",
+    ],
+    image: villasSinFronterasLogo,
+    imageAlt: "Logo de Villas Sin Fronteras",
+    accent: "#8dbbff",
+    projectUrl: "https://www.villasinfronteras.org/",
+    projectUrlLabel: "Visitar Villas Sin Fronteras",
+    brandLogo: true,
+  },
+  {
+    id: "ascensores",
+    title: "Ascensores S.A.",
+    tag: "Aplicación web a medida",
+    description:
+      "Plataforma de gestión interna para centralizar operaciones comerciales, proyectos y catálogos técnicos.",
+    detail:
+      "Aplicación desarrollada para Ascensores S.A. para reemplazar procesos dispersos en Microsoft Office y SharePoint. El sistema centraliza la información comercial, el seguimiento de proyectos y los catálogos operativos en una sola herramienta.",
+    techTags: ["React", ".NET Core", "MySQL"],
+    detailImagesKey: "ascensores",
+    highlights: [
+      "Paneles administrativos personalizados",
+      "APIs seguras e integraciones",
+      "Arquitectura escalable",
+    ],
+    image: webAppImage,
+    imageAlt: "Aplicación web de Ascensores S.A.",
+    accent: "#9ac7ff",
   },
 ];

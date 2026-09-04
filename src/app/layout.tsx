@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     template: "%s | GSITEL Services S.A.C.",
   },
   description:
-    "GSITEL Services S.A.C. ofrece soluciones en software, automatización e ingeniería RAN para redes móviles y operaciones críticas.",
+    "GSITEL desarrolla software a medida, aplicaciones web, páginas web, automatización de procesos, inteligencia artificial e integración SUNAT para empresas en Perú.",
   alternates: {
     canonical: "/",
   },
@@ -24,6 +24,13 @@ export const metadata: Metadata = {
     "ingeniería RAN",
     "automatización",
     "software a medida",
+    "desarrollo de software Perú",
+    "aplicaciones web",
+    "páginas web para empresas",
+    "automatización de procesos",
+    "automatización SUNAT",
+    "inteligencia artificial para empresas",
+    "soluciones digitales para empresas",
     "integración RAN",
     "optimización de redes",
     "proyectos telecom",

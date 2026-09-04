@@ -4,8 +4,9 @@ import Logo from "@/assets/logos/gsitel_services.png";
 import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import type { SiteMode } from "@/lib/siteMode";
+import { scrollToSection } from "@/lib/smoothSectionScroll";
 
 type HeaderProps = {
   mode?: SiteMode;
@@ -15,6 +16,7 @@ type HeaderProps = {
 const navLinks = [
   { href: "/aboutus", label: "Nosotros" },
   { href: "/#servicios", label: "Servicios" },
+  { href: "/#alianzas-software", label: "Empresas" },
   { href: "/#metodologia", label: "Cómo trabajamos" },
   { href: "/#clientes", label: "Clientes" },
   { href: "/#proyectos", label: "Proyectos" },
@@ -67,10 +69,31 @@ const ModeToggle = ({
 export const Header = ({ mode, onModeChange }: HeaderProps) => {
   const [isAtTop, setIsAtTop] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const [localMode, setLocalMode] = useState<SiteMode>("software");
   const activeMode = mode ?? localMode;
   const handleModeChange = onModeChange ?? setLocalMode;
   const isTelecom = activeMode === "telecom";
+  const visibleNavLinks = isTelecom
+    ? navLinks.filter((link) => link.href !== "/#alianzas-software")
+    : navLinks;
+
+  const handleSectionNavigation = (
+    event: MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
+    if (!href.startsWith("/#") || window.location.pathname !== "/") {
+      return;
+    }
+
+    if (!scrollToSection(href.slice(2))) {
+      return;
+    }
+
+    event.preventDefault();
+    setIsMenuOpen(false);
+    setActiveSection(href);
+  };
 
   useEffect(() => {
     const handleScroll = () => setIsAtTop(window.scrollY <= 12);
@@ -101,6 +124,7 @@ export const Header = ({ mode, onModeChange }: HeaderProps) => {
           <div className="flex items-center justify-between gap-4">
             <Link
               href="/#acerca"
+              onClick={(event) => handleSectionNavigation(event, "/#acerca")}
               className="group flex shrink-0 items-center rounded-xl border border-white/40 bg-white p-2 shadow-[0_8px_28px_rgba(0,0,0,0.18)] transition duration-500 hover:-translate-y-0.5 hover:shadow-[0_12px_34px_rgba(0,0,0,0.24)]"
               aria-label="Ir al inicio"
             >
@@ -132,15 +156,27 @@ export const Header = ({ mode, onModeChange }: HeaderProps) => {
                 isAtTop ? "text-shadow-hero" : ""
               }`}
             >
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="rounded-xl px-3.5 py-2 text-sm font-medium text-white transition duration-300 hover:bg-white/[0.12]"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {visibleNavLinks.map((link) =>
+                link.href.startsWith("/#") ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={(event) => handleSectionNavigation(event, link.href)}
+                    aria-current={activeSection === link.href ? "location" : undefined}
+                    className={`rounded-xl px-3.5 py-2 text-sm font-medium text-white transition duration-300 hover:bg-white/[0.12] ${activeSection === link.href ? "bg-white/[0.14] text-cyan-100 shadow-[inset_0_0_0_1px_rgba(125,211,252,0.2)]" : ""}`}
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="rounded-xl px-3.5 py-2 text-sm font-medium text-white transition duration-300 hover:bg-white/[0.12]"
+                  >
+                    {link.label}
+                  </Link>
+                ),
+              )}
               <div className="ml-1 border-l border-white/10 pl-2">
                 <ModeToggle mode={activeMode} onModeChange={handleModeChange} />
               </div>
@@ -156,16 +192,28 @@ export const Header = ({ mode, onModeChange }: HeaderProps) => {
               <div className="mb-2 flex justify-center">
                 <ModeToggle mode={activeMode} onModeChange={handleModeChange} />
               </div>
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="rounded-xl px-4 py-2.5 text-sm font-semibold transition hover:bg-white/10"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {visibleNavLinks.map((link) =>
+                link.href.startsWith("/#") ? (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={(event) => handleSectionNavigation(event, link.href)}
+                    aria-current={activeSection === link.href ? "location" : undefined}
+                    className={`rounded-xl px-4 py-2.5 text-sm font-semibold transition hover:bg-white/10 ${activeSection === link.href ? "bg-white/10 text-cyan-100" : ""}`}
+                  >
+                    {link.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="rounded-xl px-4 py-2.5 text-sm font-semibold transition hover:bg-white/10"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                ),
+              )}
             </nav>
           </div>
         </div>

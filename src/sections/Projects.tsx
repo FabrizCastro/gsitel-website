@@ -24,6 +24,7 @@ import {
   Code2,
   Database,
   Expand,
+  ExternalLink,
   LayoutDashboard,
   Link2,
   Monitor,
@@ -97,17 +98,28 @@ const ProjectSelector = ({
             <motion.span
               animate={{
                 scale: isActive ? 1.12 : 1,
-                backgroundColor: isActive ? project.accent : "#ffffff",
-                color: isActive ? "#ffffff" : "#0b1d3a",
+                backgroundColor: isActive ? (project.brandLogo ? "#ffffff" : project.accent) : "#ffffff",
+                color: isActive ? (project.brandLogo ? "#0b1d3a" : "#ffffff") : "#0b1d3a",
               }}
               transition={{ type: "spring", stiffness: 420, damping: 30 }}
               className={`inline-flex h-9 w-9 items-center justify-center rounded-full border text-[10px] font-black shadow-sm ${
                 isActive
-                  ? "border-transparent shadow-[0_8px_22px_rgba(27,90,166,0.2)]"
+                  ? project.brandLogo
+                    ? "border-2 shadow-[0_8px_22px_rgba(27,90,166,0.2)]"
+                    : "border-transparent shadow-[0_8px_22px_rgba(27,90,166,0.2)]"
                   : "border-[#0b1d3a]/14 group-hover:border-[#2f9edb]/45"
               }`}
+              style={{ borderColor: isActive && project.brandLogo ? project.accent : undefined }}
             >
-              {String(index + 1).padStart(2, "0")}
+              {project.brandLogo ? (
+                <Image
+                  src={project.image}
+                  alt=""
+                  className="h-5 w-5 object-contain"
+                />
+              ) : (
+                String(index + 1).padStart(2, "0")
+              )}
             </motion.span>
             <span
               className={`mt-3 line-clamp-2 text-[10px] font-black uppercase leading-4 tracking-[0.08em] transition-colors ${
@@ -212,22 +224,25 @@ const ProjectCaseStudy = ({
       : isTelecom
         ? TELECOM_VISUALS
         : [{ src: project.image, alt: project.imageAlt }];
+  const isFeatured = !isTelecom && index === 0;
 
   return (
     <motion.article
       initial={
         reduceMotion
           ? { opacity: 0 }
-          : { opacity: 0, x: direction >= 0 ? 70 : -70, scale: 0.985 }
+          : { opacity: 0, y: 18, scale: 0.985 }
       }
-      animate={{ opacity: 1, x: 0, scale: 1 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={
         reduceMotion
           ? { opacity: 0 }
-          : { opacity: 0, x: direction >= 0 ? -70 : 70, scale: 0.985 }
+          : { opacity: 0, y: -18, scale: 0.985 }
       }
       transition={{ duration: 0.58, ease: [0.22, 1, 0.36, 1] }}
-      className="quiet-card relative overflow-hidden rounded-[1.75rem] p-4 sm:p-6 lg:rounded-[2.25rem] lg:p-8"
+      className={`quiet-card relative overflow-hidden rounded-[1.75rem] p-4 sm:p-6 lg:rounded-[2.25rem] lg:p-8 ${
+        isFeatured ? "ring-1 ring-[#2f9edb]/35 shadow-[0_24px_70px_rgba(47,158,219,0.18)]" : ""
+      }`}
       id="active-project-case"
       role="tabpanel"
     >
@@ -235,6 +250,11 @@ const ProjectCaseStudy = ({
         className="absolute inset-x-10 top-0 h-px opacity-80"
         style={{ background: `linear-gradient(90deg, transparent, ${project.accent}, transparent)` }}
       />
+      {isFeatured && (
+        <div className="absolute right-0 top-0 hidden rounded-bl-[1.5rem] bg-[#0b1d3a] px-5 py-2.5 text-[9px] font-black uppercase tracking-[0.2em] text-white sm:block">
+          Selección GSITEL
+        </div>
+      )}
 
       <header className="flex flex-col gap-5 border-b border-[#0b1d3a]/10 pb-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex min-w-0 items-center gap-4">
@@ -250,7 +270,7 @@ const ProjectCaseStudy = ({
           </div>
           <div className="min-w-0">
             <p className="text-[9px] font-black uppercase tracking-[0.24em] text-[#1b5aa6]/65">
-              Proyecto {String(index + 1).padStart(2, "0")} · {project.tag}
+              {isFeatured ? "Caso principal" : `Proyecto ${String(index + 1).padStart(2, "0")}`} · {project.tag}
             </p>
             <h3 className="mt-1 text-xl font-black uppercase leading-tight tracking-tight text-[#0b1d3a] sm:text-2xl lg:text-[1.7rem]">
               {project.title}
@@ -277,7 +297,14 @@ const ProjectCaseStudy = ({
         )}
       </header>
 
-      <div className="mt-6 grid items-start gap-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(300px,0.75fr)] lg:gap-8">
+      {isFeatured && (
+        <div className="mt-5 flex items-center gap-3 rounded-2xl border border-[#2f9edb]/20 bg-[#2f9edb]/[0.07] px-4 py-3 text-[10px] font-black uppercase tracking-[0.14em] text-[#0b6092]">
+          <span className="h-2 w-2 rounded-full bg-[#2f9edb] shadow-[0_0_0_5px_rgba(47,158,219,0.12)]" />
+          Diseño de reservas deportivas, pensado para móvil
+        </div>
+      )}
+
+      <div className={`grid items-start gap-6 lg:gap-8 ${isFeatured ? "mt-5 lg:grid-cols-[minmax(0,1.65fr)_minmax(300px,0.7fr)]" : "mt-6 lg:grid-cols-[minmax(0,1.45fr)_minmax(300px,0.75fr)]"}`}>
         <ProjectGallery
           images={galleryImages}
           projectTitle={project.title}
@@ -302,6 +329,18 @@ const ProjectCaseStudy = ({
             <p className="mt-4 whitespace-pre-line text-sm font-medium leading-7 text-[#0b1d3a]/76">
               {project.detail ?? project.description}
             </p>
+            {project.projectUrl && (
+              <a
+                href={project.projectUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-5 inline-flex items-center gap-2 rounded-full px-4 py-2.5 text-[10px] font-black uppercase tracking-[0.12em] text-white shadow-[0_10px_24px_rgba(27,90,166,0.22)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(27,90,166,0.3)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2f9edb]"
+                style={{ backgroundColor: project.accent }}
+              >
+                {project.projectUrlLabel ?? "Ver proyecto"}
+                <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
+              </a>
+            )}
             <div className="mt-6 border-t border-[#0b1d3a]/10 pt-5">
               <p className="text-[9px] font-black uppercase tracking-[0.22em] text-[#0b1d3a]/45">
                 Alcance del proyecto

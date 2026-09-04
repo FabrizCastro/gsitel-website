@@ -11,13 +11,14 @@ import { WorkProcess } from "@/sections/WorkProcess";
 import { DarkSectionsShell } from "@/components/DarkSectionsShell";
 import { CtaFooterShell } from "@/components/CtaFooterShell";
 import { Footer } from "@/sections/Footer";
+import { SoftwarePartnership } from "@/sections/SoftwarePartnership";
+import { scrollToSection } from "@/lib/smoothSectionScroll";
 
 const DigitalTransformation = dynamic(
   () =>
     import("@/sections/DigitalTransformation").then(
       (module) => module.DigitalTransformation,
     ),
-  { ssr: false },
 );
 
 const KnowledgeStack = dynamic(
@@ -71,6 +72,38 @@ export const HomeShell = () => {
   const switchEndTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
+    const handleInternalNavigation = (event: MouseEvent) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+
+      const anchor = (event.target as HTMLElement | null)?.closest<HTMLAnchorElement>("a[href]");
+      const href = anchor?.getAttribute("href");
+      if (!href || (!href.startsWith("#") && !href.startsWith("/#"))) {
+        return;
+      }
+      if (href.startsWith("/#") && window.location.pathname !== "/") {
+        return;
+      }
+
+      const sectionId = href.startsWith("/#") ? href.slice(2) : href.slice(1);
+      if (sectionId && scrollToSection(sectionId)) {
+        event.preventDefault();
+      }
+    };
+
+    document.addEventListener("click", handleInternalNavigation, true);
+    return () => document.removeEventListener("click", handleInternalNavigation, true);
+  }, []);
+
+  useEffect(() => {
     return () => {
       if (switchStartTimerRef.current) {
         window.clearTimeout(switchStartTimerRef.current);
@@ -121,6 +154,7 @@ export const HomeShell = () => {
           <DarkSectionsShell mode={mode}>
             <DigitalTransformation mode={mode} />
             <Services mode={mode} />
+            {mode === "software" && <SoftwarePartnership />}
             <WorkProcess mode={mode} />
           </DarkSectionsShell>
           {mode === "software" && <KnowledgeStack mode={mode} />}
